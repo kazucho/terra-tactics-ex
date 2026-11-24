@@ -3294,7 +3294,7 @@
                                 if (e.hp > 0 && !isBossEnemy(e)) { e.hp = 0; kills++; }
                             });
                             if (kills > 0) addCombo(kills);
-                            playSkillEffect(cells, 'dark', '#e879f9');
+                            playSkillEffect(targetCells, 'dark', '#e879f9');
                             showFloatingText(3, 3, '💥 DEBUG MODE 💥', '#f0abfc', '24px');
                             showFloatingText(ally.x + 0.5, ally.y, '権限昇格…全体即死!', '#f0abfc', '13px');
                             if (state.enemies.some(e => e.hp > 0 && isBossEnemy(e))) showFloatingText(ally.x + 0.5, ally.y + 0.6, '（ボスには効かない）', '#94a3b8', '11px');
@@ -3303,7 +3303,7 @@
                         }
                     } else if (skillInfo.type === 'guard_buff') {
                         let walledCount = 0;
-                        cells.forEach(cell => {
+                        targetCells.forEach(cell => {
                             const occ = getUnitAt(cell.x, cell.y);
                             if (occ && occ.side === 'ally' && occ.unit.hp > 0) { occ.unit.wallT = 2; walledCount++; }
                         });
@@ -3316,7 +3316,7 @@
                             showFloatingText(target.x + 0.5, target.y, '🔥復活!', '#fbbf24', '16px');
                             playSkillEffect([{x: target.x, y: target.y}], 'holy', '#f59e0b');
                         } else {
-                            cells.forEach(cell => {
+                            targetCells.forEach(cell => {
                                 const occ = getUnitAt(cell.x, cell.y);
                                 if (occ && occ.side === 'ally' && occ.unit.hp > 0) {
                                     const heal = Math.round(ally.atk * boost * 1.0);
