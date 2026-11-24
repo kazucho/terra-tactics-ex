@@ -518,6 +518,7 @@
         <button onclick="enterFormation()" class="mt-10 px-10 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black text-base shadow-[0_0_30px_rgba(245,197,66,0.45)] animate-pulse">▶ 冒険をはじめる</button>
         <div class="mt-5 flex gap-2">
             <button onclick="openCollection()" class="px-5 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-amber-200 text-sm font-bold border border-amber-500/40">📖 仲間図鑑</button>
+            <button onclick="openEnemyCollection()" class="px-5 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-rose-200 text-sm font-bold border border-rose-500/40">👹 敵図鑑</button>
             <button id="reset-data-btn" onclick="resetAllData()" class="px-5 py-2.5 rounded-xl bg-slate-900/90 hover:bg-red-950 text-slate-400 text-sm font-bold border border-slate-700">🗑 データリセット</button>
         </div>
         <p class="mt-6 text-[10px] text-slate-500">全6ウェーブ / パーティ最大6人 / オリジナルBGM搭載</p>
@@ -548,6 +549,7 @@
             </div>
             <div class="px-4 py-3 bg-[#10121a] border-t border-slate-700 flex items-center justify-between gap-2 shrink-0">
                 <button onclick="openCollection()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-600">📖 図鑑</button>
+                <button onclick="openEnemyCollection()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-rose-200 text-xs font-bold border border-slate-600">👹 敵図鑑</button>
                 <button onclick="openPartyEditorFromFormation()"  class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-600">🎨 立ち絵・名前カスタム</button>
                 <button id="formation-start-btn" onclick="startBattleFromFormation()" class="px-6 py-2.5 rounded-lg bg-gradient-to-r from-amber-500 to-yellow-500 hover:brightness-110 text-black text-sm font-black shadow-lg">バトル開始 ▶</button>
             </div>
@@ -3531,6 +3533,92 @@
                 </div>`;
         }
 
+        // ===== 敵図鑑 =====
+        const ENEMY_PROFILES = {
+            en_goblin: '魔族軍の末端兵。数で押すのが仕事だが、挟まれると脆い。',
+            en_orc: '力自慢の重装戦士。槍で横一列を薙ぎ払う。',
+            en_flameknight: '業火の剣を振るう騎士。縦の間合いに入ると危険。',
+            en_thunderwolf: '紫電をまとう魔狼。その牙は素早く、2ターンごとに襲いかかる。',
+            en_blackmage: '闇の魔導を操る術士。周囲への範囲攻撃が厄介。',
+            en_golem: '古代遺跡の守護像。岩のように硬く、攻撃には吹き飛ばしが伴う。',
+            en_wyvern: '嵐を呼ぶ飛竜。横一列を薙ぐ翼撃に注意。',
+            en_hellcaster: '地獄の業火を放つ魔導士。縦列の火柱で焼き尽くす。',
+            en_pilegolem: '杭打ち機のような腕を持つ工兵ゴーレム。激突させる吹き飛ばし攻撃が脅威。',
+            en_hawk: '嵐を呼ぶ魔鷹。暴風の爪で獲物を吹き飛ばす。',
+            en_goblinarcher: '遠距離から狙撃するゴブリンの射手。横のラインに立つと危険。',
+            en_silverknight: '白銀の鎧をまとう槍騎士。長い槍で直線を制圧する。',
+            en_obsidian: '黒曜の刃を振るう剣聖。一閃の威力は全敵中でも屈指。',
+            en_stormpriest: '嵐の裁きを下す神官。吹き飛ばしの祈りで陣形を崩す。',
+            en_dragonguard: '終焉竜に仕える近衛騎士。雷槍で主を守る。',
+            en_dragonpriest: '終焉竜を崇める祭司。竜の加護で戦場を支配する。',
+            en_bahamut: '世界の終わりに君臨する竜。2×2の巨躯から放たれる終焉のブレスは、全てを吹き飛ばす。'
+        };
+        const ENEMY_PATTERN_JP = { cross: '十字攻撃', row: '横一列攻撃', col: '縦一列攻撃', around: '周囲8マス攻撃', boss_nova: '全方位ノヴァ（ボス専用）' };
+        function getEnemyCodex() {
+            const map = new Map();
+            WAVES.forEach((w, wi) => {
+                w.enemies.forEach(e => {
+                    if (!map.has(e.presetArt)) {
+                        map.set(e.presetArt, { key: e.presetArt, name: e.name, element: e.element, weapon: e.weapon, icon: e.icon, skillName: e.skillName, maxHp: e.maxHp, atk: e.atk, size: e.size || 1, cdMax: e.cdMax, pattern: e.pattern, knockback: e.effect === 'knockback', waves: [] });
+                    }
+                    const entry = map.get(e.presetArt);
+                    if (!entry.waves.includes(wi + 1)) entry.waves.push(wi + 1);
+                });
+            });
+            return [...map.values()];
+        }
+        function enemyArtHtml(key, imgClass, useFull) {
+            const a = PRESET_ART[key];
+            if (a && (useFull ? a.full : a.icon)) return `<img src="${useFull ? a.full : a.icon}" class="${imgClass}">`;
+            return `<div class="flex items-center justify-center text-4xl" style="min-height:64px;">👹</div>`;
+        }
+        let enemyCollectionFocus = null;
+        function openEnemyCollection() {
+            const list = getEnemyCodex();
+            if (!enemyCollectionFocus || !list.some(e => e.key === enemyCollectionFocus)) enemyCollectionFocus = list.length ? list[0].key : null;
+            renderEnemyCollection();
+            const s = document.getElementById('enemy-collection-screen');
+            if (s) { s.classList.remove('hidden'); s.classList.add('flex'); }
+        }
+        function closeEnemyCollection() {
+            const s = document.getElementById('enemy-collection-screen');
+            if (s) { s.classList.add('hidden'); s.classList.remove('flex'); }
+        }
+        function renderEnemyCollection() {
+            const list = getEnemyCodex();
+            document.getElementById('enemy-collection-count').textContent = `${list.length}種`;
+            const grid = document.getElementById('enemy-collection-grid');
+            grid.innerHTML = '';
+            list.forEach(e => {
+                const div = document.createElement('div');
+                div.className = `relative rounded-xl p-1.5 text-center cursor-pointer border transition bg-slate-900 border-slate-700 hover:border-rose-400 ${enemyCollectionFocus === e.key ? 'ring-2 ring-rose-400' : ''}`;
+                div.innerHTML = `<div class="h-14 flex items-center justify-center overflow-hidden">${enemyArtHtml(e.key, 'h-14 w-auto object-contain', false)}</div><div class="text-[10px] font-bold text-slate-100 truncate">${e.name}</div><div class="text-[9px] text-rose-300 truncate">WAVE ${e.waves.join('・')}</div>`;
+                div.onclick = () => { enemyCollectionFocus = e.key; renderEnemyCollection(); };
+                grid.appendChild(div);
+            });
+            const e = list.find(x => x.key === enemyCollectionFocus) || list[0];
+            const detail = document.getElementById('enemy-collection-detail');
+            if (!e) { detail.innerHTML = ''; return; }
+            const elem = ELEMENTS[e.element] || ELEMENTS.fire;
+            const weap = WEAPONS[e.weapon] || { icon: '', name: e.weapon };
+            const isBoss = e.key === 'en_bahamut';
+            detail.innerHTML = `
+                <div class="flex gap-3">
+                    <div class="w-24 sm:w-32 shrink-0 flex items-start justify-center">${enemyArtHtml(e.key, 'max-h-52 w-auto object-contain', true)}</div>
+                    <div class="flex-1 min-w-0 text-xs">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-base font-black text-white">${e.name}</span>
+                            ${isBoss ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-600 text-white font-black">FINAL BOSS</span>' : ''}
+                            ${e.knockback ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-orange-500 text-black font-black">吹き飛ばし攻撃</span>' : ''}
+                        </div>
+                        <div class="text-slate-300 mt-1">${elem.icon}${elem.name}属性 / ${weap.icon}${weap.name} / 登場 WAVE ${e.waves.join('・')}</div>
+                        <div class="text-slate-400 mt-0.5">HP ${e.maxHp} ・ ATK ${e.atk} ・ サイズ ${e.size}×${e.size} ・ 攻撃間隔 ${e.cdMax}ターン</div>
+                        <div class="mt-1"><span class="text-rose-300 font-bold">『${e.skillName}』</span> <span class="text-slate-400">${ENEMY_PATTERN_JP[e.pattern] || e.pattern}</span></div>
+                        <div class="text-slate-400 mt-1.5 leading-relaxed">${ENEMY_PROFILES[e.key] || ''}</div>
+                    </div>
+                </div>`;
+        }
+
         let resetArmTimer = null;
         function resetAllData() {
             const btn = document.getElementById('reset-data-btn');
@@ -4232,6 +4320,27 @@
                 <div id="collection-detail" class="bg-slate-900/70 border border-slate-700 rounded-xl p-3 shrink-0 max-h-[48vh] overflow-y-auto"></div>
                 <div class="flex-1 overflow-y-auto min-h-0">
                     <div id="collection-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="enemy-collection-screen" class="fixed inset-0 bg-black/92 backdrop-blur-md z-[86] hidden flex items-center justify-center p-2 sm:p-4" style="background: rgba(0,0,0,0.92);">
+        <div class="bg-[#1a1216] border border-rose-500/50 rounded-2xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="px-4 py-3 bg-[#140d10] border-b border-slate-700 flex items-center justify-between shrink-0">
+                <div>
+                    <h2 class="text-base sm:text-lg font-black text-rose-300">👹 敵図鑑</h2>
+                    <p class="text-[11px] text-slate-400">戦場に現れる敵の生態と攻撃パターンが見られます</p>
+                </div>
+                <div class="flex items-center gap-3 shrink-0">
+                    <span id="enemy-collection-count" class="text-sm font-black text-rose-300"></span>
+                    <button onclick="closeEnemyCollection()" class="text-slate-400 hover:text-white text-2xl font-bold px-2">&times;</button>
+                </div>
+            </div>
+            <div class="flex-1 flex flex-col min-h-0 p-3 gap-3">
+                <div id="enemy-collection-detail" class="bg-slate-900/70 border border-slate-700 rounded-xl p-3 shrink-0 max-h-[48vh] overflow-y-auto"></div>
+                <div class="flex-1 overflow-y-auto min-h-0">
+                    <div id="enemy-collection-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
                 </div>
             </div>
         </div>
