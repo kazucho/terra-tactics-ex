@@ -413,6 +413,8 @@
         .defeat-zoom { animation: defeatZoom 2.6s ease-out both; filter: grayscale(0.92) brightness(0.55) contrast(1.05); }
         .death-ghost { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 55; animation: deathAscend 0.95s ease-out forwards; }
         @keyframes deathAscend { 0% { opacity: 1; transform: translateY(0); } 25% { opacity: 1; } 100% { opacity: 0; transform: translateY(-46%); } }
+        .revive-descend { animation: reviveDescend 0.8s ease-out; }
+        @keyframes reviveDescend { from { opacity: 0; transform: translateY(-46%); } to { opacity: 1; transform: translateY(0); } }
         @keyframes defeatZoom { from { transform: scale(1.14); } to { transform: scale(1.0); } }
     </style>
 </head>
@@ -532,6 +534,7 @@
             <button id="reset-data-btn" onclick="resetAllData()" class="w-full py-2.5 rounded-xl bg-slate-900/90 hover:bg-red-950 text-slate-400 text-sm font-bold border border-slate-700 whitespace-nowrap">データリセット</button>
         </div>
         <p class="mt-6 text-[10px] text-slate-500">全6ウェーブ / パーティ最大6人 / オリジナルBGM搭載</p>
+        <p id="version-label" class="mt-2 font-mono text-[11px] tracking-[0.25em] text-slate-500"></p>
     </div>
 
     <!-- ==========================================
@@ -2151,7 +2154,11 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
+        const GAME_VERSION = '1.56';
+
         function initGame() {
+            const vEl = document.getElementById('version-label');
+            if (vEl) vEl.textContent = 'stable ' + GAME_VERSION + '.' + String(Math.floor(Math.random() * 10000)).padStart(4, '0');
             loadPartyFromStorage();
             const ebl = document.getElementById('endless-best-label');
             if (ebl) ebl.textContent = state.bestEndless > 0 ? `深淵ベスト記録：B${state.bestEndless}F クリア` : '';
@@ -2545,7 +2552,7 @@
                 if (!box || box.classList.contains('hidden')) break;
                 await sleep(200); waited += 200;
             }
-            if (state.allies.filter(a => a.hp > 0).length <= 1 && state.enemies.some(e => e.hp > 0)) { showGameOver(true); return; }
+            if (countStandingAllies() <= 1 && state.enemies.some(e => e.hp > 0)) { showGameOver(true); return; }
             const playerFirst = await playCoinToss();
             if (playerFirst) { setPlayerReady(); }
             else {
@@ -3168,13 +3175,36 @@
                 await sleep(420);
                 if (state.enemies.filter(e => e.hp > 0).length === 0) { await handleWaveClear(); return; }
             }
-            state.allies.forEach(a => {
+            for (const a of state.allies) {
                 if (a.hp <= 0 && (JOB_TRAITS[a.job] || {}).phoenix && !a._phoenixUsed) {
                     a._phoenixUsed = true;
                     a.hp = Math.round(a.maxHp * 0.5);
+                    recentRevives.add(a.id);
                     showFloatingText(a.x + 0.5, a.y, '不死鳥の復活!', '#fbbf24', '14px');
+                    const burstCells = [];
+                    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+                        const cx = a.x + dx, cy = a.y + dy;
+                        if (cx >= 0 && cx < COLS && cy >= 0 && cy < ROWS) burstCells.push({ x: cx, y: cy });
+                    }
+                    playSkillEffect(burstCells, 'fire', '#f97316');
+                    playSE('skill_blast', 1.0);
+                    let burstHit = false;
+                    state.enemies.forEach(e => {
+                        if (e.hp <= 0) return;
+                        const s = e.size || 1;
+                        const inRange = burstCells.some(c => c.x >= e.x && c.x < e.x + s && c.y >= e.y && c.y < e.y + s);
+                        if (inRange) {
+                            const dmg = Math.max(1, Math.round(a.atk * getElementMultiplier('fire', e.element)));
+                            e.hp = Math.max(0, e.hp - dmg);
+                            burstHit = true;
+                            showFloatingText(e.x + s / 2, e.y + 0.3, `爆炎! -${dmg}`, '#fb923c', '13px');
+                        }
+                    });
+                    renderUnits();
+                    renderPartyBar();
+                    if (burstHit) await sleep(480);
                 }
-            });
+            }
             await spiritAttack();
             await petAttack();
             if (state.charmed) await charmedAttack();
@@ -3799,6 +3829,10 @@
             });
         }
 
+        function countStandingAllies() {
+            return state.allies.filter(a => a.hp > 0 || ((JOB_TRAITS[a.job] || {}).phoenix && !a._phoenixUsed)).length;
+        }
+
         async function proceedToEnemyTurn() {
             state.phase = 'ENEMY_TURN';
             phaseLabel.textContent = 'ENEMY TURN - 敵の行動';
@@ -3968,7 +4002,7 @@
                 }
             }
 
-            const aliveAllies = state.allies.filter(a => a.hp > 0).length;
+            const aliveAllies = countStandingAllies();
             if (aliveAllies === 0) {
                 showGameOver();
                 return;
@@ -4455,7 +4489,7 @@
             if (t.freeze) traits.push('凍結：命中時に25%の確率で敵を凍結させ、次の攻撃を封じる（ボスには無効）');
             if (t.shock) traits.push('感電：命中時に25%の確率で敵を感電させ、次の攻撃を封じる（ボスには無効）');
             if (t.dragonpet) traits.push('竜ペット：子竜が毎ターン自動で敵を攻撃する');
-            if (t.phoenix) traits.push('不死鳥：戦闘中一度だけ、倒れてもHP50%で復活する');
+            if (t.phoenix) traits.push('不死鳥：戦闘中一度だけ、倒れてもHP50%で復活する。復活時に周囲3×3へ爆炎（攻撃力×1.0の火ダメージ）');
             if (t.guard2) traits.push('鉄壁：隣接する味方の被ダメージを40%軽減する');
             if (t.debug) traits.push('デバッグ：チェーンでスキルが発動すると、近くの敵を即死させる（距離で確率低下・ボス無効）');
             detail.innerHTML = `
@@ -5143,6 +5177,7 @@
         }
 
         let prevAliveMap = new Map();
+        let recentRevives = new Set();
         function ghostAvatarHtml(u, isAlly) {
             if (isAlly) {
                 const s = u.customIconData || (PRESET_ART[u.presetArt] || {}).icon || '';
@@ -5174,6 +5209,7 @@
                 el.id = `unit-${ally.id}`;
                 el.dataset.id = ally.id;
                 el.className = `unit ally elem-${ally.element}`;
+                if (recentRevives.has(ally.id)) { el.classList.add('revive-descend'); recentRevives.delete(ally.id); }
                 el.style.width = `${100 / COLS}%`;
                 el.style.height = `${100 / ROWS}%`;
                 el.style.left = `${(ally.x / COLS) * 100}%`;
