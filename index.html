@@ -31,8 +31,11 @@
             touch-action: none;
             user-select: none;
             -webkit-user-select: none;
+            -webkit-touch-callout: none;
         }
+        img { -webkit-user-drag: none; }
 
+        @keyframes turnBandIn { 0% { opacity: 0; transform: scaleX(0.65); } 16% { opacity: 1; transform: scaleX(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: scaleX(1.02); } }
         .font-cinzel { font-family: 'Cinzel', serif; }
         .update-spinner { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(212, 175, 55, 0.25); border-top-color: #d4af37; animation: updSpin 0.8s linear infinite; display: inline-block; }
         @keyframes updSpin { to { transform: rotate(360deg); } }
@@ -189,7 +192,12 @@
 
         /* 挟み撃ち・連鎖発光 */
         .unit.pincer-active .unit-inner {
-            animation: unitPop 0.35s ease;
+            border-color: #fbbf24 !important;
+            animation: pincerFramePulse 0.45s ease-in-out infinite alternate;
+        }
+        @keyframes pincerFramePulse {
+            from { box-shadow: 0 0 10px 2px rgba(251, 191, 36, 0.85), inset 0 0 8px rgba(251, 191, 36, 0.7); }
+            to { box-shadow: 0 0 24px 7px rgba(251, 191, 36, 0.95), inset 0 0 15px rgba(251, 191, 36, 0.85); }
         }
 
         /* スキル発動ズーム＋属性ネオン枠 */
@@ -223,9 +231,12 @@
         .unit-hp > div { height: 100%; }
         .unit-badges { font-size: 8px; font-size: 1.35cqw; }
         .unit.chain-active .unit-inner {
-            box-shadow: 0 0 15px 3px #38bdf8, inset 0 0 8px #bae6fd !important;
             border-color: #7dd3fc !important;
-            animation: unitPop 0.35s ease;
+            animation: chainFramePulse 0.45s ease-in-out infinite alternate;
+        }
+        @keyframes chainFramePulse {
+            from { box-shadow: 0 0 10px 2px rgba(56, 189, 248, 0.85), inset 0 0 8px rgba(56, 189, 248, 0.7); }
+            to { box-shadow: 0 0 24px 7px rgba(56, 189, 248, 0.95), inset 0 0 15px rgba(56, 189, 248, 0.85); }
         }
         @keyframes unitPop {
             0% { transform: scale(1); }
@@ -535,6 +546,11 @@
         <canvas id="magic-fx-canvas" class="absolute inset-0 w-full h-full block"></canvas>
     </div>
 
+    <div id="turn-banner" class="fixed inset-0 hidden items-center justify-center pointer-events-none" style="z-index: 145;">
+        <div id="turn-banner-band" class="w-full py-4 sm:py-5 text-center border-y-2 bg-indigo-950/75 border-amber-300/80 shadow-2xl">
+            <div id="turn-banner-text" class="font-black tracking-[0.35em] text-3xl sm:text-4xl text-amber-100">味方のターン</div>
+        </div>
+    </div>
     <div id="cutin-overlay">
         <div class="cutin-backdrop"></div>
         <div id="cutin-band" class="cutin-band bg-gradient-to-r from-red-900 via-orange-600 to-amber-500">
@@ -2411,7 +2427,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.105';
+        const GAME_VERSION = '1.106';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2901,7 +2917,7 @@
             calculateEnemyDangerZones();
             updateHeaderUI();
             renderAll();
-            setPlayerReady();
+            setPlayerReady(true);
             startBGM(state.endlessFloor > 0 ? (state.dynamicWave && state.dynamicWave.isBossFloor ? 'boss' : pickEndlessBGM()) : (idx >= WAVES.length - 1 ? 'boss' : 'stage' + (idx + 1)));
             if (state.splashEnabled) showWaveSplash(idx);
             runBattleStartSequence(idx);
@@ -2995,9 +3011,12 @@
             const w = Math.min(430, m.clientWidth, Math.floor(m.clientHeight * 0.75));
             if (w > 0) b.style.width = w + 'px';
         }
+        // 長押しの画像メニューを抑止（入力欄だけ許可）
+        document.addEventListener('contextmenu', e => { const t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) return; e.preventDefault(); });
+        document.addEventListener('dragstart', e => { if (e.target && e.target.tagName === 'IMG') e.preventDefault(); });
         window.addEventListener('resize', fitBoard);
 
-        function setPlayerReady() {
+        function setPlayerReady(isSetup) {
             fitBoard();
             state.phase = 'PLAYER_IDLE';
             state.allies.forEach(a => {
@@ -3011,6 +3030,7 @@
             timerText.textContent = '操作時間: キャラ別';
             phaseLabel.textContent = '味方をドラッグして敵を挟み撃て！';
             phaseLabel.className = 'font-bold text-amber-300 truncate';
+            if (!isSetup) showTurnBanner('味方のターン', false);
         }
 
         // ==========================================
@@ -3819,8 +3839,7 @@
             const pincers = detectPincers();
 
             if (pincers.length === 0) {
-                showFloatingText(COLS / 2, ROWS / 2, 'NO PINCER...', '#94a3b8', '16px');
-                await sleepFx(500);
+                await sleepFx(200);
                 await proceedToEnemyTurn();
                 return;
             }
@@ -3849,7 +3868,6 @@
                     const pa = state.allies.find(a => a.id === pid);
                     if (pa) setTimeout(() => showAttackFlash(pa), i2 * 400);
                 });
-                drawChainLines(participants, p.pincerAllyIds);
                 playChainEffects(participants, p.pincerAllyIds);
                 if (chainCount >= 3 && livingEnemies.length) {
                     const fe = livingEnemies[0];
@@ -4553,7 +4571,7 @@
             state.phase = 'ENEMY_TURN';
             phaseLabel.textContent = 'ENEMY TURN - 敵の行動';
             phaseLabel.className = 'font-bold text-rose-400 truncate';
-            await sleep(320);
+            await showTurnBanner('敵のターン', true);
 
             // スリップダメージ（毒・闇の蝕み）：敵フェイズ開始時に継続ダメージ
             let slipHit = false;
@@ -4630,7 +4648,7 @@
                             playSkillEffect([{ x: wounded.x, y: wounded.y }], 'holy', '#fde68a');
                             showFloatingText(wounded.x + (wounded.size || 1) / 2, wounded.y + 0.3, `回復 +${heal}`, '#4ade80', '14px');
                             enemy.cd = enemy.cdMax;
-                            moveEnemyAggressively(enemy);
+                            await moveEnemyAggressively(enemy);
                             renderUnits();
                             renderPartyBar();
                             await sleep(420);
@@ -4638,7 +4656,7 @@
                         }
                     }
                     // 攻撃前に移動する（ボス含む・毎ターン移動可）。射程に誰もいなければ空振りしない
-                    moveEnemyAggressively(enemy);
+                    await moveEnemyAggressively(enemy);
                     renderUnits();
                     const preTargets = getEnemyAttackCells(enemy);
                     const canHitNow = preTargets.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'ally'; });
@@ -4773,7 +4791,7 @@
                     renderPartyBar();
                     await sleepFx(hitAny ? 520 : 340);
                 } else {
-                    moveEnemyAggressively(enemy);
+                    await moveEnemyAggressively(enemy);
                     renderUnits();
                     await sleepFx(200);
                 }
@@ -4855,7 +4873,7 @@
             enemy.x = best.x; enemy.y = best.y;
         }
 
-        function moveEnemyAggressively(enemy) {
+        async function moveEnemyAggressively(enemy) {
             const canHitFrom = (x, y) => {
                 const kx = enemy.x, ky = enemy.y;
                 enemy.x = x; enemy.y = y;
@@ -4863,7 +4881,7 @@
                 enemy.x = kx; enemy.y = ky;
                 return state.allies.some(a => a.hp > 0 && cells.some(c => c.x === a.x && c.y === a.y));
             };
-            if (canHitFrom(enemy.x, enemy.y)) { tryStepEnemySmartly(enemy); return; }
+            if (canHitFrom(enemy.x, enemy.y)) { const bx0 = enemy.x, by0 = enemy.y; tryStepEnemySmartly(enemy); if (enemy.x !== bx0 || enemy.y !== by0) { renderUnits(); await sleepFx(130); } return; }
             // 攻撃が届かない間は2マス接近する（BFSで射程に入れる最短経路を進む）
             for (let step = 0; step < 2; step++) {
                 const size = enemy.size || 1;
@@ -4891,7 +4909,7 @@
                         queue.push({ x: nx, y: ny });
                     }
                 }
-                if (!goal) { tryStepEnemySmartly(enemy); break; }
+                if (!goal) { const bx1 = enemy.x, by1 = enemy.y; tryStepEnemySmartly(enemy); if (enemy.x !== bx1 || enemy.y !== by1) { renderUnits(); await sleepFx(130); } break; }
                 let cur = goal;
                 while (true) {
                     const p = prev.get(keyOf(cur.x, cur.y));
@@ -4899,6 +4917,8 @@
                     cur = p;
                 }
                 enemy.x = cur.x; enemy.y = cur.y;
+                renderUnits();
+                await sleepFx(130);
                 if (canHitFrom(enemy.x, enemy.y)) break;
             }
         }
@@ -6244,39 +6264,20 @@
             });
         }
 
-        function drawChainLines(participants, pincerIds) {
-            if (participants.length < 2) return;
-            const rect = boardEl.getBoundingClientRect();
-            const cellW = rect.width / COLS;
-            const cellH = rect.height / ROWS;
-            const pincers = participants.filter(a => !pincerIds || pincerIds.has(a.id));
-            const chained = participants.filter(a => pincerIds && !pincerIds.has(a.id));
-            const drawSeg = (a, b) => {
-                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', (a.x + 0.5) * cellW);
-                line.setAttribute('y1', (a.y + 0.5) * cellH);
-                line.setAttribute('x2', (b.x + 0.5) * cellW);
-                line.setAttribute('y2', (b.y + 0.5) * cellH);
-                line.setAttribute('stroke', '#38bdf8');
-                line.setAttribute('stroke-width', '3.5');
-                line.setAttribute('stroke-linecap', 'round');
-                fxSvg.appendChild(line);
-            };
-            // 挟んだ2人の間（敵を貫く軸）を結ぶ
-            if (pincers.length === 2) drawSeg(pincers[0], pincers[1]);
-            // 各ピンサーから、同じ行・列の直線上にいるチェーン味方へまっすぐ結ぶ（方向ごとに一番遠い味方まで1本）
-            pincers.forEach(p => {
-                [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dx, dy]) => {
-                    let far = null;
-                    chained.forEach(c => {
-                        if (c.x !== p.x && c.y !== p.y) return; // 同じ行・列に居ない味方は結ばない
-                        if (enemyBlocksLine(p.x, p.y, c.x, c.y)) return;
-                        if (dx !== 0 && c.y === p.y && Math.sign(c.x - p.x) === dx) { if (!far || Math.abs(c.x - p.x) > Math.abs(far.x - p.x)) far = c; }
-                        if (dy !== 0 && c.x === p.x && Math.sign(c.y - p.y) === dy) { if (!far || Math.abs(c.y - p.y) > Math.abs(far.y - p.y)) far = c; }
-                    });
-                    if (far) drawSeg(p, far);
-                });
-            });
+        async function showTurnBanner(text, isEnemy) {
+            const b = document.getElementById('turn-banner');
+            if (!b) return;
+            const band = document.getElementById('turn-banner-band');
+            const tx = document.getElementById('turn-banner-text');
+            tx.textContent = text;
+            band.className = 'w-full py-4 sm:py-5 text-center border-y-2 shadow-2xl ' + (isEnemy ? 'bg-rose-950/75 border-rose-400/80' : 'bg-indigo-950/75 border-amber-300/80');
+            tx.className = 'font-black tracking-[0.35em] text-3xl sm:text-4xl ' + (isEnemy ? 'text-rose-200' : 'text-amber-100');
+            b.classList.remove('hidden'); b.classList.add('flex');
+            const dur = 480 * fxScale();
+            band.style.animation = 'none'; void band.offsetWidth;
+            band.style.animation = `turnBandIn ${dur}ms ease forwards`;
+            await sleep(dur);
+            b.classList.add('hidden'); b.classList.remove('flex');
         }
 
         function showFloatingText(gridX, gridY, text, color = '#fff', fontSize = '16px') {
