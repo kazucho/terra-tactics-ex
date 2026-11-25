@@ -422,8 +422,8 @@
                 <span id="turn-badge" class="text-[10px] bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-300 border border-slate-700/80">TURN 1</span>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
-                <button id="btn-sound" onclick="toggleSound()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs flex items-center justify-center transition" title="効果音">🔊</button>
-                <button id="btn-bgm" onclick="toggleBGM()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs flex items-center justify-center transition" title="BGM ON/OFF">🎵</button>
+                <button id="btn-sound" onclick="toggleSound()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs flex items-center justify-center transition" title="効果音">音</button>
+                <button id="btn-bgm" onclick="toggleBGM()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs flex items-center justify-center transition" title="BGM ON/OFF">曲</button>
                 <button onclick="openHelp()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs font-bold flex items-center justify-center transition">？</button>
             </div>
         </div>
@@ -445,9 +445,9 @@
         <!-- 地形ミニガイド -->
         <div class="flex items-center gap-2 text-[10px] text-slate-400 mt-1 pt-1 border-t border-slate-800/80">
             <div class="flex items-center gap-3 overflow-x-auto whitespace-nowrap flex-1 py-0.5">
-                <span>🪨 岩壁：通行不可</span>
-                <span class="text-red-400">🔺 トゲ床：踏むと12%傷（レンジャー無効）</span>
-                <span class="text-emerald-400">💠 魔力泉：停止で回復+火力UP</span>
+                <span> 岩壁：通行不可</span>
+                <span class="text-red-400"> トゲ床：踏むと12%傷（レンジャー無効）</span>
+                <span class="text-emerald-400"> 魔力泉：停止で回復+火力UP</span>
             </div>
         </div>
     </section>
@@ -537,7 +537,7 @@
         <div class="bg-[#161923] border border-amber-500/50 rounded-2xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
             <div class="px-4 py-3 bg-[#10121a] border-b border-slate-700 flex items-center justify-between shrink-0">
                 <div>
-                    <h2 class="text-base sm:text-lg font-black text-amber-300">⚔️ パーティ編成</h2>
+                    <h2 class="text-base sm:text-lg font-black text-amber-300"> パーティ編成</h2>
                     <p class="text-[11px] text-slate-400">出撃メンバーを最大6人まで選べます（一覧をタップで追加／解除、メンバー枠タップで詳細）</p>
                 </div>
                 <span id="formation-count" class="text-sm font-black text-amber-300 shrink-0"></span>
@@ -556,7 +556,7 @@
                 </div>
             </div>
             <div class="px-4 py-3 bg-[#10121a] border-t border-slate-700 shrink-0">
-                <button id="formation-start-btn" onclick="startBattleFromFormation()" class="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:brightness-110 text-black text-lg font-black tracking-widest shadow-lg start-glow">⚔️ バトル開始 ⚔️</button>
+                <button id="formation-start-btn" onclick="startBattleFromFormation()" class="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:brightness-110 text-black text-lg font-black tracking-widest shadow-lg start-glow"> バトル開始 </button>
             </div>
         </div>
     </div>
@@ -569,7 +569,7 @@
             <!-- モーダルヘッダー -->
             <div class="px-4 py-3 bg-[#10121a] border-b border-slate-700 flex items-center justify-between shrink-0">
                 <div>
-                    <h2 class="text-base sm:text-lg font-black text-amber-300">🎨 パーティ編成・オリジナル画像＆特性編集</h2>
+                    <h2 class="text-base sm:text-lg font-black text-amber-300"> パーティ編成・オリジナル画像＆特性編集</h2>
                     <p class="text-[11px] text-slate-400">アイコン画像・全身カットイン立ち絵のアップロードやジョブ・スキル範囲を自由に設定できます</p>
                 </div>
                 <button onclick="closePartyEditor()" class="text-slate-400 hover:text-white text-2xl font-bold px-2">&times;</button>
@@ -619,7 +619,7 @@
     <div id="help-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#181b24] border border-amber-500/40 rounded-xl max-w-md w-full max-h-[88vh] overflow-y-auto p-5 shadow-2xl space-y-3 text-xs sm:text-sm">
             <div class="flex justify-between items-center border-b border-slate-700 pb-2">
-                <h2 class="text-base font-black text-amber-300">⚔️ TERRA TACTICS EX+ 戦術ガイド</h2>
+                <h2 class="text-base font-black text-amber-300"> TERRA TACTICS EX+ 戦術ガイド</h2>
                 <button onclick="closeHelp()" class="text-slate-400 hover:text-white text-xl font-bold px-2">&times;</button>
             </div>
             <div class="space-y-2.5 text-slate-300 leading-relaxed">
@@ -631,11 +631,11 @@
                 </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">2. 挟み撃ち（ピンサー）＆チェーン魔法</div>
-                    敵キャラと🪨岩壁はすり抜け不可。味方を押し出しながら敵を縦または横で挟むと攻撃開始！さらに、挟んだ2人と同じ行・列の直線上にいる味方は<span class="text-sky-300 font-bold">離れていてもチェーン発動</span>し、全身カットインと共に固有範囲スキルを放ちます。
+                    敵キャラと岩壁はすり抜け不可。味方を押し出しながら敵を縦または横で挟むと攻撃開始！さらに、挟んだ2人と同じ行・列の直線上にいる味方は<span class="text-sky-300 font-bold">離れていてもチェーン発動</span>し、全身カットインと共に固有範囲スキルを放ちます。
                 </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">3. カスタム画像＆立ち絵カットイン</div>
-                    右上の<span class="text-amber-300 font-bold">「🎨 編成・立ち絵」</span>から、お手持ちの画像ファイルをアップロードして盤面アイコンやスキル発動時の全身立ち絵に設定できます！
+                    右上の<span class="text-amber-300 font-bold">「 編成・立ち絵」</span>から、お手持ちの画像ファイルをアップロードして盤面アイコンやスキル発動時の全身立ち絵に設定できます！
                 </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">4. スキル発動率＆スキルブースト（EX+新仕様）</div>
@@ -643,7 +643,7 @@
                 </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">5. 武器の三すくみ＆P/Cスキル（EX+新仕様）</div>
-                    🗡️剣は🔱槍に強く、🔱槍は🏹弓に強く、🏹弓は🗡️剣に強い（有利×1.25／不利×0.8、🪄杖は中立）。武器は編成画面で変更可能。<br>
+                    剣は槍に強く、槍は弓に強く、弓は剣に強い（有利×1.25／不利×0.8、杖は中立）。武器は編成画面で変更可能。<br>
                     挟んだ本人のスキルは<span class="text-amber-200 font-bold">Pスキル</span>（固有範囲・フル威力）、チェーンした味方は<span class="text-sky-300 font-bold">Cスキル</span>（十字範囲・威力85%）になります。
                 </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
@@ -654,7 +654,7 @@
                 </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">6. 吹き飛ばし攻撃に注意（EX+新仕様）</div>
-                    💨マークの敵（ゴーレム・テンペストホーク・嵐の神官・バハムート等）の攻撃が当たると、味方が敵から離れる方向へ<span class="text-rose-300 font-bold">1マス吹き飛ばされ</span>布陣が崩れます。行き止まりに激突すると追加ダメージ、トゲ床に飛ばされるとトゲダメージも受けます。
+                    マークの敵（ゴーレム・テンペストホーク・嵐の神官・バハムート等）の攻撃が当たると、味方が敵から離れる方向へ<span class="text-rose-300 font-bold">1マス吹き飛ばされ</span>布陣が崩れます。行き止まりに激突すると追加ダメージ、トゲ床に飛ばされるとトゲダメージも受けます。
                 </div>
             </div>
                 <div class="space-y-1">
@@ -665,7 +665,7 @@
                 </div>
                 <div class="space-y-1">
                     <div class="font-bold text-amber-300">8. 召喚・図鑑・特性（EX+追加仕様）</div>
-                    ウェーブをクリアするたびに、魔導書から<span class="text-amber-300 font-bold">41人の中からランダムで1体召喚</span>されます。初めての仲間には<span class="text-rose-400 font-bold">NEW</span>バッジが付き、すでに仲間になっているキャラが重複すると<span class="text-amber-300 font-bold">レベルアップ（HP・ATK +5%／Lv）</span>します。未所持の仲間がいる間は、20%の確率で必ず未所持の仲間が選ばれます。集めた仲間はタイトル画面の<span class="text-amber-300 font-bold">📖仲間図鑑</span>で立ち絵とプロフィールが見られます。<br>
+                    ウェーブをクリアするたびに、魔導書から<span class="text-amber-300 font-bold">41人の中からランダムで1体召喚</span>されます。初めての仲間には<span class="text-rose-400 font-bold">NEW</span>バッジが付き、すでに仲間になっているキャラが重複すると<span class="text-amber-300 font-bold">レベルアップ（HP・ATK +5%／Lv）</span>します。未所持の仲間がいる間は、20%の確率で必ず未所持の仲間が選ばれます。集めた仲間はタイトル画面の<span class="text-amber-300 font-bold">仲間図鑑</span>で立ち絵とプロフィールが見られます。<br>
                     ジョブ特性：斥候・忍者・侍・アーチャーは<span class="text-amber-300 font-bold">クリティカル</span>（1.6倍）が発生。斥候と暗黒騎士は<span class="text-purple-300 font-bold">スリップ</span>（継続ダメージ）、黒魔道士は<span class="text-sky-300 font-bold">攻防ダウン</span>を付与。ランサーの挟撃は背後の敵まで<span class="text-amber-300 font-bold">貫通</span>します。<br>
                     新ジョブ：<span class="text-amber-300 font-bold">時魔道士</span>（遅延＋市松範囲）・<span class="text-amber-300 font-bold">モンク</span>（背水）・<span class="text-amber-300 font-bold">聖騎士</span>（守護＋攻撃回復の十字）・<span class="text-amber-300 font-bold">竜騎士</span>（桂馬跳び範囲＋飛空移動：敵・岩・トゲを飛び越える。ただし敵や岩の上には着地できない）・<span class="text-amber-300 font-bold">召喚士</span>（精霊が3ターン自動攻撃）・<span class="text-amber-300 font-bold">ドワーフ工兵</span>（整地スキルで岩とトゲを除去）。<span class="text-amber-300 font-bold">風水師</span>（泉生成）・<span class="text-amber-300 font-bold">からくり師</span>（地雷）・<span class="text-amber-300 font-bold">空間魔道士</span>（集合転送）・<span class="text-amber-300 font-bold">ネクロマンサー</span>（呪縛）・<span class="text-amber-300 font-bold">錬金術師</span>（時限ボム）も参戦。暗黒騎士は吸収、レンジャーは地形特効を習得。チェーン時は仲間のマスが光り、連携が大きいと「ゴゴゴゴゴ！！」が炸裂します。
                     話術士：<span class="text-amber-300 font-bold">懐柔</span>スキルでボス以外の敵を味方にできます（精霊と同じ随行枠・そのウェーブ限り）。成功率は敵が強いほど下がります。<br>
@@ -714,75 +714,75 @@
 
         // ジョブ（クラス）定義
         const JOB_CLASSES = {
-            geomancer: { name: '風水師', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: '🧭 風水師', desc: '地脈を読み、戦場に魔力泉を生み出す地形の魔術師。' },
-            karakuri: { name: 'からくり師', moveTime: 5.0, directMult: 0.9, skillPowerMult: 1.0, badge: '⚙️ からくり師', desc: '地雷を仕掛ける罠の専門家。敵の足元に死を置く。' },
-            warper: { name: '空間魔道士', moveTime: 6.0, directMult: 0.35, skillPowerMult: 1.0, badge: '🌀 空間魔道士', desc: '仲間全員を自分の周囲へ転送する、次元を操る魔道士。' },
-            necromancer: { name: 'ネクロマンサー', moveTime: 5.0, directMult: 0.35, skillPowerMult: 1.35, badge: '💀 ネクロマンサー', desc: '倒した敵の地に呪縛を残す死霊術師。死がさらなる死を呼ぶ。' },
-            alchemist: { name: '錬金術師', moveTime: 5.0, directMult: 0.4, skillPowerMult: 1.0, badge: '⚗️ 錬金術師', desc: '敵に時限ボムを仕掛ける爆弾魔。次の攻撃開始とともに大爆発。' },
-            orator: { name: '話術士', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: '🕊️ 話術士', desc: '言葉で敵を懐柔する調停者。味方になった敵はそのウェーブの間、共に戦う。' },
-            whitemage: { name: '白魔道士', moveTime: 5.0, directMult: 0.35, skillPowerMult: 1.5, badge: '🌹 白魔道士', desc: '野ばらの紋章を掲げる攻撃型の白魔道士。広範囲の攻撃白魔法ホーリーノヴァを放つ。合言葉を知る者だけが仲間にできる。' },
-            developer: { name: '開発者', moveTime: 5.0, directMult: 1.05, skillPowerMult: 1.45, badge: '🛠️ 開発者', desc: '世界の理を書き換える隠れ開発者。15パズルの封印を解いた者だけが仲間にできる。' },
-            thief: { name: 'シーフ', moveTime: 6.0, directMult: 0.95, skillPowerMult: 1.35, badge: '🗡️ シーフ', desc: '短剣二本で前線に立つ戦闘特化のシーフ。クリティカル率30%。スキル【不意打ち×騙し討ち】は隣接する敵への特大ダメージ（ウェポンスキル）。' },
-            salaryman: { name: 'サラリーマン', moveTime: 0.5, directMult: 0.1, skillPowerMult: 1.0, badge: '👓 サラリーマン', desc: '眼鏡の中年サラリーマン。HP10の紙装甲だが移動は爆速。チェーンでスキルが発動すると様子がおかしくなる。' },
-            wallknight: { name: '鉄壁騎士', moveTime: 6.0, directMult: 0.9, skillPowerMult: 1.0, badge: '🛡️ 鉄壁騎士', desc: '鉄壁の守りで仲間を庇う騎士。隣接する味方の被ダメージを大きく軽減する。' },
-            deathbringer: { name: '死剣士', moveTime: 4.5, directMult: 1.25, skillPowerMult: 1.3, badge: '💀 死剣士', desc: '死の呪いを宿す剣士。攻撃命中時に稀に敵を即死させる（ボスには無効）。' },
-            reaper: { name: '死鎌騎士', moveTime: 5.0, directMult: 1.2, skillPowerMult: 1.25, badge: '🌙 死鎌騎士', desc: '大鎌で魂を刈る暗黒騎士。与えたダメージの一部を吸収して回復する。' },
-            frostwarrior: { name: '凍結戦士', moveTime: 5.0, directMult: 1.15, skillPowerMult: 1.2, badge: '🪓 凍結戦士', desc: '氷の戦斧を振るう戦士。命中時に敵を凍結させ、次の攻撃を封じる（ボスには無効）。' },
-            wyvernlancer: { name: '竜槍騎士', moveTime: 5.5, directMult: 1.15, skillPowerMult: 1.25, badge: '🐉 竜槍騎士', desc: '子竜を連れた槍騎士。相棒の子竜が毎ターン自動で敵を攻撃する。' },
-            phoenixknight: { name: '不死鳥騎士', moveTime: 5.0, directMult: 1.0, skillPowerMult: 1.1, badge: '🔥 不死鳥騎士', desc: '不死鳥の加護を持つ騎士。スキルで仲間を復活させ、一度だけ自らも蘇る。' },
-            amazoness: { name: 'アマゾネス', moveTime: 5.0, directMult: 1.1, skillPowerMult: 1.2, badge: '⚡ アマゾネス', desc: '雷をまとう女戦士。命中時に敵を感電させ、次の攻撃を封じる（ボスには無効）。' },
-            dwarf: { name: 'ドワーフ工兵', moveTime: 6.0, directMult: 1.1, skillPowerMult: 1.0, badge: '⛏️ ドワーフ工兵', desc: 'ギミックマスを整地する職人。岩とトゲを打ち砕き、戦場を切り開く。' },
+            geomancer: { name: '風水師', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: ' 風水師', desc: '地脈を読み、戦場に魔力泉を生み出す地形の魔術師。' },
+            karakuri: { name: 'からくり師', moveTime: 5.0, directMult: 0.9, skillPowerMult: 1.0, badge: ' からくり師', desc: '地雷を仕掛ける罠の専門家。敵の足元に死を置く。' },
+            warper: { name: '空間魔道士', moveTime: 6.0, directMult: 0.35, skillPowerMult: 1.0, badge: ' 空間魔道士', desc: '仲間全員を自分の周囲へ転送する、次元を操る魔道士。' },
+            necromancer: { name: 'ネクロマンサー', moveTime: 5.0, directMult: 0.35, skillPowerMult: 1.35, badge: ' ネクロマンサー', desc: '倒した敵の地に呪縛を残す死霊術師。死がさらなる死を呼ぶ。' },
+            alchemist: { name: '錬金術師', moveTime: 5.0, directMult: 0.4, skillPowerMult: 1.0, badge: ' 錬金術師', desc: '敵に時限ボムを仕掛ける爆弾魔。次の攻撃開始とともに大爆発。' },
+            orator: { name: '話術士', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: ' 話術士', desc: '言葉で敵を懐柔する調停者。味方になった敵はそのウェーブの間、共に戦う。' },
+            whitemage: { name: '白魔道士', moveTime: 5.0, directMult: 0.35, skillPowerMult: 1.5, badge: ' 白魔道士', desc: '野ばらの紋章を掲げる攻撃型の白魔道士。広範囲の攻撃白魔法ホーリーノヴァを放つ。合言葉を知る者だけが仲間にできる。' },
+            developer: { name: '開発者', moveTime: 5.0, directMult: 1.05, skillPowerMult: 1.45, badge: ' 開発者', desc: '世界の理を書き換える隠れ開発者。15パズルの封印を解いた者だけが仲間にできる。' },
+            thief: { name: 'シーフ', moveTime: 6.0, directMult: 0.95, skillPowerMult: 1.35, badge: ' シーフ', desc: '短剣二本で前線に立つ戦闘特化のシーフ。クリティカル率30%。スキル【不意打ち×騙し討ち】は隣接する敵への特大ダメージ（ウェポンスキル）。' },
+            salaryman: { name: 'サラリーマン', moveTime: 0.5, directMult: 0.1, skillPowerMult: 1.0, badge: ' サラリーマン', desc: '眼鏡の中年サラリーマン。HP10の紙装甲だが移動は爆速。チェーンでスキルが発動すると様子がおかしくなる。' },
+            wallknight: { name: '鉄壁騎士', moveTime: 6.0, directMult: 0.9, skillPowerMult: 1.0, badge: ' 鉄壁騎士', desc: '鉄壁の守りで仲間を庇う騎士。隣接する味方の被ダメージを大きく軽減する。' },
+            deathbringer: { name: '死剣士', moveTime: 4.5, directMult: 1.25, skillPowerMult: 1.3, badge: ' 死剣士', desc: '死の呪いを宿す剣士。攻撃命中時に稀に敵を即死させる（ボスには無効）。' },
+            reaper: { name: '死鎌騎士', moveTime: 5.0, directMult: 1.2, skillPowerMult: 1.25, badge: ' 死鎌騎士', desc: '大鎌で魂を刈る暗黒騎士。与えたダメージの一部を吸収して回復する。' },
+            frostwarrior: { name: '凍結戦士', moveTime: 5.0, directMult: 1.15, skillPowerMult: 1.2, badge: ' 凍結戦士', desc: '氷の戦斧を振るう戦士。命中時に敵を凍結させ、次の攻撃を封じる（ボスには無効）。' },
+            wyvernlancer: { name: '竜槍騎士', moveTime: 5.5, directMult: 1.15, skillPowerMult: 1.25, badge: ' 竜槍騎士', desc: '子竜を連れた槍騎士。相棒の子竜が毎ターン自動で敵を攻撃する。' },
+            phoenixknight: { name: '不死鳥騎士', moveTime: 5.0, directMult: 1.0, skillPowerMult: 1.1, badge: ' 不死鳥騎士', desc: '不死鳥の加護を持つ騎士。スキルで仲間を復活させ、一度だけ自らも蘇る。' },
+            amazoness: { name: 'アマゾネス', moveTime: 5.0, directMult: 1.1, skillPowerMult: 1.2, badge: ' アマゾネス', desc: '雷をまとう女戦士。命中時に敵を感電させ、次の攻撃を封じる（ボスには無効）。' },
+            dwarf: { name: 'ドワーフ工兵', moveTime: 6.0, directMult: 1.1, skillPowerMult: 1.0, badge: ' ドワーフ工兵', desc: 'ギミックマスを整地する職人。岩とトゲを打ち砕き、戦場を切り開く。' },
             timemage: { name: '時魔道士', moveTime: 5.0, directMult: 0.4, skillPowerMult: 1.45, badge: '⏳ 時魔道士', desc: '命中した敵の攻撃カウントを遅らせる妨害魔道士。市松模様に時空を断ち切る。' },
-            monk: { name: 'モンク', moveTime: 4.5, directMult: 1.3, skillPowerMult: 1.35, badge: '👊 モンク', desc: '拳で戦う武闘家。HPが減るほど燃え上がる背水の闘志を持つ。' },
-            paladin: { name: '聖騎士', moveTime: 5.0, directMult: 1.0, skillPowerMult: 1.1, badge: '🛡️ 聖騎士', desc: '隣接する仲間を守護し、攻撃と回復を兼ねる聖なる十字を放つ。' },
-            dragoon: { name: '竜騎士', moveTime: 5.5, directMult: 1.15, skillPowerMult: 1.3, badge: '🐉 竜騎士', desc: '桂馬跳びの軌道で離れた敵を貫く、空を駆ける槍騎士。' },
-            summoner: { name: '召喚士', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.3, badge: '🔮 召喚士', desc: '精霊を召喚して自動攻撃させる。手数を増やす戦術の要。' },
-            knight:  { name: '重騎士', moveTime: 3.0, directMult: 1.15, skillPowerMult: 1.0, badge: '🛡️重騎士(3.0s)', desc: '操作時間は短いが最高峰のHPと防御力を誇る前衛の要' },
-            scout:   { name: '斥候',   moveTime: 6.5, directMult: 0.75, skillPowerMult: 0.9, badge: '👢斥候(6.5s)',   desc: '操作時間が非常に長く、盤面全体を組み替える運び屋' },
-            warrior: { name: '戦士',   moveTime: 4.5, directMult: 1.30, skillPowerMult: 1.1, badge: '⚔️戦士(4.5s)',   desc: '直接の挟み撃ち物理火力に優れた万能アタッカー' },
-            mage:    { name: '魔導士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.65, badge: '🔮魔導士(4.5s)', desc: '直接打撃は弱いがチェーンで超威力の広範囲魔法を放つ' },
-            healer:  { name: '僧侶',   moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.45, badge: '✨僧侶(4.5s)',   desc: 'チェーン発動で範囲内の味方を大きく回復する生命線' },
-            ninja:   { name: '忍者',   moveTime: 6.0, directMult: 0.9,  skillPowerMult: 1.15, badge: '🥷忍者(6.0s)',   desc: '操作時間が長く発動率も高い。菱形の影牙で急所を突く影の仕事人。【分身】で敵の攻撃を2回まで完全回避する' },
-            samurai: { name: '侍',     moveTime: 4.0, directMult: 1.25, skillPowerMult: 1.3,  badge: '🌸侍(4.0s)',     desc: '横一列を薙ぎ払う居合の達人。一閃の高火力で戦線を断つ' },
-            cavalry: { name: '騎兵',   moveTime: 7.5, directMult: 1.1,  skillPowerMult: 1.15, badge: '🐴騎兵(7.5s)',   desc: '操作時間は全職最長。縦列を貫く突撃槍で戦線を切り開く' },
-            ranger:  { name: 'レンジャー', moveTime: 5.5, directMult: 0.95, skillPowerMult: 1.2, badge: '🏹レンジャー(5.5s)', desc: '地形ギミック（トゲ床）のダメージを完全無効化する野戦の専門家' },
-            bard:    { name: '吟遊詩人', moveTime: 5.0, directMult: 0.3,  skillPowerMult: 1.0,  badge: '🎵吟遊詩人(5.0s)', desc: 'バフ専門職。英雄歌で範囲内の味方の攻撃力+30%とSBを高める' },
-            mage_fire:    { name: '炎魔導士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.65, badge: '🔥炎魔導士(4.5s)', desc: '縦1列を業火の柱で焼き払う紅蓮の魔法使い' },
-            mage_ice:     { name: '氷魔導士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.6,  badge: '❄️氷魔導士(4.5s)', desc: '十字2マスを凍てつかせる極北の魔法使い' },
-            mage_thunder: { name: '雷魔導士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.65, badge: '⚡雷魔導士(4.5s)', desc: '斜め直線に紫電の雷撃を放つ魔法使い' },
-            mage_wind:    { name: '風魔導士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.5,  badge: '🌪️風魔導士(4.5s)', desc: '縦横十字の全列を烈風で貫く嵐の魔法使い' },
-            dancer:     { name: '踊り子', moveTime: 5.5, directMult: 0.8,  skillPowerMult: 1.0,  badge: '🪭踊り子(5.5s)',   desc: '扇の舞で周囲と十字の広範囲を薙ぐ舞踏戦士。火力は控えめだが範囲と手数で圧倒する' },
-            lancer:     { name: 'ランサー', moveTime: 5.0, directMult: 1.15, skillPowerMult: 1.15, badge: '🔱ランサー(5.0s)', desc: '挟み撃ちが敵を貫通して背後の敵まで届く槍の達人。十字2マスの貫通槍も持つ' },
-            darkknight: { name: '暗黒騎士', moveTime: 4.5, directMult: 1.2,  skillPowerMult: 1.2,  badge: '🌑暗黒騎士(4.5s)', desc: '攻撃した敵にスリップダメージを付与し、闇の蝕みで苦しめ続ける騎士' },
-            archmage: { name: '極魔道士', moveTime: 5.0, directMult: 0.3, skillPowerMult: 1.5, badge: '🌋 極魔道士', desc: '全属性を操る極悪の大魔道士。スキル【全属性開放】は火・氷・雷・風・土・光・闇の7属性を同時に叩き込み、相手の弱点を突く。隠しキャラ。' },
-            blackmage:  { name: '黒魔道士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.6,  badge: '🔮黒魔道士(4.5s)', desc: '攻撃した敵の攻撃と防御を下げる弱体特化の魔道士。広範囲の暗黒爆発も放つ' },
-            archer:     { name: 'アーチャー', moveTime: 5.5, directMult: 0.95, skillPowerMult: 1.25, badge: '🎯アーチャー(5.5s)', desc: '遠距離狙撃の名手。チェーン時も威力が落ちず、クリティカル率が非常に高い' }
+            monk: { name: 'モンク', moveTime: 4.5, directMult: 1.3, skillPowerMult: 1.35, badge: ' モンク', desc: '拳で戦う武闘家。HPが減るほど燃え上がる背水の闘志を持つ。' },
+            paladin: { name: '聖騎士', moveTime: 5.0, directMult: 1.0, skillPowerMult: 1.1, badge: ' 聖騎士', desc: '隣接する仲間を守護し、攻撃と回復を兼ねる聖なる十字を放つ。' },
+            dragoon: { name: '竜騎士', moveTime: 5.5, directMult: 1.15, skillPowerMult: 1.3, badge: ' 竜騎士', desc: '桂馬跳びの軌道で離れた敵を貫く、空を駆ける槍騎士。' },
+            summoner: { name: '召喚士', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.3, badge: ' 召喚士', desc: '精霊を召喚して自動攻撃させる。手数を増やす戦術の要。' },
+            knight: { name: '重騎士', moveTime: 3.0, directMult: 1.15, skillPowerMult: 1.0, badge: '重騎士(3.0s)', desc: '操作時間は短いが最高峰のHPと防御力を誇る前衛の要' },
+            scout: { name: '斥候', moveTime: 6.5, directMult: 0.75, skillPowerMult: 0.9, badge: '斥候(6.5s)', desc: '操作時間が非常に長く、盤面全体を組み替える運び屋' },
+            warrior: { name: '戦士', moveTime: 4.5, directMult: 1.30, skillPowerMult: 1.1, badge: '戦士(4.5s)', desc: '直接の挟み撃ち物理火力に優れた万能アタッカー' },
+            mage: { name: '魔導士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.65, badge: '魔導士(4.5s)', desc: '直接打撃は弱いがチェーンで超威力の広範囲魔法を放つ' },
+            healer: { name: '僧侶', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.45, badge: '僧侶(4.5s)', desc: 'チェーン発動で範囲内の味方を大きく回復する生命線' },
+            ninja: { name: '忍者', moveTime: 6.0, directMult: 0.9, skillPowerMult: 1.15, badge: '忍者(6.0s)', desc: '操作時間が長く発動率も高い。菱形の影牙で急所を突く影の仕事人。【分身】で敵の攻撃を2回まで完全回避する' },
+            samurai: { name: '侍', moveTime: 4.0, directMult: 1.25, skillPowerMult: 1.3, badge: '侍(4.0s)', desc: '横一列を薙ぎ払う居合の達人。一閃の高火力で戦線を断つ' },
+            cavalry: { name: '騎兵', moveTime: 7.5, directMult: 1.1, skillPowerMult: 1.15, badge: '騎兵(7.5s)', desc: '操作時間は全職最長。縦列を貫く突撃槍で戦線を切り開く' },
+            ranger: { name: 'レンジャー', moveTime: 5.5, directMult: 0.95, skillPowerMult: 1.2, badge: 'レンジャー(5.5s)', desc: '地形ギミック（トゲ床）のダメージを完全無効化する野戦の専門家' },
+            bard: { name: '吟遊詩人', moveTime: 5.0, directMult: 0.3, skillPowerMult: 1.0, badge: '吟遊詩人(5.0s)', desc: 'バフ専門職。英雄歌で範囲内の味方の攻撃力+30%とSBを高める' },
+            mage_fire: { name: '炎魔導士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.65, badge: '炎魔導士(4.5s)', desc: '縦1列を業火の柱で焼き払う紅蓮の魔法使い' },
+            mage_ice: { name: '氷魔導士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.6, badge: '氷魔導士(4.5s)', desc: '十字2マスを凍てつかせる極北の魔法使い' },
+            mage_thunder: { name: '雷魔導士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.65, badge: '雷魔導士(4.5s)', desc: '斜め直線に紫電の雷撃を放つ魔法使い' },
+            mage_wind: { name: '風魔導士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.5, badge: '風魔導士(4.5s)', desc: '縦横十字の全列を烈風で貫く嵐の魔法使い' },
+            dancer: { name: '踊り子', moveTime: 5.5, directMult: 0.8, skillPowerMult: 1.0, badge: '踊り子(5.5s)', desc: '扇の舞で周囲と十字の広範囲を薙ぐ舞踏戦士。火力は控えめだが範囲と手数で圧倒する' },
+            lancer: { name: 'ランサー', moveTime: 5.0, directMult: 1.15, skillPowerMult: 1.15, badge: 'ランサー(5.0s)', desc: '挟み撃ちが敵を貫通して背後の敵まで届く槍の達人。十字2マスの貫通槍も持つ' },
+            darkknight: { name: '暗黒騎士', moveTime: 4.5, directMult: 1.2, skillPowerMult: 1.2, badge: '暗黒騎士(4.5s)', desc: '攻撃した敵にスリップダメージを付与し、闇の蝕みで苦しめ続ける騎士' },
+            archmage: { name: '極魔道士', moveTime: 5.0, directMult: 0.3, skillPowerMult: 1.5, badge: ' 極魔道士', desc: '全属性を操る極悪の大魔道士。スキル【全属性開放】は火・氷・雷・風・土・光・闇の7属性を同時に叩き込み、相手の弱点を突く。隠しキャラ。' },
+            blackmage: { name: '黒魔道士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.6, badge: '黒魔道士(4.5s)', desc: '攻撃した敵の攻撃と防御を下げる弱体特化の魔道士。広範囲の暗黒爆発も放つ' },
+            archer: { name: 'アーチャー', moveTime: 5.5, directMult: 0.95, skillPowerMult: 1.25, badge: 'アーチャー(5.5s)', desc: '遠距離狙撃の名手。チェーン時も威力が落ちず、クリティカル率が非常に高い' }
         };
 
         // 属性定義
         const ELEMENTS = {
-            fire:    { name: '炎', icon: '🔥', color: '#f87171', strong: 'wind',    weak: 'thunder' },
-            thunder: { name: '雷', icon: '⚡', color: '#60a5fa', strong: 'fire',    weak: 'wind' },
-            wind:    { name: '風', icon: '🌪️', color: '#4ade80', strong: 'thunder', weak: 'fire' },
-            earth:   { name: '地', icon: '🪨', color: '#fbbf24', strong: 'thunder', weak: 'wind' },
-            ice:     { name: '氷', icon: '❄️', color: '#7dd3fc', strong: 'earth',   weak: 'fire' },
-            light:   { name: '光', icon: '🌟', color: '#e879f9', strong: 'dark',      weak: 'dark' },
-            dark:    { name: '闇', icon: '🌑', color: '#a78bfa', strong: 'light',     weak: 'light' }
+            fire: { name: '炎', icon: '', color: '#f87171', strong: 'wind', weak: 'thunder' },
+            thunder: { name: '雷', icon: '', color: '#60a5fa', strong: 'fire', weak: 'wind' },
+            wind: { name: '風', icon: '', color: '#4ade80', strong: 'thunder', weak: 'fire' },
+            earth: { name: '地', icon: '', color: '#fbbf24', strong: 'thunder', weak: 'wind' },
+            ice: { name: '氷', icon: '', color: '#7dd3fc', strong: 'earth', weak: 'fire' },
+            light: { name: '光', icon: '', color: '#e879f9', strong: 'dark', weak: 'dark' },
+            dark: { name: '闇', icon: '', color: '#a78bfa', strong: 'light', weak: 'light' }
         };
 
         // 武器種＆三すくみ定義（剣→槍→弓→剣、杖は中立）※本家テラバトル仕様
         const WEAPONS = {
-            hammer: { name: '槌', icon: '🔨' },
-            fist: { name: '拳', icon: '👊' },
-            scythe: { name: '鎌', icon: '🌙' },
-            axe: { name: '斧', icon: '🪓' },
-            laptop: { name: 'ノートPC', icon: '💻' },
-            dagger: { name: '短剣', icon: '🔪' },
-            sword: { name: '剣', icon: '🗡️', strong: 'spear' },
-            spear: { name: '槍', icon: '🔱', strong: 'bow' },
-            bow:   { name: '弓', icon: '🏹', strong: 'sword' },
-            staff: { name: '杖', icon: '🪄', strong: null },
-            fan:   { name: '扇', icon: '🪭', strong: null }
+            hammer: { name: '槌', icon: '' },
+            fist: { name: '拳', icon: '' },
+            scythe: { name: '鎌', icon: '' },
+            axe: { name: '斧', icon: '' },
+            laptop: { name: 'ノートPC', icon: '' },
+            dagger: { name: '短剣', icon: '' },
+            sword: { name: '剣', icon: '', strong: 'spear' },
+            spear: { name: '槍', icon: '', strong: 'bow' },
+            bow: { name: '弓', icon: '', strong: 'sword' },
+            staff: { name: '杖', icon: '', strong: null },
+            fan: { name: '扇', icon: '', strong: null }
         };
         const JOB_WEAPONS = { archmage: 'staff', thief: 'dagger', whitemage: 'staff', developer: 'staff', salaryman: 'laptop', wallknight: 'sword', deathbringer: 'sword', reaper: 'scythe', frostwarrior: 'axe', wyvernlancer: 'spear', phoenixknight: 'sword', amazoness: 'spear', orator: 'staff', geomancer: 'staff', karakuri: 'fist', warper: 'staff', necromancer: 'staff', alchemist: 'staff', dwarf: 'hammer', timemage: 'staff', monk: 'fist', paladin: 'sword', dragoon: 'spear', summoner: 'staff', knight: 'spear', scout: 'bow', warrior: 'sword', mage: 'staff', healer: 'staff', ninja: 'sword', samurai: 'sword', cavalry: 'spear', ranger: 'bow', bard: 'staff', mage_fire: 'staff', mage_ice: 'staff', mage_thunder: 'staff', mage_wind: 'staff', dancer: 'fan', lancer: 'spear', darkknight: 'sword', blackmage: 'staff', archer: 'bow' };
         // ジョブ別スキル基礎発動率（本家仕様：発動・不発でスキルブーストSBが上昇）
@@ -875,11 +875,11 @@
             }
             if ((t.freeze || t.shock) && !isBossEnemy(enemy) && Math.random() < (t.freeze || t.shock)) {
                 enemy.stunT = 1; enemy.stunKind = t.freeze ? 'freeze' : 'shock';
-                showFloatingText(cx, enemy.y + 1.45, t.freeze ? '🧊凍結!' : '⚡感電!', '#93c5fd', '12px');
+                showFloatingText(cx, enemy.y + 1.45, t.freeze ? '凍結!' : '感電!', '#93c5fd', '12px');
             }
             if (t.deathblow && !isBossEnemy(enemy) && Math.random() < t.deathblow) {
                 enemy.hp = 0;
-                showFloatingText(cx, enemy.y + 0.3, '💀即死!', '#e9d5ff', '16px');
+                showFloatingText(cx, enemy.y + 0.3, '即死!', '#e9d5ff', '16px');
             }
             if (t.steal && !enemy._stolen) {
                 enemy._stolen = true;
@@ -1459,159 +1459,159 @@
                 id: 's1', name: 'カイト', title: '駆け出しの剣士', job: 'warrior', element: 'fire', weapon: 'sword',
                 maxHp: 430, hp: 430, atk: 98,
                 skillName: 'フレイムスラッシュ', skillPattern: 'cross_slash', cutinTheme: 'crimson',
-                iconEmoji: '⚔️', customIconData: '', presetArt: 'rookie_warrior', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'rookie_warrior', customFullArtData: ''
             },
             {
                 id: 's2', name: 'スズ', title: '駆け出しの斥候', job: 'scout', element: 'wind', weapon: 'bow',
                 maxHp: 360, hp: 360, atk: 88,
                 skillName: '疾風の矢', skillPattern: 'hawk_diag2', cutinTheme: 'emerald',
-                iconEmoji: '🍃', customIconData: '', presetArt: 'rookie_scout', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'rookie_scout', customFullArtData: ''
             },
             {
                 id: 's3', name: 'ミリア', title: '駆け出しの僧侶', job: 'healer', element: 'light', weapon: 'staff',
                 maxHp: 350, hp: 350, atk: 80,
                 skillName: '癒しの光', skillPattern: 'ring2_heal', cutinTheme: 'holy',
-                iconEmoji: '🔔', customIconData: '', presetArt: 'rookie_healer', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'rookie_healer', customFullArtData: ''
             },
             {
                 id: 's4', name: 'レン', title: '駆け出しの弓使い', job: 'ranger', element: 'earth', weapon: 'bow',
                 maxHp: 380, hp: 380, atk: 92,
                 skillName: 'アースアロー', skillPattern: 'row_gale', cutinTheme: 'golden',
-                iconEmoji: '🏹', customIconData: '', presetArt: 'rookie_archer', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'rookie_archer', customFullArtData: ''
             },
             {
                 id: 'p1', name: 'バルガス', title: '鉄壁の重騎士', job: 'knight', element: 'earth', weapon: 'spear',
                 maxHp: 620, hp: 620, atk: 115,
                 skillName: 'グランド・クロス', skillPattern: 'cross_slash', cutinTheme: 'golden',
-                iconEmoji: '🛡️', customIconData: '', presetArt: 'knight', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'knight', customFullArtData: ''
             },
             {
                 id: 'p2', name: 'リィン', title: '疾風の斥候', job: 'scout', element: 'wind', weapon: 'bow',
                 maxHp: 410, hp: 410, atk: 95,
                 skillName: 'テンペスト・ライン', skillPattern: 'row_gale', cutinTheme: 'emerald',
-                iconEmoji: '🗡️', customIconData: '', presetArt: 'scout', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'scout', customFullArtData: ''
             },
             {
                 id: 'p3', name: 'イグニス', title: '紅蓮の大魔導士', job: 'mage_fire', element: 'fire', weapon: 'staff',
                 maxHp: 380, hp: 380, atk: 125,
                 skillName: 'インフェルノ・ピラー', skillPattern: 'col_flame', cutinTheme: 'crimson',
-                iconEmoji: '🔥', customIconData: '', presetArt: 'mage_fire', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'mage_fire', customFullArtData: ''
             },
             {
                 id: 'p4', name: 'ライデン', title: '紫電の雷魔導士', job: 'mage_thunder', element: 'thunder', weapon: 'staff',
                 maxHp: 390, hp: 390, atk: 125,
                 skillName: 'クロス・サンダーボルト', skillPattern: 'diag_thunder', cutinTheme: 'lightning',
-                iconEmoji: '⚡', customIconData: '', presetArt: 'mage_thunder', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'mage_thunder', customFullArtData: ''
             },
             {
                 id: 'p5', name: 'セシル', title: '慈愛の聖女', job: 'healer', element: 'light', weapon: 'staff',
                 maxHp: 430, hp: 430, atk: 80,
                 skillName: 'セレスティアル・ヒール', skillPattern: 'ring2_heal', cutinTheme: 'holy',
-                iconEmoji: '✨', customIconData: '', presetArt: 'healer', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'healer', customFullArtData: ''
             },
             {
                 id: 'p6', name: 'ガレン', title: '荒野の戦士', job: 'warrior', element: 'earth', weapon: 'sword',
                 maxHp: 540, hp: 540, atk: 125,
                 skillName: '旋風烈破', skillPattern: 'spin_ring1', cutinTheme: 'golden',
-                iconEmoji: '⚔️', customIconData: '', presetArt: 'warrior', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'warrior', customFullArtData: ''
             },
             {
                 id: 'p7', name: 'シノブ', title: '影の忍者', job: 'ninja', element: 'wind', weapon: 'sword',
                 maxHp: 400, hp: 400, atk: 105,
                 skillName: '影牙・菱襲', skillPattern: 'shadow_fang', cutinTheme: 'emerald',
-                iconEmoji: '🥷', customIconData: '', presetArt: 'ninja', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'ninja', customFullArtData: ''
             },
             {
                 id: 'p8', name: 'ムサシ', title: '浪人の侍', job: 'samurai', element: 'fire', weapon: 'sword',
                 maxHp: 500, hp: 500, atk: 130,
                 skillName: '居合・横一文字', skillPattern: 'iai_row', cutinTheme: 'crimson',
-                iconEmoji: '🌸', customIconData: '', presetArt: 'samurai', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'samurai', customFullArtData: ''
             },
             {
                 id: 'p9', name: 'フロスト', title: '極北の氷魔導士', job: 'mage_ice', element: 'ice', weapon: 'staff',
                 maxHp: 375, hp: 375, atk: 128,
                 skillName: 'アブソリュート・フロスト', skillPattern: 'frost_cross2', cutinTheme: 'frost',
-                iconEmoji: '❄️', customIconData: '', presetArt: 'mage_ice', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'mage_ice', customFullArtData: ''
             },
             {
                 id: 'p10', name: 'シルフ', title: '嵐を呼ぶ風魔導士', job: 'mage_wind', element: 'wind', weapon: 'staff',
                 maxHp: 385, hp: 385, atk: 122,
                 skillName: 'ヴォルテックス・クロス', skillPattern: 'vortex_cross', cutinTheme: 'emerald',
-                iconEmoji: '🌪️', customIconData: '', presetArt: 'mage_wind', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'mage_wind', customFullArtData: ''
             },
             {
                 id: 'p11', name: 'ロビン', title: '森のレンジャー', job: 'ranger', element: 'earth', weapon: 'bow',
                 maxHp: 440, hp: 440, atk: 108,
                 skillName: 'ホークアイ・狙撃', skillPattern: 'hawk_diag2', cutinTheme: 'emerald',
-                iconEmoji: '🏹', customIconData: '', presetArt: 'ranger', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'ranger', customFullArtData: ''
             },
             {
                 id: 'p12', name: 'リュート', title: '旅の吟遊詩人', job: 'bard', element: 'light', weapon: 'staff',
                 maxHp: 420, hp: 420, atk: 70,
                 skillName: '鼓舞の英雄歌', skillPattern: 'hero_song', cutinTheme: 'holy',
-                iconEmoji: '🎵', customIconData: '', presetArt: 'bard', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'bard', customFullArtData: ''
             },
             {
                 id: 'p13', name: 'ケイ', title: '疾駆の騎兵', job: 'cavalry', element: 'earth', weapon: 'spear',
                 maxHp: 560, hp: 560, atk: 118,
                 skillName: 'チャージ・ランス', skillPattern: 'charge_col', cutinTheme: 'golden',
-                iconEmoji: '🐴', customIconData: '', presetArt: 'cavalry', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'cavalry', customFullArtData: ''
             },
             {
                 id: 'n1', name: 'ライラ', title: '舞踏の踊り子', job: 'dancer', element: 'wind', weapon: 'fan',
                 maxHp: 400, hp: 400, atk: 88,
                 skillName: '扇舞・花吹雪', skillPattern: 'fan_dance', cutinTheme: 'golden',
-                iconEmoji: '🪭', customIconData: '', presetArt: 'dancer', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'dancer', customFullArtData: ''
             },
             {
                 id: 'n2', name: 'ジーク', title: '貫通の槍騎士', job: 'lancer', element: 'thunder', weapon: 'spear',
                 maxHp: 520, hp: 520, atk: 112,
                 skillName: 'サンダーピアス', skillPattern: 'pierce_cross2', cutinTheme: 'lightning',
-                iconEmoji: '🔱', customIconData: '', presetArt: 'lancer', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'lancer', customFullArtData: ''
             },
             {
                 id: 'n3', name: 'カイン', title: '漆黒の暗黒騎士', job: 'darkknight', element: 'dark', weapon: 'sword',
                 maxHp: 580, hp: 580, atk: 120,
                 skillName: '影牙・ダークファング', skillPattern: 'shadow_fang', cutinTheme: 'crimson',
-                iconEmoji: '🌑', customIconData: '', presetArt: 'darkknight', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'darkknight', customFullArtData: ''
             },
             {
                 id: 'n4', name: 'モルガナ', title: '禁忌の黒魔道士', job: 'blackmage', element: 'dark', weapon: 'staff',
                 maxHp: 340, hp: 340, atk: 125,
                 skillName: '暗黒爆発・ダークノヴァ', skillPattern: 'ring2_blast', cutinTheme: 'holy',
-                iconEmoji: '🔮', customIconData: '', presetArt: 'blackmage', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'blackmage', customFullArtData: ''
             },
             {
                 id: 'n5', name: 'ユーリ', title: '狙撃のアーチャー', job: 'archer', element: 'wind', weapon: 'bow',
                 maxHp: 390, hp: 390, atk: 105,
                 skillName: 'スナイプショット', skillPattern: 'snipe_cross', cutinTheme: 'emerald',
-                iconEmoji: '🎯', customIconData: '', presetArt: 'archer', customFullArtData: ''
+                iconEmoji: '', customIconData: '', presetArt: 'archer', customFullArtData: ''
             },
             { id: 'n6', name: 'ティア', title: '時を紡ぐ魔道士', job: 'timemage', element: 'light', weapon: 'staff', maxHp: 360, atk: 105, skillName: '時空断絶・クロノブレイク', skillPattern: 'checker5', cutinTheme: 'holy', iconEmoji: '⏳', presetArt: 'timemage' },
-            { id: 'n7', name: 'ガイ', title: '不屈の武闘家', job: 'monk', element: 'earth', weapon: 'fist', maxHp: 560, atk: 118, skillName: '旋風連脚', skillPattern: 'spin_ring1', cutinTheme: 'golden', iconEmoji: '👊', presetArt: 'monk' },
-            { id: 'n8', name: 'セラ', title: '暁の聖騎士', job: 'paladin', element: 'light', weapon: 'sword', maxHp: 540, atk: 100, skillName: '聖十字・ホーリークロス', skillPattern: 'holy_cross_hybrid', cutinTheme: 'holy', iconEmoji: '🛡️', presetArt: 'paladin' },
-            { id: 'n9', name: 'リュカ', title: '蒼空の竜騎士', job: 'dragoon', element: 'wind', weapon: 'spear', maxHp: 500, atk: 115, skillName: '蒼竜跳躍・ドラゴンダイブ', skillPattern: 'knight_leap', cutinTheme: 'emerald', iconEmoji: '🐉', presetArt: 'dragoon' },
-            { id: 'n10', name: 'ミコト', title: '精霊を呼ぶ巫女', job: 'summoner', element: 'light', weapon: 'staff', maxHp: 350, atk: 100, skillName: '精霊召喚・コンジュア', skillPattern: 'summon_spirit', cutinTheme: 'holy', iconEmoji: '🔮', presetArt: 'summoner' },
-            { id: 'n11', name: 'ボルグ', title: '戦場の工兵長', job: 'dwarf', element: 'earth', weapon: 'hammer', maxHp: 580, atk: 108, skillName: '整地ハンマー・ランドシェイプ', skillPattern: 'terraform', cutinTheme: 'golden', iconEmoji: '⛏️', presetArt: 'dwarf' },
-            { id: 'n12', name: 'ミズハ', title: '地脈を読む風水師', job: 'geomancer', element: 'earth', weapon: 'staff', maxHp: 380, atk: 95, skillName: '霊泉生成・フォーチュンスプリング', skillPattern: 'spring_ring', cutinTheme: 'emerald', iconEmoji: '🧭', presetArt: 'geomancer' },
-            { id: 'n13', name: 'ゲンマ', title: '罠仕掛けのからくり師', job: 'karakuri', element: 'thunder', weapon: 'fist', maxHp: 420, atk: 100, skillName: '地雷設置・カラクリマイン', skillPattern: 'mine_ring', cutinTheme: 'lightning', iconEmoji: '⚙️', presetArt: 'karakuri' },
-            { id: 'n14', name: 'ノクス', title: '次元を渡る空間魔道士', job: 'warper', element: 'dark', weapon: 'staff', maxHp: 340, atk: 95, skillName: '集合転送・テレポートサークル', skillPattern: 'teleport_circle', cutinTheme: 'frost', iconEmoji: '🌀', presetArt: 'warper' },
-            { id: 'n15', name: 'リリム', title: '死を紡ぐネクロマンサー', job: 'necromancer', element: 'dark', weapon: 'staff', maxHp: 330, atk: 122, skillName: '魂縛十字・ソウルバインド', skillPattern: 'curse_cross', cutinTheme: 'crimson', iconEmoji: '💀', presetArt: 'necromancer' },
-            { id: 'n16', name: 'プリム', title: '爆発大好き錬金術師', job: 'alchemist', element: 'fire', weapon: 'staff', maxHp: 370, atk: 108, skillName: '爆裂フラスコ・ボムフラスコ', skillPattern: 'flask_cross', cutinTheme: 'crimson', iconEmoji: '⚗️', presetArt: 'alchemist' },
+            { id: 'n7', name: 'ガイ', title: '不屈の武闘家', job: 'monk', element: 'earth', weapon: 'fist', maxHp: 560, atk: 118, skillName: '旋風連脚', skillPattern: 'spin_ring1', cutinTheme: 'golden', iconEmoji: '', presetArt: 'monk' },
+            { id: 'n8', name: 'セラ', title: '暁の聖騎士', job: 'paladin', element: 'light', weapon: 'sword', maxHp: 540, atk: 100, skillName: '聖十字・ホーリークロス', skillPattern: 'holy_cross_hybrid', cutinTheme: 'holy', iconEmoji: '', presetArt: 'paladin' },
+            { id: 'n9', name: 'リュカ', title: '蒼空の竜騎士', job: 'dragoon', element: 'wind', weapon: 'spear', maxHp: 500, atk: 115, skillName: '蒼竜跳躍・ドラゴンダイブ', skillPattern: 'knight_leap', cutinTheme: 'emerald', iconEmoji: '', presetArt: 'dragoon' },
+            { id: 'n10', name: 'ミコト', title: '精霊を呼ぶ巫女', job: 'summoner', element: 'light', weapon: 'staff', maxHp: 350, atk: 100, skillName: '精霊召喚・コンジュア', skillPattern: 'summon_spirit', cutinTheme: 'holy', iconEmoji: '', presetArt: 'summoner' },
+            { id: 'n11', name: 'ボルグ', title: '戦場の工兵長', job: 'dwarf', element: 'earth', weapon: 'hammer', maxHp: 580, atk: 108, skillName: '整地ハンマー・ランドシェイプ', skillPattern: 'terraform', cutinTheme: 'golden', iconEmoji: '', presetArt: 'dwarf' },
+            { id: 'n12', name: 'ミズハ', title: '地脈を読む風水師', job: 'geomancer', element: 'earth', weapon: 'staff', maxHp: 380, atk: 95, skillName: '霊泉生成・フォーチュンスプリング', skillPattern: 'spring_ring', cutinTheme: 'emerald', iconEmoji: '', presetArt: 'geomancer' },
+            { id: 'n13', name: 'ゲンマ', title: '罠仕掛けのからくり師', job: 'karakuri', element: 'thunder', weapon: 'fist', maxHp: 420, atk: 100, skillName: '地雷設置・カラクリマイン', skillPattern: 'mine_ring', cutinTheme: 'lightning', iconEmoji: '', presetArt: 'karakuri' },
+            { id: 'n14', name: 'ノクス', title: '次元を渡る空間魔道士', job: 'warper', element: 'dark', weapon: 'staff', maxHp: 340, atk: 95, skillName: '集合転送・テレポートサークル', skillPattern: 'teleport_circle', cutinTheme: 'frost', iconEmoji: '', presetArt: 'warper' },
+            { id: 'n15', name: 'リリム', title: '死を紡ぐネクロマンサー', job: 'necromancer', element: 'dark', weapon: 'staff', maxHp: 330, atk: 122, skillName: '魂縛十字・ソウルバインド', skillPattern: 'curse_cross', cutinTheme: 'crimson', iconEmoji: '', presetArt: 'necromancer' },
+            { id: 'n16', name: 'プリム', title: '爆発大好き錬金術師', job: 'alchemist', element: 'fire', weapon: 'staff', maxHp: 370, atk: 108, skillName: '爆裂フラスコ・ボムフラスコ', skillPattern: 'flask_cross', cutinTheme: 'crimson', iconEmoji: '', presetArt: 'alchemist' },
             { id: 'n17', name: 'ミレーユ', title: '銀舌の調停者', job: 'orator', element: 'light', weapon: 'staff', maxHp: 360, atk: 92,
-              skillName: '懐柔の弁舌・ゴールデントーク', skillPattern: 'persuade_cross', cutinTheme: 'holy', iconEmoji: '🕊️', presetArt: 'orator' },
-            { id: 'k11', name: 'シャントット', title: '連邦の黒い悪魔', job: 'archmage', element: 'dark', weapon: 'staff', maxHp: 300, atk: 150, skillName: '全属性開放', skillPattern: 'omni_blast', cutinTheme: 'crimson', iconEmoji: '🔮', presetArt: 'archmage' },
-            { id: 'n18', name: 'オヤビン', title: '二刀の戦闘シーフ', job: 'thief', element: 'wind', weapon: 'dagger', maxHp: 420, atk: 102, skillName: '不意打ち×騙し討ち', skillPattern: 'sata_ws', cutinTheme: 'emerald', iconEmoji: '🗡️', presetArt: 'thief' },
-            { id: 'k1', name: 'ルディ', title: '鉄壁の騎士', job: 'wallknight', element: 'light', weapon: 'sword', maxHp: 640, atk: 95, skillName: '鉄壁の守護', skillPattern: 'iron_wall', cutinTheme: 'holy', iconEmoji: '🛡️', presetArt: 'rudy' },
-            { id: 'k2', name: 'クリス', title: '死を運ぶ剣士', job: 'deathbringer', element: 'dark', weapon: 'sword', maxHp: 500, atk: 115, skillName: '死の宣告', skillPattern: 'shadow_fang', cutinTheme: 'crimson', iconEmoji: '💀', presetArt: 'kris' },
-            { id: 'k3', name: 'デロンズ', title: '魂刈りの暗黒騎士', job: 'reaper', element: 'dark', weapon: 'scythe', maxHp: 560, atk: 118, skillName: '死神の円舞', skillPattern: 'fan_dance', cutinTheme: 'crimson', iconEmoji: '🌙', presetArt: 'dellons' },
-            { id: 'k4', name: 'スパイク', title: '凍結の戦士', job: 'frostwarrior', element: 'ice', weapon: 'axe', maxHp: 540, atk: 112, skillName: 'ブリザードアックス', skillPattern: 'frost_cross2', cutinTheme: 'frost', iconEmoji: '🪓', presetArt: 'spike' },
-            { id: 'k5', name: 'ジェイブ', title: '竜を連れた槍騎士', job: 'wyvernlancer', element: 'fire', weapon: 'spear', maxHp: 490, atk: 110, skillName: '紅蓮の竜槍', skillPattern: 'pierce_cross2', cutinTheme: 'crimson', iconEmoji: '🐉', presetArt: 'jave' },
-            { id: 'k6', name: 'レイチェル', title: '不死鳥の騎士', job: 'phoenixknight', element: 'fire', weapon: 'sword', maxHp: 480, atk: 102, skillName: 'フェニックスの加護', skillPattern: 'revive_ring', cutinTheme: 'crimson', iconEmoji: '🔥', presetArt: 'rachel' },
-            { id: 'k7', name: 'アイリーン', title: '雷霆のアマゾネス', job: 'amazoness', element: 'thunder', weapon: 'spear', maxHp: 500, atk: 115, skillName: '雷霆の槍', skillPattern: 'charge_col', cutinTheme: 'lightning', iconEmoji: '⚡', presetArt: 'eileene' },
-            { id: 'k8', name: 'ジョニー', title: '眼鏡の中年サラリーマン', job: 'salaryman', element: 'light', weapon: 'laptop', maxHp: 10, atk: 10, skillName: 'デバッグモード', skillPattern: 'debug_all', cutinTheme: 'golden', iconEmoji: '👓', presetArt: 'salaryman' },
-            { id: 'k9', name: 'レイ', title: '隠れ開発者', job: 'developer', element: 'light', weapon: 'staff', maxHp: 520, atk: 118, skillName: 'グリッチストライク', skillPattern: 'glitch_cross', cutinTheme: 'golden', iconEmoji: '🛠️', presetArt: 'developer' },
-            { id: 'k10', name: 'ロゼッタ', title: '野ばらの白魔道士', job: 'whitemage', element: 'light', weapon: 'staff', maxHp: 380, atk: 125, skillName: 'ホーリーノヴァ', skillPattern: 'ring2_blast', cutinTheme: 'holy', iconEmoji: '🌹', presetArt: 'whitemage' },
+              skillName: '懐柔の弁舌・ゴールデントーク', skillPattern: 'persuade_cross', cutinTheme: 'holy', iconEmoji: '', presetArt: 'orator' },
+            { id: 'k11', name: 'シャントット', title: '連邦の黒い悪魔', job: 'archmage', element: 'dark', weapon: 'staff', maxHp: 300, atk: 150, skillName: '全属性開放', skillPattern: 'omni_blast', cutinTheme: 'crimson', iconEmoji: '', presetArt: 'archmage' },
+            { id: 'n18', name: 'オヤビン', title: '二刀の戦闘シーフ', job: 'thief', element: 'wind', weapon: 'dagger', maxHp: 420, atk: 102, skillName: '不意打ち×騙し討ち', skillPattern: 'sata_ws', cutinTheme: 'emerald', iconEmoji: '', presetArt: 'thief' },
+            { id: 'k1', name: 'ルディ', title: '鉄壁の騎士', job: 'wallknight', element: 'light', weapon: 'sword', maxHp: 640, atk: 95, skillName: '鉄壁の守護', skillPattern: 'iron_wall', cutinTheme: 'holy', iconEmoji: '', presetArt: 'rudy' },
+            { id: 'k2', name: 'クリス', title: '死を運ぶ剣士', job: 'deathbringer', element: 'dark', weapon: 'sword', maxHp: 500, atk: 115, skillName: '死の宣告', skillPattern: 'shadow_fang', cutinTheme: 'crimson', iconEmoji: '', presetArt: 'kris' },
+            { id: 'k3', name: 'デロンズ', title: '魂刈りの暗黒騎士', job: 'reaper', element: 'dark', weapon: 'scythe', maxHp: 560, atk: 118, skillName: '死神の円舞', skillPattern: 'fan_dance', cutinTheme: 'crimson', iconEmoji: '', presetArt: 'dellons' },
+            { id: 'k4', name: 'スパイク', title: '凍結の戦士', job: 'frostwarrior', element: 'ice', weapon: 'axe', maxHp: 540, atk: 112, skillName: 'ブリザードアックス', skillPattern: 'frost_cross2', cutinTheme: 'frost', iconEmoji: '', presetArt: 'spike' },
+            { id: 'k5', name: 'ジェイブ', title: '竜を連れた槍騎士', job: 'wyvernlancer', element: 'fire', weapon: 'spear', maxHp: 490, atk: 110, skillName: '紅蓮の竜槍', skillPattern: 'pierce_cross2', cutinTheme: 'crimson', iconEmoji: '', presetArt: 'jave' },
+            { id: 'k6', name: 'レイチェル', title: '不死鳥の騎士', job: 'phoenixknight', element: 'fire', weapon: 'sword', maxHp: 480, atk: 102, skillName: 'フェニックスの加護', skillPattern: 'revive_ring', cutinTheme: 'crimson', iconEmoji: '', presetArt: 'rachel' },
+            { id: 'k7', name: 'アイリーン', title: '雷霆のアマゾネス', job: 'amazoness', element: 'thunder', weapon: 'spear', maxHp: 500, atk: 115, skillName: '雷霆の槍', skillPattern: 'charge_col', cutinTheme: 'lightning', iconEmoji: '', presetArt: 'eileene' },
+            { id: 'k8', name: 'ジョニー', title: '眼鏡の中年サラリーマン', job: 'salaryman', element: 'light', weapon: 'laptop', maxHp: 10, atk: 10, skillName: 'デバッグモード', skillPattern: 'debug_all', cutinTheme: 'golden', iconEmoji: '', presetArt: 'salaryman' },
+            { id: 'k9', name: 'レイ', title: '隠れ開発者', job: 'developer', element: 'light', weapon: 'staff', maxHp: 520, atk: 118, skillName: 'グリッチストライク', skillPattern: 'glitch_cross', cutinTheme: 'golden', iconEmoji: '', presetArt: 'developer' },
+            { id: 'k10', name: 'ロゼッタ', title: '野ばらの白魔道士', job: 'whitemage', element: 'light', weapon: 'staff', maxHp: 380, atk: 125, skillName: 'ホーリーノヴァ', skillPattern: 'ring2_blast', cutinTheme: 'holy', iconEmoji: '', presetArt: 'whitemage' },
         ];
 
         const STARTER_IDS = ['s1', 's2', 's3', 's4'];
@@ -1674,8 +1674,8 @@
                     { x: 2, y: 5, type: 'spring' }
                 ],
                 enemies: [
-                    { id: 'e1', presetArt: 'en_goblin', cutinTheme: 'emerald', skillName: '疾風の斬撃', name: 'ゴブリン兵', weapon: 'sword', icon: '👺', element: 'wind', size: 1, maxHp: 420, hp: 420, atk: 80, cdMax: 2, cd: 2, x: 2, y: 2, pattern: 'cross' },
-                    { id: 'e2', presetArt: 'en_orc', cutinTheme: 'golden', skillName: '大地の槍撃', name: 'オーク戦士', weapon: 'spear', icon: '👹', element: 'earth', size: 1, maxHp: 480, hp: 480, atk: 90, cdMax: 3, cd: 2, x: 3, y: 2, pattern: 'row' }
+                    { id: 'e1', presetArt: 'en_goblin', cutinTheme: 'emerald', skillName: '疾風の斬撃', name: 'ゴブリン兵', weapon: 'sword', icon: '', element: 'wind', size: 1, maxHp: 420, hp: 420, atk: 80, cdMax: 2, cd: 2, x: 2, y: 2, pattern: 'cross' },
+                    { id: 'e2', presetArt: 'en_orc', cutinTheme: 'golden', skillName: '大地の槍撃', name: 'オーク戦士', weapon: 'spear', icon: '', element: 'earth', size: 1, maxHp: 480, hp: 480, atk: 90, cdMax: 3, cd: 2, x: 3, y: 2, pattern: 'row' }
                 ]
             },
             {
@@ -1686,9 +1686,9 @@
                     { x: 1, y: 6, type: 'spring' }, { x: 4, y: 6, type: 'spring' }
                 ],
                 enemies: [
-                    { id: 'e3', presetArt: 'en_flameknight', cutinTheme: 'crimson', skillName: '業火の剣', name: 'フレイムナイト', weapon: 'sword', icon: '⚔️', element: 'fire', size: 1, maxHp: 620, hp: 620, atk: 105, cdMax: 2, cd: 1, x: 1, y: 2, pattern: 'col' },
-                    { id: 'e4', presetArt: 'en_thunderwolf', cutinTheme: 'lightning', skillName: '紫電の牙', name: 'サンダーウルフ', weapon: 'sword', icon: '🐺', element: 'thunder', size: 1, maxHp: 580, hp: 580, atk: 110, cdMax: 2, cd: 2, x: 4, y: 2, pattern: 'cross' },
-                    { id: 'e5', presetArt: 'en_blackmage', cutinTheme: 'holy', skillName: '暗黒魔導', name: '黒魔導士', weapon: 'staff', icon: '🧙', element: 'light', size: 1, maxHp: 540, hp: 540, atk: 115, cdMax: 3, cd: 2, x: 2, y: 1, pattern: 'around' }
+                    { id: 'e3', presetArt: 'en_flameknight', cutinTheme: 'crimson', skillName: '業火の剣', name: 'フレイムナイト', weapon: 'sword', icon: '', element: 'fire', size: 1, maxHp: 620, hp: 620, atk: 105, cdMax: 2, cd: 1, x: 1, y: 2, pattern: 'col' },
+                    { id: 'e4', presetArt: 'en_thunderwolf', cutinTheme: 'lightning', skillName: '紫電の牙', name: 'サンダーウルフ', weapon: 'sword', icon: '', element: 'thunder', size: 1, maxHp: 580, hp: 580, atk: 110, cdMax: 2, cd: 2, x: 4, y: 2, pattern: 'cross' },
+                    { id: 'e5', presetArt: 'en_blackmage', cutinTheme: 'holy', skillName: '暗黒魔導', name: '黒魔導士', weapon: 'staff', icon: '', element: 'light', size: 1, maxHp: 540, hp: 540, atk: 115, cdMax: 3, cd: 2, x: 2, y: 1, pattern: 'around' }
                 ]
             },
             {
@@ -1699,9 +1699,9 @@
                     { x: 2, y: 6, type: 'spring' }, { x: 3, y: 6, type: 'spring' }
                 ],
                 enemies: [
-                    { id: 'e6', presetArt: 'en_golem', cutinTheme: 'golden', skillName: '岩塊崩し', name: 'ストーンゴーレム', weapon: 'staff', icon: '🗿', element: 'earth', size: 1, maxHp: 850, hp: 850, atk: 125, cdMax: 3, cd: 2, x: 2, y: 2, pattern: 'around', effect: 'knockback' },
-                    { id: 'e7', presetArt: 'en_wyvern', cutinTheme: 'emerald', skillName: '嵐の翼撃', name: 'ストームワイバーン', weapon: 'bow', icon: '🦅', element: 'wind', size: 1, maxHp: 680, hp: 680, atk: 115, cdMax: 2, cd: 1, x: 3, y: 2, pattern: 'row' },
-                    { id: 'e8', presetArt: 'en_hellcaster', cutinTheme: 'crimson', skillName: '地獄の業火', name: 'ヘルキャスター', weapon: 'staff', icon: '💀', element: 'fire', size: 1, maxHp: 640, hp: 640, atk: 120, cdMax: 2, cd: 2, x: 2, y: 3, pattern: 'col' }
+                    { id: 'e6', presetArt: 'en_golem', cutinTheme: 'golden', skillName: '岩塊崩し', name: 'ストーンゴーレム', weapon: 'staff', icon: '', element: 'earth', size: 1, maxHp: 850, hp: 850, atk: 125, cdMax: 3, cd: 2, x: 2, y: 2, pattern: 'around', effect: 'knockback' },
+                    { id: 'e7', presetArt: 'en_wyvern', cutinTheme: 'emerald', skillName: '嵐の翼撃', name: 'ストームワイバーン', weapon: 'bow', icon: '', element: 'wind', size: 1, maxHp: 680, hp: 680, atk: 115, cdMax: 2, cd: 1, x: 3, y: 2, pattern: 'row' },
+                    { id: 'e8', presetArt: 'en_hellcaster', cutinTheme: 'crimson', skillName: '地獄の業火', name: 'ヘルキャスター', weapon: 'staff', icon: '', element: 'fire', size: 1, maxHp: 640, hp: 640, atk: 120, cdMax: 2, cd: 2, x: 2, y: 3, pattern: 'col' }
                 ]
             },
             {
@@ -1712,9 +1712,9 @@
                     { x: 2, y: 6, type: 'spring' }
                 ],
                 enemies: [
-                    { id: 'e11', presetArt: 'en_pilegolem', cutinTheme: 'golden', skillName: '杭打ち崩撃', name: 'パイルゴーレム', weapon: 'staff', icon: '🗿', element: 'earth', size: 1, maxHp: 920, hp: 920, atk: 120, cdMax: 3, cd: 2, x: 2, y: 2, pattern: 'around', effect: 'knockback' },
-                    { id: 'e12', presetArt: 'en_hawk', cutinTheme: 'emerald', skillName: '暴風の爪', name: 'テンペストホーク', weapon: 'bow', icon: '🦅', element: 'wind', size: 1, maxHp: 600, hp: 600, atk: 115, cdMax: 2, cd: 1, x: 3, y: 1, pattern: 'row', effect: 'knockback' },
-                    { id: 'e13', presetArt: 'en_goblinarcher', cutinTheme: 'emerald', skillName: '疾風の矢', name: 'ゴブリン弓兵', weapon: 'bow', icon: '🏹', element: 'wind', size: 1, maxHp: 450, hp: 450, atk: 95, cdMax: 2, cd: 2, x: 0, y: 2, pattern: 'col' }
+                    { id: 'e11', presetArt: 'en_pilegolem', cutinTheme: 'golden', skillName: '杭打ち崩撃', name: 'パイルゴーレム', weapon: 'staff', icon: '', element: 'earth', size: 1, maxHp: 920, hp: 920, atk: 120, cdMax: 3, cd: 2, x: 2, y: 2, pattern: 'around', effect: 'knockback' },
+                    { id: 'e12', presetArt: 'en_hawk', cutinTheme: 'emerald', skillName: '暴風の爪', name: 'テンペストホーク', weapon: 'bow', icon: '', element: 'wind', size: 1, maxHp: 600, hp: 600, atk: 115, cdMax: 2, cd: 1, x: 3, y: 1, pattern: 'row', effect: 'knockback' },
+                    { id: 'e13', presetArt: 'en_goblinarcher', cutinTheme: 'emerald', skillName: '疾風の矢', name: 'ゴブリン弓兵', weapon: 'bow', icon: '', element: 'wind', size: 1, maxHp: 450, hp: 450, atk: 95, cdMax: 2, cd: 2, x: 0, y: 2, pattern: 'col' }
                 ]
             },
             {
@@ -1725,9 +1725,9 @@
                     { x: 1, y: 6, type: 'spring' }, { x: 4, y: 6, type: 'spring' }
                 ],
                 enemies: [
-                    { id: 'e14', presetArt: 'en_silverknight', cutinTheme: 'holy', skillName: '白銀の突撃', name: '白銀の槍騎士', weapon: 'spear', icon: '🛡️', element: 'light', size: 1, maxHp: 980, hp: 980, atk: 130, cdMax: 2, cd: 1, x: 1, y: 1, pattern: 'cross' },
-                    { id: 'e15', presetArt: 'en_obsidian', cutinTheme: 'golden', skillName: '黒曜の一閃', name: '黒曜の剣聖', weapon: 'sword', icon: '⚔️', element: 'earth', size: 1, maxHp: 980, hp: 980, atk: 135, cdMax: 2, cd: 2, x: 4, y: 1, pattern: 'cross' },
-                    { id: 'e16', presetArt: 'en_stormpriest', cutinTheme: 'emerald', skillName: '嵐の裁き', name: '嵐の神官', weapon: 'staff', icon: '🔮', element: 'wind', size: 1, maxHp: 620, hp: 620, atk: 110, cdMax: 3, cd: 2, x: 2, y: 0, pattern: 'around', effect: 'knockback' }
+                    { id: 'e14', presetArt: 'en_silverknight', cutinTheme: 'holy', skillName: '白銀の突撃', name: '白銀の槍騎士', weapon: 'spear', icon: '', element: 'light', size: 1, maxHp: 980, hp: 980, atk: 130, cdMax: 2, cd: 1, x: 1, y: 1, pattern: 'cross' },
+                    { id: 'e15', presetArt: 'en_obsidian', cutinTheme: 'golden', skillName: '黒曜の一閃', name: '黒曜の剣聖', weapon: 'sword', icon: '', element: 'earth', size: 1, maxHp: 980, hp: 980, atk: 135, cdMax: 2, cd: 2, x: 4, y: 1, pattern: 'cross' },
+                    { id: 'e16', presetArt: 'en_stormpriest', cutinTheme: 'emerald', skillName: '嵐の裁き', name: '嵐の神官', weapon: 'staff', icon: '', element: 'wind', size: 1, maxHp: 620, hp: 620, atk: 110, cdMax: 3, cd: 2, x: 2, y: 0, pattern: 'around', effect: 'knockback' }
                 ]
             },
             {
@@ -1737,9 +1737,9 @@
                     { x: 1, y: 6, type: 'spring' }, { x: 4, y: 6, type: 'spring' }
                 ],
                 enemies: [
-                    { id: 'boss1', presetArt: 'en_bahamut', cutinTheme: 'crimson', skillName: '終焉のブレス', name: '終焉竜バハムート', weapon: 'staff', icon: '🐉', element: 'fire', size: 2, maxHp: 2800, hp: 2800, atk: 155, cdMax: 2, cd: 2, x: 2, y: 1, pattern: 'boss_nova', isBoss: true, effect: 'knockback' },
-                    { id: 'e9', presetArt: 'en_dragonguard', cutinTheme: 'lightning', skillName: '雷槍の守護', name: '竜の近衛騎士', weapon: 'spear', icon: '🛡️', element: 'thunder', size: 1, maxHp: 680, hp: 680, atk: 110, cdMax: 2, cd: 1, x: 0, y: 1, pattern: 'col' },
-                    { id: 'e10', presetArt: 'en_dragonpriest', cutinTheme: 'emerald', skillName: '竜の加護', name: '竜の祭司', weapon: 'staff', icon: '🔮', element: 'wind', size: 1, maxHp: 620, hp: 620, atk: 105, cdMax: 3, cd: 2, x: 5, y: 1, pattern: 'row' }
+                    { id: 'boss1', presetArt: 'en_bahamut', cutinTheme: 'crimson', skillName: '終焉のブレス', name: '終焉竜バハムート', weapon: 'staff', icon: '', element: 'fire', size: 2, maxHp: 2800, hp: 2800, atk: 155, cdMax: 2, cd: 2, x: 2, y: 1, pattern: 'boss_nova', isBoss: true, effect: 'knockback' },
+                    { id: 'e9', presetArt: 'en_dragonguard', cutinTheme: 'lightning', skillName: '雷槍の守護', name: '竜の近衛騎士', weapon: 'spear', icon: '', element: 'thunder', size: 1, maxHp: 680, hp: 680, atk: 110, cdMax: 2, cd: 1, x: 0, y: 1, pattern: 'col' },
+                    { id: 'e10', presetArt: 'en_dragonpriest', cutinTheme: 'emerald', skillName: '竜の加護', name: '竜の祭司', weapon: 'staff', icon: '', element: 'wind', size: 1, maxHp: 620, hp: 620, atk: 105, cdMax: 3, cd: 2, x: 5, y: 1, pattern: 'row' }
                 ]
             }
         ];
@@ -1811,7 +1811,7 @@
 
         function toggleSound() {
             soundEnabled = !soundEnabled;
-            document.getElementById('btn-sound').textContent = soundEnabled ? '🔊' : '🔇';
+            const sb = document.getElementById('btn-sound'); sb.textContent = '音'; sb.classList.toggle('opacity-40', !soundEnabled);
             if (soundEnabled) initAudio();
         }
 
@@ -2284,8 +2284,8 @@
             { prefix: '金の', filter: 'sepia(0.9) saturate(2.4) hue-rotate(5deg)' }
         ];
         const ENDLESS_BOSSES = [
-            { id: 'xb_cerberus', presetArt: 'en_cerberus', cutinTheme: 'crimson', skillName: '三頭の業火', name: '冥府の番犬ケルベロス', weapon: 'sword', icon: '🐺', element: 'fire', size: 2, maxHp: 2500, hp: 2500, atk: 145, cdMax: 2, cd: 2, x: 2, y: 0, pattern: 'around', effect: 'knockback' },
-            { id: 'xb_demon', presetArt: 'en_demon', cutinTheme: 'holy', skillName: '深淵の裁き', name: '深淵の大悪魔アザゼル', weapon: 'staff', icon: '😈', element: 'dark', size: 2, maxHp: 2700, hp: 2700, atk: 150, cdMax: 3, cd: 2, x: 2, y: 0, pattern: 'boss_nova', effect: 'knockback' }
+            { id: 'xb_cerberus', presetArt: 'en_cerberus', cutinTheme: 'crimson', skillName: '三頭の業火', name: '冥府の番犬ケルベロス', weapon: 'sword', icon: '', element: 'fire', size: 2, maxHp: 2500, hp: 2500, atk: 145, cdMax: 2, cd: 2, x: 2, y: 0, pattern: 'around', effect: 'knockback' },
+            { id: 'xb_demon', presetArt: 'en_demon', cutinTheme: 'holy', skillName: '深淵の裁き', name: '深淵の大悪魔アザゼル', weapon: 'staff', icon: '', element: 'dark', size: 2, maxHp: 2700, hp: 2700, atk: 150, cdMax: 3, cd: 2, x: 2, y: 0, pattern: 'boss_nova', effect: 'knockback' }
         ];
         const ENDLESS_BOSS_VARIANTS = {
             en_bahamut: [
@@ -2421,13 +2421,13 @@
             startBGM('victory');
             const modal = document.getElementById('overlay-modal');
             document.getElementById('modal-title').textContent = `ENDLESS B${floor}F CLEAR!`;
-            document.getElementById('modal-desc').textContent = `HPが40%回復しました。B${floor + 1}Fの敵はさらに強くなります（ステータス累計+${(floor + 1) * 5}%）。ベスト記録：B${state.bestEndless}F クリア${johnnyDropped ? ' 👓 完全レア「ジョニー」が仲間になった！' : ''}`;
+            document.getElementById('modal-desc').textContent = `HPが40%回復しました。B${floor + 1}Fの敵はさらに強くなります（ステータス累計+${(floor + 1) * 5}%）。ベスト記録：B${state.bestEndless}F クリア${johnnyDropped ? ' 完全レア「ジョニー」が仲間になった！' : ''}`;
             document.getElementById('modal-choices').innerHTML = `
                 <button onclick="descendEndless()" class="w-full py-3 bg-gradient-to-r from-violet-500 to-purple-400 text-white font-black rounded-lg shadow-lg">
                     B${floor + 1}Fへ潜る &rarr;
                 </button>
                 <button onclick="changeFormationForEndless()" class="w-full py-3 mt-2 bg-slate-800 hover:bg-slate-700 text-violet-300 font-bold rounded-lg border border-violet-500/50">
-                    ⚔️ 編成を変更して次の階層へ
+                     編成を変更して次の階層へ
                 </button>
                 <button onclick="quitEndlessToTitle()" class="w-full py-3 mt-2 bg-slate-900 hover:bg-slate-800 text-slate-400 font-bold rounded-lg border border-slate-700">
                     帰還する（タイトルへ）
@@ -2496,7 +2496,7 @@
             const playerFirst = await playCoinToss();
             if (playerFirst) { setPlayerReady(); }
             else {
-                phaseLabel.textContent = '星月の面…エネミー先行！';
+                phaseLabel.textContent = 'ENEMY FIRST';
                 phaseLabel.className = 'font-bold text-rose-400 truncate';
                 await sleep(500);
                 state.noTurnIncrement = true;
@@ -2519,8 +2519,8 @@
                 coin.classList.add(heads ? 'coin-flip-heads' : 'coin-flip-tails');
                 playSE('cutin');
                 setTimeout(() => {
-                    res.textContent = heads ? '🐉 竜の面！ プレイヤー先行' : '🌙 星月の面！ エネミー先行';
-                    res.className = 'text-2xl font-black tracking-widest ' + (heads ? 'text-amber-300' : 'text-sky-300');
+                    res.textContent = heads ? 'PLAYER' : 'ENEMY';
+                    res.className = 'text-3xl font-black tracking-[0.35em] ' + (heads ? 'text-amber-300' : 'text-rose-400');
                     playSE(heads ? 'heal' : 'skill_blast');
                 }, 1500);
                 setTimeout(() => { ov.classList.add('hidden'); ov.classList.remove('flex'); resolve(heads); }, 2350);
@@ -2554,7 +2554,7 @@
             }
             if (spawned) {
                 playSE('cutin');
-                showFloatingText(3, 3.5, `⚠ 増援到着！ 敵が${spawned}体現れた！`, '#f87171', '19px');
+                showFloatingText(3, 3.5, ` 増援到着！ 敵が${spawned}体現れた！`, '#f87171', '19px');
                 renderUnits();
             }
         }
@@ -3042,7 +3042,7 @@
             const wasAlive = target.hp > 0;
             target.hp = Math.max(0, target.hp - dmg);
             if (wasAlive && target.hp <= 0) addCombo(1);
-            showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `🔮精霊 -${dmg}`, '#fcd34d', '15px');
+            showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `精霊 -${dmg}`, '#fcd34d', '15px');
             sp.turnsLeft--;
             if (sp.turnsLeft <= 0) {
                 state.spirit = null;
@@ -3070,7 +3070,7 @@
             const wasAlive = target.hp > 0;
             target.hp = Math.max(0, target.hp - dmg);
             if (wasAlive && target.hp <= 0) addCombo(1);
-            showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `🐉子竜 -${dmg}`, '#fdba74', '15px');
+            showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `子竜 -${dmg}`, '#fdba74', '15px');
             renderUnits();
             renderPartyBar();
             await sleep(240);
@@ -3090,7 +3090,7 @@
             const wasAlive = target.hp > 0;
             target.hp = Math.max(0, target.hp - dmg);
             if (wasAlive && target.hp <= 0) addCombo(1);
-            showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `💬${ch.name} -${dmg}`, '#f9a8d4', '15px');
+            showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `${ch.name} -${dmg}`, '#f9a8d4', '15px');
             renderUnits();
             await sleep(420);
         }
@@ -3106,7 +3106,7 @@
                     if (victim) {
                         exploded = true;
                         victim.hp = Math.max(0, victim.hp - b.power);
-                        showFloatingText(b.x + 0.5, b.y, `💥爆発! -${b.power}`, '#fb923c', '17px');
+                        showFloatingText(b.x + 0.5, b.y, `爆発! -${b.power}`, '#fb923c', '17px');
                     }
                 }
                 if (exploded) playSE('skill_blast', 1.2);
@@ -3119,7 +3119,7 @@
                 if (a.hp <= 0 && (JOB_TRAITS[a.job] || {}).phoenix && !a._phoenixUsed) {
                     a._phoenixUsed = true;
                     a.hp = Math.round(a.maxHp * 0.5);
-                    showFloatingText(a.x + 0.5, a.y, '🔥不死鳥の復活!', '#fbbf24', '14px');
+                    showFloatingText(a.x + 0.5, a.y, '不死鳥の復活!', '#fbbf24', '14px');
                 }
             });
             await spiritAttack();
@@ -3294,7 +3294,7 @@
                         playSE('heal');
                         const power = Math.round(ally.atk * skillInfo.mult * jobInfo.skillPowerMult * boost);
                         state.spirit = { ownerId: ally.id, turnsLeft: 3, power };
-                        showFloatingText(ally.x + 0.5, ally.y - 0.2, '🔮 精霊召喚！ 3ターン自動攻撃', '#fcd34d', '14px');
+                        showFloatingText(ally.x + 0.5, ally.y - 0.2, ' 精霊召喚！ 3ターン自動攻撃', '#fcd34d', '14px');
                         renderUnits();
                         renderPartyBar();
                         await sleep(320);
@@ -3437,7 +3437,7 @@
                             });
                             if (kills > 0) addCombo(kills);
                             playSkillEffect(targetCells, 'dark', '#e879f9');
-                            showFloatingText(3, 3, '💥 DEBUG MODE 💥', '#f0abfc', '24px');
+                            showFloatingText(3, 3, ' DEBUG MODE ', '#f0abfc', '24px');
                             showFloatingText(ally.x + 0.5, ally.y, '権限昇格…全体即死!', '#f0abfc', '13px');
                             if (state.enemies.some(e => e.hp > 0 && isBossEnemy(e))) showFloatingText(ally.x + 0.5, ally.y + 0.6, '（ボスには効かない）', '#94a3b8', '11px');
                         } else {
@@ -3455,7 +3455,7 @@
                         if (dead.length) {
                             const target = dead.reduce((m, a) => a.maxHp > m.maxHp ? a : m, dead[0]);
                             target.hp = Math.round(target.maxHp * 0.5);
-                            showFloatingText(target.x + 0.5, target.y, '🔥復活!', '#fbbf24', '16px');
+                            showFloatingText(target.x + 0.5, target.y, '復活!', '#fbbf24', '16px');
                             playSkillEffect([{x: target.x, y: target.y}], 'holy', '#f59e0b');
                         } else {
                             targetCells.forEach(cell => {
@@ -3476,7 +3476,7 @@
                             if (occ && occ.side === 'enemy' && occ.unit.hp > 0 && !placedB.has(occ.unit.id)) {
                                 placedB.add(occ.unit.id);
                                 state.bombs.push({ x: occ.unit.x, y: occ.unit.y, power: Math.round(ally.atk * skillInfo.mult * jobInfo.skillPowerMult * boost) });
-                                showFloatingText(occ.unit.x + 0.5, occ.unit.y, '💣ボム設置!', '#fb923c', '13px');
+                                showFloatingText(occ.unit.x + 0.5, occ.unit.y, 'ボム設置!', '#fb923c', '13px');
                             }
                         });
                         renderFieldMarks();
@@ -3771,7 +3771,7 @@
                         boom = true;
                         playSkillEffect([{ x: mine.x, y: mine.y }], 'fire', '#f97316');
                         victim.hp = Math.max(0, victim.hp - mine.power);
-                        showFloatingText(mine.x + 0.5, mine.y, `💣地雷爆発! -${mine.power}`, '#fb923c', '16px');
+                        showFloatingText(mine.x + 0.5, mine.y, `地雷爆発! -${mine.power}`, '#fb923c', '16px');
                     } else remainM.push(mine);
                 }
                 state.mines = remainM;
@@ -3802,7 +3802,7 @@
                 enemy.cd -= 1;
                 if ((enemy.stunT || 0) > 0) {
                     enemy.stunT--;
-                    showFloatingText(enemy.x + (enemy.size || 1) / 2, enemy.y + 0.3, enemy.stunKind === 'shock' ? '⚡感電で動けない!' : '🧊凍結で動けない!', '#93c5fd', '13px');
+                    showFloatingText(enemy.x + (enemy.size || 1) / 2, enemy.y + 0.3, enemy.stunKind === 'shock' ? '感電で動けない!' : '凍結で動けない!', '#93c5fd', '13px');
                     renderUnits();
                     await sleep(350);
                     continue;
@@ -3993,7 +3993,7 @@
 
             if (state.waveIndex >= WAVES.length - 1) {
                 const modal = document.getElementById('overlay-modal');
-                document.getElementById('modal-title').textContent = '🏆 ALL WAVES CLEAR!';
+                document.getElementById('modal-title').textContent = ' ALL WAVES CLEAR!';
                 document.getElementById('modal-desc').textContent = `終焉竜バハムートを討伐し、全${WAVES.length}ウェーブを制覇しました！（最終ウェーブ ${state.turn}ターン）`;
                 document.getElementById('modal-choices').innerHTML = `
                     <button onclick="resetGame()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black rounded-lg shadow-lg">
@@ -4021,7 +4021,7 @@
                     次のWAVEへ進む &rarr;
                 </button>
                 <button onclick="changeFormationForNextWave()" class="w-full py-3 mt-2 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold rounded-lg border border-amber-500/50">
-                    ⚔️ 編成を変更して次のWAVEへ
+                     編成を変更して次のWAVEへ
                 </button>
             `;
             modal.classList.remove('hidden');
@@ -4065,7 +4065,7 @@
             if (state.endlessFloor > 0) {
                 state.phase = 'MODAL';
                 const modalE = document.getElementById('overlay-modal');
-                document.getElementById('modal-title').textContent = '💀 DEFEATED...';
+                document.getElementById('modal-title').textContent = ' DEFEATED...';
                 document.getElementById('modal-desc').textContent = `深淵 B${state.endlessFloor}F で力尽きました…（ベスト記録：B${state.bestEndless || 0}F クリア）`;
                 document.getElementById('modal-choices').innerHTML = `
                     <button onclick="quitEndlessToTitle()" class="w-full py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-bold rounded-lg">
@@ -4077,7 +4077,7 @@
             }
             state.phase = 'MODAL';
             const modal = document.getElementById('overlay-modal');
-            document.getElementById('modal-title').textContent = '💀 DEFEATED...';
+            document.getElementById('modal-title').textContent = ' DEFEATED...';
             document.getElementById('modal-desc').textContent = '部隊が全滅しました。編成やジョブを見直して再挑戦しましょう！';
             document.getElementById('modal-choices').innerHTML = `
                 <button onclick="resetGame()" class="w-full py-3 bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold rounded-lg">
@@ -4178,7 +4178,7 @@
             if (puzzle.timer) { clearInterval(puzzle.timer); puzzle.timer = null; }
             renderPuzzle();
             const res = document.getElementById('puzzle-result');
-            res.textContent = `🎉 PUZZLE COMPLETE! （${puzzle.moves}手 / ${Math.floor(puzzle.seconds / 60)}:${String(puzzle.seconds % 60).padStart(2, '0')}）`;
+            res.textContent = ` PUZZLE COMPLETE! （${puzzle.moves}手 / ${Math.floor(puzzle.seconds / 60)}:${String(puzzle.seconds % 60).padStart(2, '0')}）`;
             res.classList.remove('hidden');
             const dev = state.partyConfig.find(c => c.id === 'k9');
             if (!dev) return;
@@ -4247,11 +4247,11 @@
                 const tagEl = document.getElementById('summon-tag');
                 const subEl = document.getElementById('summon-sub');
                 if (result && result.type === 'equip') {
-                    tagEl.textContent = '🎁 TREASURE 🎁';
+                    tagEl.textContent = ' TREASURE ';
                     tagEl.className = 'text-[13px] tracking-[0.45em] text-emerald-300 font-black';
                     subEl.textContent = `宝箱から【${result.equip}】を入手！ ${char.name}の装備が強化された　Lv ${result.before} → Lv ${result.after}（タップで閉じる）`;
                 } else if (result && result.type === 'levelup') {
-                    tagEl.textContent = '⬆ LEVEL UP ⬆';
+                    tagEl.textContent = ' LEVEL UP ';
                     tagEl.className = 'text-[13px] tracking-[0.45em] text-sky-300 font-black';
                     subEl.textContent = `Lv ${result.before ?? result.from} → Lv ${result.after ?? result.to}　HP・ATKが +5% アップ！（タップで閉じる）`;
                 } else {
@@ -4307,7 +4307,7 @@
                 div.className = `relative rounded-xl p-1.5 text-center cursor-pointer border transition ${collectionFocusId === c.id ? 'ring-2 ring-sky-400' : ''} ${isOwned ? 'bg-slate-900 border-slate-700 hover:border-slate-500' : 'bg-slate-950 border-slate-800 opacity-70'}`;
                 div.innerHTML = isOwned
                     ? `<div class="h-14 flex items-center justify-center overflow-hidden">${charArtHtml(c, 'h-14 w-auto object-contain')}</div><div class="text-[10px] font-bold text-slate-100 truncate">${c.name}</div><div class="text-[9px] text-slate-400 truncate">${(JOB_CLASSES[c.job] || {}).name || ''}</div>`
-                    : `<div class="h-14 flex items-center justify-center text-3xl text-slate-700">❓</div><div class="text-[10px] font-bold text-slate-600 truncate">？？？</div><div class="text-[9px] text-slate-700 truncate">未召喚</div>`;
+                    : `<div class="h-14 flex items-center justify-center text-3xl text-slate-700">？</div><div class="text-[10px] font-bold text-slate-600 truncate">？？？</div><div class="text-[9px] text-slate-700 truncate">未召喚</div>`;
                 div.onclick = () => { collectionFocusId = c.id; renderCollection(); };
                 grid.appendChild(div);
                 if (isOwned && state.newIds.includes(c.id)) {
@@ -4321,7 +4321,7 @@
             const detail = document.getElementById('collection-detail');
             if (!c) { detail.innerHTML = ''; return; }
             if (!state.ownedIds.includes(c.id)) {
-                detail.innerHTML = `<div class="text-center text-slate-400 text-xs py-6">🔒 まだ出会っていない仲間<br><span class="text-slate-500">ウェーブクリア時の召喚で仲間になります</span></div>`;
+                detail.innerHTML = `<div class="text-center text-slate-400 text-xs py-6"> まだ出会っていない仲間<br><span class="text-slate-500">ウェーブクリア時の召喚で仲間になります</span></div>`;
                 return;
             }
             const job = JOB_CLASSES[c.job] || JOB_CLASSES.warrior;
@@ -4370,7 +4370,7 @@
                         ${traits.length ? `<div class="mt-1 text-purple-300">特性：${traits.join(' ／ ')}</div>` : ''}
                         <div class="text-slate-400 mt-1.5 leading-relaxed">${CHAR_PROFILES[c.id] || ''}</div>
                         <div class="text-slate-500 mt-1">${job.desc}</div>
-                        <button onclick="openPartyEditorFor('${c.id}')" class="mt-2 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-100 text-[11px] font-bold border border-slate-600">🎨 立ち絵・名前カスタム</button>
+                        <button onclick="openPartyEditorFor('${c.id}')" class="mt-2 px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-100 text-[11px] font-bold border border-slate-600"> 立ち絵・名前カスタム</button>
                     </div>
                 </div>`;
         }
@@ -4426,7 +4426,7 @@
         function enemyArtHtml(key, imgClass, useFull) {
             const a = PRESET_ART[key];
             if (a && (useFull ? a.full : a.icon)) return `<img src="${useFull ? a.full : a.icon}" class="${imgClass}">`;
-            return `<div class="flex items-center justify-center text-4xl" style="min-height:64px;">👹</div>`;
+            return `<div class="flex items-center justify-center text-4xl" style="min-height:64px;"></div>`;
         }
         let enemyCollectionFocus = null;
         function openEnemyCollection() {
@@ -4590,10 +4590,10 @@
                     if (img) img.style.filter = 'brightness(0) contrast(1.3)';
                     const divs = div.querySelectorAll('div');
                     if (divs[1]) divs[1].textContent = '？？？';
-                    if (!img && divs[0]) divs[0].textContent = '❓';
+                    if (!img && divs[0]) divs[0].textContent = '？';
                     const badge = document.createElement('div');
                     badge.className = 'absolute top-1 right-1 text-[10px]';
-                    badge.textContent = '🔒';
+                    badge.textContent = '';
                     div.appendChild(badge);
                 }
                 if (state.ownedIds.includes(c.id) && state.newIds.includes(c.id)) {
@@ -4627,7 +4627,7 @@
             if (!state.ownedIds.includes(c.id)) {
                 document.getElementById('formation-detail').innerHTML = `
                     <div class="text-center py-3">
-                        <div class="text-3xl mb-1">🔒</div>
+                        <div class="text-3xl mb-1"></div>
                         <div class="text-xs font-bold text-slate-300">まだ召喚されていない仲間</div>
                         <div class="text-[11px] text-slate-500 mt-1">ウェーブをクリアすると、魔導書からランダムで1体が召喚されます</div>
                     </div>`;
@@ -4789,12 +4789,12 @@
                             ${iconPreviewHtml}
                             <div class="flex-1 space-y-1.5">
                                 <label class="block w-full text-center py-1.5 px-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg cursor-pointer text-xs font-bold text-sky-300">
-                                    📁 画像をアップロード
+                                     画像をアップロード
                                     <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'icon')">
                                 </label>
                                 ${c.customIconData ? `<button onclick="clearCustomImage('icon')" class="w-full py-1 text-[10px] text-rose-400 underline">画像を解除して絵文字に戻す</button>` : `
                                 <div class="flex gap-1 justify-between">
-                                    ${['🛡️','🗡️','🔥','⚡','🏹','🪄','🐉','👑'].map(em => `<button onclick="updateCharField('iconEmoji', '${em}')" class="p-1 bg-slate-950 rounded hover:bg-slate-700">${em}</button>`).join('')}
+                                    ${['','','','','','','',''].map(em => `<button onclick="updateCharField('iconEmoji', '${em}')" class="p-1 bg-slate-950 rounded hover:bg-slate-700">${em}</button>`).join('')}
                                 </div>`}
                             </div>
                         </div>
@@ -4809,7 +4809,7 @@
                             </div>
                             <div class="flex-1 space-y-1.5">
                                 <label class="block w-full text-center py-1.5 px-2 bg-amber-600/30 hover:bg-amber-600/50 border border-amber-500/60 rounded-lg cursor-pointer text-xs font-bold text-amber-200">
-                                    🖼️ 全身イラストを選択
+                                     全身イラストを選択
                                     <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'full')">
                                 </label>
                                 <p class="text-[10px] text-slate-400">透過PNG推奨。スキル発動時に画面全体へカットイン表示されます！</p>
@@ -4998,9 +4998,9 @@
                 el.style.top = `calc(${(t.y / ROWS) * 100}% + 1px)`;
 
                 if (TERRAIN_ART[t.type]) el.innerHTML = `<img src="${TERRAIN_ART[t.type]}" class="w-full h-full object-cover block" style="border-radius: 4px;">`;
-                else if (t.type === 'rock') el.innerHTML = '<span class="text-xl sm:text-2xl drop-shadow">🪨</span>';
-                else if (t.type === 'spike') el.innerHTML = '<span class="text-sm sm:text-base opacity-80">🔺</span>';
-                else if (t.type === 'spring') el.innerHTML = '<span class="text-base sm:text-lg animate-pulse">💠</span>';
+                else if (t.type === 'rock') el.innerHTML = '<span class="text-xl sm:text-2xl drop-shadow"></span>';
+                else if (t.type === 'spike') el.innerHTML = '<span class="text-sm sm:text-base opacity-80"></span>';
+                else if (t.type === 'spring') el.innerHTML = '<span class="text-base sm:text-lg animate-pulse"></span>';
 
                 terrainLayer.appendChild(el);
             });
@@ -5016,8 +5016,8 @@
                 el.innerHTML = html;
                 terrainLayer.appendChild(el);
             };
-            (state.mines || []).forEach(m => mk(m.x, m.y, '<span style="font-size:15px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.85));">💣</span>', ''));
-            (state.bombs || []).forEach(b => mk(b.x, b.y, '<span style="font-size:17px; filter: drop-shadow(0 0 6px rgba(239,68,68,0.95));">💣</span>', 'background: radial-gradient(circle, rgba(239,68,68,0.32), transparent 70%);'));
+            (state.mines || []).forEach(m => mk(m.x, m.y, '<span style="font-size:15px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.85));"></span>', ''));
+            (state.bombs || []).forEach(b => mk(b.x, b.y, '<span style="font-size:17px; filter: drop-shadow(0 0 6px rgba(239,68,68,0.95));"></span>', 'background: radial-gradient(circle, rgba(239,68,68,0.32), transparent 70%);'));
             (state.curses || []).forEach(c => mk(c.x, c.y, '<span style="font-size:15px; color:#e9d5ff; text-shadow:0 0 8px #a855f7;">呪</span>', 'background: radial-gradient(circle, rgba(168,85,247,0.35), rgba(88,28,135,0.12) 75%); box-shadow: inset 0 0 10px rgba(168,85,247,0.55);'));
         }
 
@@ -5097,10 +5097,10 @@
 
                 const cdClass = enemy.cd === 1 ? 'bg-red-600 text-white animate-pulse border-red-300' : 'bg-slate-950 text-amber-300 border-amber-500/50';
                 const statusBadges = [
-                    (enemy.slipT || 0) > 0 ? '🟣スリップ' : '',
-                    (enemy.stunT || 0) > 0 ? (enemy.stunKind === 'shock' ? '⚡感電' : '🧊凍結') : '',
-                    (enemy.atkDownT || 0) > 0 ? '🔻攻' : '',
-                    (enemy.defDownT || 0) > 0 ? '🔻防' : ''
+                    (enemy.slipT || 0) > 0 ? 'スリップ' : '',
+                    (enemy.stunT || 0) > 0 ? (enemy.stunKind === 'shock' ? '感電' : '凍結') : '',
+                    (enemy.atkDownT || 0) > 0 ? '攻' : '',
+                    (enemy.defDownT || 0) > 0 ? '防' : ''
                 ].filter(Boolean).map(s => `<span class="bg-black/70 text-purple-200 px-1 rounded mr-0.5">${s}</span>`).join('');
                 const ePreset = PRESET_ART[enemy.presetArt];
                 const tintStyle = enemy.tint ? ` style="filter:${enemy.tint}"` : '';
@@ -5114,7 +5114,7 @@
                     <div class="unit-inner">
                         <span class="text-[10px] absolute top-1 left-1.5">${elem.icon}</span>
                         <span class="text-[10px] sm:text-xs font-black px-1.5 rounded border ${cdClass} absolute top-1 right-1">${enemy.cd}</span>
-                        <span class="text-[9px] absolute bottom-0.5 left-1 z-10">${WEAPONS[getWeaponOf(enemy)].icon}${enemy.effect === 'knockback' ? '💨' : ''}</span>
+                        <span class="text-[9px] absolute bottom-0.5 left-1 z-10">${WEAPONS[getWeaponOf(enemy)].icon}${enemy.effect === 'knockback' ? '' : ''}</span>
                         ${enemyAvatar}
                         <div class="text-[9px] font-bold text-rose-200 truncate max-w-[92%] mt-0.5">${enemy.name}</div>
                         <div class="text-[8px] leading-none mt-0.5">${statusBadges}</div>
@@ -5261,7 +5261,7 @@
         <div class="bg-[#161923] border border-amber-500/50 rounded-2xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
             <div class="px-4 py-3 bg-[#10121a] border-b border-slate-700 flex items-center justify-between shrink-0">
                 <div>
-                    <h2 class="text-base sm:text-lg font-black text-amber-300">📖 仲間図鑑</h2>
+                    <h2 class="text-base sm:text-lg font-black text-amber-300"> 仲間図鑑</h2>
                     <p class="text-[11px] text-slate-400">集めた仲間の立ち絵とプロフィールが見られます</p>
                 </div>
                 <div class="flex items-center gap-3 shrink-0">
@@ -5299,7 +5299,7 @@
         <div class="bg-[#1a1216] border border-rose-500/50 rounded-2xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
             <div class="px-4 py-3 bg-[#140d10] border-b border-slate-700 flex items-center justify-between shrink-0">
                 <div>
-                    <h2 class="text-base sm:text-lg font-black text-rose-300">👹 敵図鑑</h2>
+                    <h2 class="text-base sm:text-lg font-black text-rose-300"> 敵図鑑</h2>
                     <p class="text-[11px] text-slate-400">戦場に現れる敵の生態と攻撃パターンが見られます</p>
                 </div>
                 <div class="flex items-center gap-3 shrink-0">
