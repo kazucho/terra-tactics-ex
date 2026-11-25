@@ -2291,7 +2291,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.71';
+        const GAME_VERSION = '1.72';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2911,22 +2911,25 @@
                 if (state.phase !== 'PLAYER_DRAGGING' || !state.draggingUnit) return;
                 e.preventDefault();
 
-                // まず見た目をクランプ済みの位置に置き、その「中心」が入ったマスを移動目標にする（判定は中心の小さい範囲のみ）
-                moveDraggedUnitVisual(e);
-                const activeUnit = state.draggingUnit;
-                const el = document.getElementById(`unit-${activeUnit.id}`);
-                if (!el) return;
                 const rect = boardEl.getBoundingClientRect();
-                const cellW = rect.width / COLS;
-                const cellH = rect.height / ROWS;
-                const cx = parseFloat(el.style.left || '0') + cellW / 2;
-                const cy = parseFloat(el.style.top || '0') + cellH / 2;
-                const targetX = Math.max(0, Math.min(COLS - 1, Math.floor(cx / cellW)));
-                const targetY = Math.max(0, Math.min(ROWS - 1, Math.floor(cy / cellH)));
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const relX = Math.max(0, Math.min(rect.width - 1, clientX - rect.left));
+                const relY = Math.max(0, Math.min(rect.height - 1, clientY - rect.top));
+                let targetX = Math.floor((relX / rect.width) * COLS);
+                let targetY = Math.floor((relY / rect.height) * ROWS);
+
+                const activeUnit = state.draggingUnit;
+                if (isCellBlockedForAlly(targetX, targetY, activeUnit)) {
+                    // 指が敵などの塞がったマスを指している間は、指の位置に一番近い空きマスへ読み替える（敵の横を滑って通れるように）
+                    const proj = nearestFreeCellForDrag(targetX, targetY, activeUnit, relX, relY, rect);
+                    if (proj) { targetX = proj.x; targetY = proj.y; }
+                }
                 if (targetX !== activeUnit.x || targetY !== activeUnit.y) {
                     stepMoveUnit(activeUnit, targetX, targetY);
-                    moveDraggedUnitVisual(e);
                 }
+
+                moveDraggedUnitVisual(e);
             };
 
             const onPointerUp = () => {
@@ -2968,6 +2971,27 @@
             if (dragTop < cellTop && isCellBlockedForAlly(du.x, du.y - 1, du)) dragTop = Math.max(dragTop, cellTop - cellH * 0.30);
             el.style.left = `${Math.max(-cellW * 0.2, Math.min(rect.width - cellW * 0.8, dragLeft))}px`;
             el.style.top = `${Math.max(-cellH * 0.2, Math.min(rect.height - cellH * 0.8, dragTop))}px`;
+        }
+
+        function nearestFreeCellForDrag(tx, ty, unit, relX, relY, rect) {
+            const cellW = rect.width / COLS;
+            const cellH = rect.height / ROWS;
+            let best = null, bestScore = Infinity;
+            for (let r = 1; r <= 2; r++) {
+                for (let dx = -r; dx <= r; dx++) {
+                    for (let dy = -r; dy <= r; dy++) {
+                        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
+                        const nx = tx + dx, ny = ty + dy;
+                        if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) continue;
+                        if (isCellBlockedForAlly(nx, ny, unit)) continue;
+                        const cx = (nx + 0.5) * cellW, cy = (ny + 0.5) * cellH;
+                        const score = (cx - relX) * (cx - relX) + (cy - relY) * (cy - relY);
+                        if (score < bestScore) { bestScore = score; best = { x: nx, y: ny }; }
+                    }
+                }
+                if (best) break;
+            }
+            return best;
         }
 
         function stepMoveUnit(activeUnit, destX, destY) {
