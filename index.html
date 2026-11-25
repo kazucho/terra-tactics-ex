@@ -641,8 +641,9 @@
                     <div id="formation-roster" class="grid grid-cols-3 sm:grid-cols-4 gap-2 p-0.5"></div>
                 </div>
             </div>
-            <div class="px-4 py-3 bg-[#10121a] border-t border-slate-700 shrink-0">
-                <button id="formation-start-btn" onclick="startBattleFromFormation()" class="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:brightness-110 text-black text-lg font-black tracking-widest shadow-lg start-glow"><img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%231c1917%22%3E%3Cpath%20d%3D%22M11%203h2v11h-2z%22%2F%3E%3Cpath%20d%3D%22M11%203%2012%201l1%202z%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2214%22%20width%3D%2212%22%20height%3D%222%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%2216%22%20width%3D%222%22%20height%3D%224%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2221.4%22%20r%3D%221.6%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt=""> バトル開始 </button>
+            <div class="px-4 py-3 bg-[#10121a] border-t border-slate-700 shrink-0 flex gap-2">
+                <button id="formation-start-btn" onclick="startBattleFromFormation()" class="flex-1 px-4 py-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:brightness-110 text-black text-lg font-black tracking-widest shadow-lg start-glow"><img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%231c1917%22%3E%3Cpath%20d%3D%22M11%203h2v11h-2z%22%2F%3E%3Cpath%20d%3D%22M11%203%2012%201l1%202z%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2214%22%20width%3D%2212%22%20height%3D%222%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%2216%22%20width%3D%222%22%20height%3D%224%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2221.4%22%20r%3D%221.6%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt=""> バトル開始 </button>
+                <button id="formation-back-btn" onclick="backFromFormationToTitle()" class="px-5 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-500 text-slate-200 text-base font-black tracking-widest shadow-lg shrink-0">戻る</button>
             </div>
         </div>
     </div>
@@ -2427,7 +2428,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.106';
+        const GAME_VERSION = '1.107';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2757,6 +2758,7 @@
         function enterEndlessFormation() {
             initAudio();
             document.getElementById('title-screen').classList.add('hidden');
+            state.formationFromTitle = true;
             state.pendingFloor = 1;
             state.pendingFloorFresh = true;
             openFormation();
@@ -2767,6 +2769,7 @@
         }
         function changeFormationForEndless() {
             document.getElementById('overlay-modal').classList.add('hidden');
+            state.formationFromTitle = false;
             openFormation();
             state.pendingFloor = state.endlessFloor + 1;
             state.pendingFloorFresh = false;
@@ -5015,6 +5018,7 @@
 
         function changeFormationForNextWave() {
             document.getElementById('overlay-modal').classList.add('hidden');
+            state.formationFromTitle = false;
             openFormation();
             state.pendingWave = state.waveIndex + 1;
             renderFormation();
@@ -5580,6 +5584,7 @@
         function enterFormation() {
             initAudio();
             document.getElementById('title-screen').classList.add('hidden');
+            state.formationFromTitle = true;
             openFormation();
         }
         function openFormation() {
@@ -5589,9 +5594,17 @@
             }
             renderFormation();
             document.getElementById('formation-screen').classList.remove('hidden');
+            document.getElementById('formation-back-btn').classList.toggle('hidden', !state.formationFromTitle);
         }
         function closeFormation() {
             document.getElementById('formation-screen').classList.add('hidden');
+        }
+        function backFromFormationToTitle() {
+            state.pendingFloor = null;
+            state.pendingFloorFresh = false;
+            state.pendingWave = null;
+            closeFormation();
+            document.getElementById('title-screen').classList.remove('hidden');
         }
         function togglePartyMember(id) {
             state.rosterFocusId = id;
