@@ -398,6 +398,16 @@
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
         @keyframes startGlow { 0%, 100% { box-shadow: 0 0 16px rgba(245, 158, 11, 0.45); } 50% { box-shadow: 0 0 36px rgba(245, 158, 11, 0.9); } }
         .start-glow { animation: startGlow 1.6s ease-in-out infinite; }
+        .coin3d { position: relative; width: 120px; height: 120px; transform-style: preserve-3d; }
+        .coin-face { position: absolute; inset: 0; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 900; backface-visibility: hidden; border: 5px solid #b45309; }
+        .coin-front { background: radial-gradient(circle at 35% 30%, #fde68a, #f59e0b 70%); color: #78350f; }
+        .coin-back { background: radial-gradient(circle at 35% 30%, #e2e8f0, #94a3b8 70%); color: #1e293b; transform: rotateX(180deg); border-color: #64748b; }
+        .coin-flip-heads { animation: coinHeads 1.5s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+        .coin-flip-tails { animation: coinTails 1.5s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+        @keyframes coinHeads { 0% { transform: rotateX(0) translateY(0); } 30% { transform: rotateX(720deg) translateY(-46px); } 100% { transform: rotateX(1800deg) translateY(0); } }
+        @keyframes coinTails { 0% { transform: rotateX(0) translateY(0); } 30% { transform: rotateX(720deg) translateY(-46px); } 100% { transform: rotateX(1980deg) translateY(0); } }
+        .defeat-zoom { animation: defeatZoom 2.6s ease-out both; filter: grayscale(0.92) brightness(0.55) contrast(1.05); }
+        @keyframes defeatZoom { from { transform: scale(1.14); } to { transform: scale(1.0); } }
     </style>
 </head>
 <body class="h-screen w-screen flex flex-col justify-between p-2 sm:p-3 max-w-2xl mx-auto">
@@ -586,6 +596,23 @@
         </div>
     </div>
 
+    <!-- 先攻コイントス -->
+    <div id="coin-overlay" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[96] hidden flex-col items-center justify-center gap-6">
+        <div id="coin" class="coin3d"><div class="coin-face coin-front">表</div><div class="coin-face coin-back">裏</div></div>
+        <div id="coin-result" class="text-2xl font-black tracking-widest text-amber-300"></div>
+        <div class="text-xs text-slate-400">コイントスで先攻を決める…</div>
+    </div>
+
+    <!-- 敗北スプラッシュ -->
+    <div id="defeat-splash" class="fixed inset-0 z-[96] hidden items-center justify-center overflow-hidden bg-black">
+        <img id="defeat-splash-img" class="absolute inset-0 w-full h-full object-cover" alt="">
+        <div class="absolute inset-0" style="background: radial-gradient(ellipse at center, rgba(60,0,0,0.25) 0%, rgba(0,0,0,0.88) 75%);"></div>
+        <div class="relative text-center px-6">
+            <div class="text-6xl font-black tracking-[0.5em] text-red-500" style="text-shadow: 0 0 34px rgba(220,38,38,0.65);">敗北</div>
+            <div id="defeat-splash-sub" class="mt-4 text-sm text-slate-300"></div>
+        </div>
+    </div>
+
     <!-- ルール説明モーダル -->
     <div id="help-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#181b24] border border-amber-500/40 rounded-xl max-w-md w-full max-h-[88vh] overflow-y-auto p-5 shadow-2xl space-y-3 text-xs sm:text-sm">
@@ -616,6 +643,12 @@
                     <div class="font-bold text-amber-300">5. 武器の三すくみ＆P/Cスキル（EX+新仕様）</div>
                     🗡️剣は🔱槍に強く、🔱槍は🏹弓に強く、🏹弓は🗡️剣に強い（有利×1.25／不利×0.8、🪄杖は中立）。武器は編成画面で変更可能。<br>
                     挟んだ本人のスキルは<span class="text-amber-200 font-bold">Pスキル</span>（固有範囲・フル威力）、チェーンした味方は<span class="text-sky-300 font-bold">Cスキル</span>（十字範囲・威力85%）になります。
+                </div>
+                <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
+                    <div class="font-bold text-amber-300">先攻コイントス＆増援＆敗北条件</div>
+                    各ウェーブ開始時にコイントスで先攻を決定（表＝プレイヤー先行／裏＝エネミー先行）。<br>
+                    10ターン目に敵の増援が2体現れる。<br>
+                    味方が残り1人になると挟み撃ちができないため、その時点で敗北となる。
                 </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">6. 吹き飛ばし攻撃に注意（EX+新仕様）</div>
@@ -2404,6 +2437,7 @@
         function loadWave(idx) {
             state.waveIndex = idx;
             state.turn = 1;
+            state.reinforced = false;
             const waveData = state.endlessFloor > 0 ? state.dynamicWave : WAVES[idx];
             state.spirit = null;
             state.charmed = null;
@@ -2439,6 +2473,82 @@
             setPlayerReady();
             startBGM(state.endlessFloor > 0 ? (state.dynamicWave && state.dynamicWave.isBossFloor ? 'boss' : pickEndlessBGM()) : (idx >= WAVES.length - 1 ? 'boss' : 'stage' + (idx + 1)));
             if (state.splashEnabled) showWaveSplash(idx);
+            runBattleStartSequence(idx);
+        }
+
+        async function runBattleStartSequence(idx) {
+            state.phase = 'COIN_TOSS';
+            phaseLabel.textContent = 'コイントスで先攻を決定…';
+            phaseLabel.className = 'font-bold text-slate-300 truncate';
+            let waited = 0;
+            while (state.splashEnabled && waited < 4200) {
+                const box = document.getElementById('wave-splash');
+                if (!box || box.classList.contains('hidden')) break;
+                await sleep(200); waited += 200;
+            }
+            if (state.allies.filter(a => a.hp > 0).length <= 1 && state.enemies.some(e => e.hp > 0)) { showGameOver(true); return; }
+            const playerFirst = await playCoinToss();
+            if (playerFirst) { setPlayerReady(); }
+            else {
+                phaseLabel.textContent = '裏…エネミー先行！';
+                phaseLabel.className = 'font-bold text-rose-400 truncate';
+                await sleep(500);
+                state.noTurnIncrement = true;
+                proceedToEnemyTurn();
+            }
+        }
+
+        function playCoinToss() {
+            return new Promise(resolve => {
+                const ov = document.getElementById('coin-overlay');
+                const coin = document.getElementById('coin');
+                const res = document.getElementById('coin-result');
+                if (!ov || !coin) { resolve(true); return; }
+                const heads = Math.random() < 0.5;
+                res.textContent = '';
+                ov.classList.remove('hidden'); ov.classList.add('flex');
+                coin.classList.remove('coin-flip-heads', 'coin-flip-tails'); void coin.offsetWidth;
+                coin.classList.add(heads ? 'coin-flip-heads' : 'coin-flip-tails');
+                playSE('cutin');
+                setTimeout(() => {
+                    res.textContent = heads ? '表！ プレイヤー先行' : '裏！ エネミー先行';
+                    res.className = 'text-2xl font-black tracking-widest ' + (heads ? 'text-amber-300' : 'text-sky-300');
+                    playSE(heads ? 'heal' : 'skill_blast');
+                }, 1500);
+                setTimeout(() => { ov.classList.add('hidden'); ov.classList.remove('flex'); resolve(heads); }, 2350);
+            });
+        }
+
+        function spawnReinforcements() {
+            const waveData = state.endlessFloor > 0 ? state.dynamicWave : WAVES[state.waveIndex];
+            let defs = (waveData.enemies || []).filter(d => !d.isBoss && (d.size || 1) <= 1);
+            if (!defs.length) defs = endlessEnemyPool();
+            const occupied = new Set();
+            state.enemies.forEach(e => { if (e.hp > 0) { const s = e.size || 1; for (let dx = 0; dx < s; dx++) for (let dy = 0; dy < s; dy++) occupied.add(`${e.x + dx},${e.y + dy}`); } });
+            state.allies.forEach(a => { if (a.hp > 0) occupied.add(`${a.x},${a.y}`); });
+            (state.terrain || []).forEach(t => { if (t.type === 'rock') occupied.add(`${t.x},${t.y}`); });
+            let spawned = 0;
+            for (let i = 0; i < 2 && defs.length; i++) {
+                const def = defs[Math.floor(Math.random() * defs.length)];
+                const cells = [];
+                for (let x = 0; x < COLS; x++) for (let y = 0; y < ROWS; y++) if (!occupied.has(`${x},${y}`)) cells.push({ x, y });
+                if (!cells.length) break;
+                const cell = cells[Math.floor(Math.random() * cells.length)];
+                const e = JSON.parse(JSON.stringify(def));
+                e.id = 'reinf_' + Date.now() + '_' + i;
+                e.x = cell.x; e.y = cell.y;
+                if (!e.maxHp) e.maxHp = e.hp;
+                e.hp = e.maxHp;
+                e.cd = e.cdMax || e.cd || 2;
+                state.enemies.push(e);
+                occupied.add(`${cell.x},${cell.y}`);
+                spawned++;
+            }
+            if (spawned) {
+                playSE('cutin');
+                showFloatingText(3, 3.5, `⚠ 増援到着！ 敵が${spawned}体現れた！`, '#f87171', '19px');
+                renderUnits();
+            }
         }
 
         function setPlayerReady() {
@@ -3786,8 +3896,13 @@
                 }
             }
 
-            if (state.allies.filter(a => a.hp > 0).length === 0) {
+            const aliveAllies = state.allies.filter(a => a.hp > 0).length;
+            if (aliveAllies === 0) {
                 showGameOver();
+                return;
+            }
+            if (aliveAllies === 1) {
+                showGameOver(true);
                 return;
             }
 
@@ -3795,7 +3910,9 @@
                 if ((e.atkDownT || 0) > 0) e.atkDownT -= 1;
                 if ((e.defDownT || 0) > 0) e.defDownT -= 1;
             });
-            state.turn += 1;
+            if (!state.noTurnIncrement) state.turn += 1;
+            state.noTurnIncrement = false;
+            if (state.turn === 10 && !state.reinforced) { state.reinforced = true; spawnReinforcements(); }
             updateHeaderUI();
             calculateEnemyDangerZones();
             renderDangerZones();
@@ -3914,8 +4031,29 @@
             loadWave(state.waveIndex + 1);
         }
 
-        function showGameOver() {
+        async function showGameOver(lone) {
+            state.phase = 'MODAL';
             startBGM('gameover');
+            await showDefeatSplash(lone);
+            showGameOverModal(lone);
+        }
+
+        function showDefeatSplash(lone) {
+            return new Promise(resolve => {
+                const box = document.getElementById('defeat-splash');
+                const img = document.getElementById('defeat-splash-img');
+                if (!box || !img) { resolve(); return; }
+                let art = STAGE_ART[state.waveIndex] || STAGE_ART[0];
+                if (state.endlessFloor > 0 && state.dynamicWave) art = (state.dynamicWave.isBossFloor && BOSS_DOOR_ART) ? BOSS_DOOR_ART : STAGE_ART[state.endlessFloor % STAGE_ART.length];
+                img.src = art;
+                img.classList.remove('defeat-zoom'); void img.offsetWidth; img.classList.add('defeat-zoom');
+                document.getElementById('defeat-splash-sub').textContent = lone ? '残り1人では挟み撃ちができない…' : 'パーティは全滅した…';
+                box.classList.remove('hidden'); box.classList.add('flex');
+                setTimeout(() => { box.classList.add('hidden'); box.classList.remove('flex'); resolve(); }, 2500);
+            });
+        }
+
+        function showGameOverModal(lone) {
             if (state.endlessFloor > 0) {
                 state.phase = 'MODAL';
                 const modalE = document.getElementById('overlay-modal');
