@@ -2264,7 +2264,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.64';
+        const GAME_VERSION = '1.65';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2942,29 +2942,48 @@
         }
 
         function stepMoveUnit(activeUnit, destX, destY) {
-            let safety = 0;
-            while ((activeUnit.x !== destX || activeUnit.y !== destY) && safety < 16) {
-                safety++;
-                const dx = Math.sign(destX - activeUnit.x);
-                const dy = Math.sign(destY - activeUnit.y);
-                // 直交移動のみ：敵・岩壁の「斜めすり抜け」を禁止し、本家同様マス目に沿って1マスずつ進む
-                const candidates = [];
-                if (Math.abs(destX - activeUnit.x) >= Math.abs(destY - activeUnit.y)) {
-                    if (dx !== 0) candidates.push([activeUnit.x + dx, activeUnit.y]);
-                    if (dy !== 0) candidates.push([activeUnit.x, activeUnit.y + dy]);
-                } else {
-                    if (dy !== 0) candidates.push([activeUnit.x, activeUnit.y + dy]);
-                    if (dx !== 0) candidates.push([activeUnit.x + dx, activeUnit.y]);
+            if (activeUnit.x === destX && activeUnit.y === destY) return;
+            // BFSで指のマスまでの最短経路を探し、障害物を回り込んで進む（味方はすり替えで通過可、飛行は全マス通過可）
+            const keyOf = (x, y) => x + ',' + y;
+            const prev = new Map();
+            const visited = new Set([keyOf(activeUnit.x, activeUnit.y)]);
+            const queue = [{ x: activeUnit.x, y: activeUnit.y }];
+            let goal = null;
+            while (queue.length) {
+                const cur = queue.shift();
+                if (cur.x === destX && cur.y === destY) { goal = cur; break; }
+                const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+                    .map(([dx, dy]) => ({ x: cur.x + dx, y: cur.y + dy }))
+                    .sort((a, b) => (Math.abs(a.x - destX) + Math.abs(a.y - destY)) - (Math.abs(b.x - destX) + Math.abs(b.y - destY)));
+                for (const n of dirs) {
+                    const k = keyOf(n.x, n.y);
+                    if (visited.has(k)) continue;
+                    if (isCellBlockedForAlly(n.x, n.y, activeUnit)) continue;
+                    visited.add(k); prev.set(k, cur);
+                    queue.push(n);
                 }
-                let moved = false;
-                for (const [nx, ny] of candidates) {
-                    if (!isCellBlockedForAlly(nx, ny, activeUnit)) {
-                        executeSwapOrMove(activeUnit, nx, ny);
-                        moved = true;
-                        break;
-                    }
+            }
+            if (!goal) {
+                // 目標マスが塞がれている等で届かない場合は、到達できる中で最も目標に近いマスまで進む
+                let best = null, bestScore = Infinity;
+                for (const k of visited) {
+                    const p = k.split(',').map(Number);
+                    const d = Math.abs(p[0] - destX) + Math.abs(p[1] - destY);
+                    if (d < bestScore) { bestScore = d; best = { x: p[0], y: p[1] }; }
                 }
-                if (!moved) break;
+                if (!best || (best.x === activeUnit.x && best.y === activeUnit.y)) return;
+                goal = best;
+            }
+            const path = [];
+            let cur = goal;
+            while (!(cur.x === activeUnit.x && cur.y === activeUnit.y)) {
+                path.unshift(cur);
+                cur = prev.get(keyOf(cur.x, cur.y));
+                if (!cur) return;
+            }
+            for (const step of path) {
+                if (isCellBlockedForAlly(step.x, step.y, activeUnit)) break;
+                executeSwapOrMove(activeUnit, step.x, step.y);
             }
         }
 
