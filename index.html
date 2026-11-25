@@ -451,7 +451,7 @@
     <header class="bg-[#13151d] px-3 py-2 rounded-xl fancy-border shrink-0 space-y-1.5">
         <div class="flex items-center justify-between gap-2">
             <div class="flex items-center gap-2 whitespace-nowrap min-w-0">
-                <span id="wave-badge" class="text-base font-black text-amber-300">WAVE 1 / 6</span>
+                <span id="wave-badge" class="text-base font-black text-amber-300">STAGE 1 / 6</span>
                 <span id="turn-badge" class="text-[10px] bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-300 border border-slate-700/80">TURN 1</span>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
@@ -538,7 +538,7 @@
         <img id="wave-splash-img" class="absolute inset-0 w-full h-full object-cover opacity-80">
         <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60"></div>
         <div class="relative text-center px-4 splash-anim">
-            <div id="wave-splash-label" class="text-amber-400 font-cinzel font-bold tracking-[0.5em] text-sm sm:text-base mb-2">WAVE 1</div>
+            <div id="wave-splash-label" class="text-amber-400 font-cinzel font-bold tracking-[0.5em] text-sm sm:text-base mb-2">STAGE 1</div>
             <div id="wave-splash-title" class="text-3xl sm:text-5xl font-black text-white" style="text-shadow: 0 4px 24px rgba(0,0,0,0.9);"></div>
             <div class="mt-6 text-[11px] tracking-[0.3em] text-slate-300 animate-pulse">― TAP TO START ―</div>
         </div>
@@ -565,16 +565,16 @@
         <h1 class="font-cinzel text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 via-amber-400 to-amber-600 text-center leading-tight" style="filter: drop-shadow(0 4px 14px rgba(0,0,0,0.8));">TERRA<br>TACTICS EX+</h1>
         <p class="mt-3 text-slate-300 text-xs sm:text-sm tracking-widest">― 挟み撃ちタクティカルパズルRPG ―</p>
         <div class="mt-10 flex flex-col gap-3 w-80 max-w-[85vw]">
-            <button onclick="enterFormation()" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black font-black text-base tracking-widest start-glow whitespace-nowrap">冒険をはじめる</button>
-            <button onclick="enterEndlessFormation()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-purple-500 text-white font-black text-base shadow-[0_0_25px_rgba(139,92,246,0.4)] whitespace-nowrap">エンドレスダンジョン</button>
+            <button onclick="enterFormation()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black font-black start-glow whitespace-nowrap"><span class="block font-cinzel text-xl tracking-[0.35em] leading-none">story</span><span class="block text-[10px] font-bold opacity-70 tracking-[0.3em] mt-1">冒険をはじめる</span></button>
+            <button onclick="enterEndlessFormation()" class="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-500 text-white font-black shadow-[0_0_25px_rgba(139,92,246,0.4)] whitespace-nowrap"><span class="block font-cinzel text-lg tracking-[0.35em] leading-none">endless</span><span class="block text-[10px] font-bold opacity-75 tracking-[0.3em] mt-1">エンドレスダンジョン</span></button>
             <p id="endless-best-label" class="h-4 -mt-1 text-center text-[11px] text-violet-300"></p>
             <div class="border-t border-slate-700/60"></div>
-            <button onclick="openCollection()" class="w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-amber-200 text-sm font-bold border border-amber-500/40 whitespace-nowrap">仲間図鑑</button>
-            <button onclick="openEnemyCollection()" class="w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-rose-200 text-sm font-bold border border-rose-500/40 whitespace-nowrap">敵図鑑</button>
-            <button onclick="openHelp()" class="w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-sky-200 text-sm font-bold border border-sky-500/40 whitespace-nowrap">遊び方ガイド</button>
-            <button id="reset-data-btn" onclick="resetAllData()" class="w-full py-2.5 rounded-xl bg-slate-900/90 hover:bg-red-950 text-slate-400 text-sm font-bold border border-slate-700 whitespace-nowrap">データリセット</button>
+            <button onclick="openCollection()" class="w-full py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-amber-200 border border-amber-500/40 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">characters</span><span class="block text-[9px] font-bold opacity-60 tracking-[0.3em] mt-0.5">仲間図鑑</span></button>
+            <button onclick="openEnemyCollection()" class="w-full py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-rose-200 border border-rose-500/40 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">monsters</span><span class="block text-[9px] font-bold opacity-60 tracking-[0.3em] mt-0.5">敵図鑑</span></button>
+            <button onclick="openHelp()" class="w-full py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-sky-200 border border-sky-500/40 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">guide</span><span class="block text-[9px] font-bold opacity-60 tracking-[0.3em] mt-0.5">遊び方ガイド</span></button>
+            <button id="reset-data-btn" onclick="resetAllData()" class="w-full py-2 rounded-xl bg-slate-900/90 hover:bg-red-950 text-slate-400 border border-slate-700 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">all clear</span><span class="block text-[9px] font-bold opacity-60 tracking-[0.3em] mt-0.5">データリセット</span></button>
         </div>
-        <p class="mt-6 text-[10px] text-slate-500">全6ウェーブ / パーティ最大6人 / オリジナルBGM搭載</p>
+        <p class="mt-6 text-[10px] text-slate-500">全6ステージ / パーティ最大6人 / オリジナルBGM搭載</p>
         <p id="version-label" class="absolute bottom-3 right-4 font-mono text-[10px] tracking-[0.2em] text-slate-500"></p>
     </div>
 
@@ -716,7 +716,7 @@
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">先攻コイントス＆増援＆敗北条件</div>
                         <div class="mt-1 space-y-1.5">
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>各ウェーブ開始時にコイントスで先攻を決定（竜の面＝プレイヤー先行／星月の面＝エネミー先行）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>各ステージ開始時にコイントスで先攻を決定（竜の面＝プレイヤー先行／星月の面＝エネミー先行）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>10ターン目に敵の増援が2体現れる</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>味方が残り1人になると挟み撃ちができないため、その時点で敗北となる</span></div>
                         </div>
@@ -743,7 +743,7 @@
                 <div class="space-y-1">
                     <div class="font-bold text-amber-300">8. 召喚・図鑑・特性（EX+追加仕様）</div>
                         <div class="mt-1 space-y-1.5">
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ウェーブをクリアするたびに、魔導書から<span class="text-amber-300 font-bold">46人の中からランダムで1体召喚</span>される</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ステージをクリアするたびに、魔導書から<span class="text-amber-300 font-bold">46人の中からランダムで1体召喚</span>される</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>初めての仲間には<span class="text-rose-400 font-bold">NEW</span>バッジが付き、重複すると<span class="text-amber-300 font-bold">レベルアップ（HP・ATK +5%／Lv）</span>する</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>未所持の仲間がいる間は、20%の確率で必ず未所持の仲間が選ばれる</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>集めた仲間はタイトル画面の<span class="text-amber-300 font-bold">仲間図鑑</span>で立ち絵とプロフィールが見られる</span></div>
@@ -755,7 +755,7 @@
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-amber-300 font-bold">風水師</span>（泉生成）・<span class="text-amber-300 font-bold">からくり師</span>（地雷）・<span class="text-amber-300 font-bold">空間魔道士</span>（集合転送）・<span class="text-amber-300 font-bold">ネクロマンサー</span>（呪縛）・<span class="text-amber-300 font-bold">錬金術師</span>（時限ボム）も参戦</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>暗黒騎士は吸収、レンジャーは地形特効を習得する</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>チェーン時は仲間のマスが光り、連携が大きいと「ゴゴゴゴゴ！！」が炸裂する</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>話術士：<span class="text-amber-300 font-bold">懐柔</span>スキルでボス以外の敵を味方にできる（精霊と同じ随行枠・そのウェーブ限り）。成功率は敵が強いほど下がる</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>話術士：<span class="text-amber-300 font-bold">懐柔</span>スキルでボス以外の敵を味方にできる（精霊と同じ随行枠・そのステージ限り）。成功率は敵が強いほど下がる</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>七騎士（オマージュ）：<span class="text-amber-300 font-bold">ルディ</span>（鉄壁＋守護スキル）・<span class="text-amber-300 font-bold">クリス</span>（即死15%）・<span class="text-amber-300 font-bold">デロンズ</span>（大鎌＋吸収）・<span class="text-amber-300 font-bold">スパイク</span>（凍結＋戦斧）・<span class="text-amber-300 font-bold">ジェイブ</span>（子竜ペット）・<span class="text-amber-300 font-bold">レイチェル</span>（復活＋不死鳥）・<span class="text-amber-300 font-bold">アイリーン</span>（感電）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ネタ枠：<span class="text-amber-300 font-bold">ジョニー</span>（サラリーマン／HP10・移動0.5秒）。通常の召喚では絶対に出ず、<span class="text-violet-300 font-bold">エンドレスダンジョンの階層クリア時に1%の確率</span>でドロップする完全レア</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ジョニーがチェーンでスキルを発動すると、<span class="text-fuchsia-300 font-bold">デバッグモードでボス以外の敵が全員即死</span>する。本人は普通のおじさん</span></div>
@@ -776,7 +776,7 @@
     <!-- Waveクリア / ゲームオーバーモーダル -->
     <div id="overlay-modal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#181b24] border border-amber-500/50 rounded-xl max-w-md w-full p-6 shadow-2xl text-center space-y-4">
-            <h2 id="modal-title" class="text-2xl font-black text-amber-300">WAVE CLEAR!</h2>
+            <h2 id="modal-title" class="text-2xl font-black text-amber-300">STAGE CLEAR!</h2>
             <p id="modal-desc" class="text-xs sm:text-sm text-slate-300"></p>
             <div id="modal-choices" class="space-y-2.5 text-left"></div>
         </div>
@@ -810,7 +810,7 @@
             warper: { name: '空間魔道士', moveTime: 6.0, directMult: 0.35, skillPowerMult: 1.0, badge: '空間魔道士', desc: '仲間全員を自分の周囲へ転送する、次元を操る魔道士。' },
             necromancer: { name: 'ネクロマンサー', moveTime: 5.0, directMult: 0.35, skillPowerMult: 1.35, badge: 'ネクロマンサー', desc: '倒した敵の地に呪縛を残す死霊術師。死がさらなる死を呼ぶ。' },
             alchemist: { name: '錬金術師', moveTime: 5.0, directMult: 0.4, skillPowerMult: 1.0, badge: '錬金術師', desc: '敵に時限ボムを仕掛ける爆弾魔。次の攻撃開始とともに大爆発。' },
-            orator: { name: '話術士', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: '話術士', desc: '言葉で敵を懐柔する調停者。味方になった敵はそのウェーブの間、共に戦う。' },
+            orator: { name: '話術士', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: '話術士', desc: '言葉で敵を懐柔する調停者。味方になった敵はそのステージの間、共に戦う。' },
             whitemage: { name: '白魔道士', moveTime: 5.0, directMult: 0.35, skillPowerMult: 1.5, badge: '白魔道士', desc: '野ばらの紋章を掲げる攻撃型の白魔道士。広範囲の攻撃白魔法ホーリーノヴァを放つ。合言葉を知る者だけが仲間にできる。' },
             developer: { name: '開発者', moveTime: 5.0, directMult: 1.05, skillPowerMult: 1.45, badge: '開発者', desc: '世界の理を書き換える隠れ開発者。15パズルの封印を解いた者だけが仲間にできる。' },
             thief: { name: 'シーフ', moveTime: 6.0, directMult: 0.95, skillPowerMult: 1.35, badge: 'シーフ', desc: '短剣二本で前線に立つ戦闘特化のシーフ。クリティカル率30%。スキル【不意打ち×騙し討ち】は隣接する敵への特大ダメージ（ウェポンスキル）。' },
@@ -1352,7 +1352,7 @@
             teleport_circle: { name: '集合転送', type: 'warp', mult: 1.0, desc: '仲間全員を自分の周囲に転送する', getCells: (ux, uy) => [{x: ux, y: uy}] },
             curse_cross: { name: '魂縛十字', type: 'damage', mult: 1.35, desc: '十字2マスを攻撃', getCells: (ux, uy) => { const arr = [{x: ux, y: uy}]; for (let d = 1; d <= 2; d++) arr.push({x: ux + d, y: uy}, {x: ux - d, y: uy}, {x: ux, y: uy + d}, {x: ux, y: uy - d}); return arr.filter(c => c.x >= 0 && c.x < COLS && c.y >= 0 && c.y < ROWS); } },
             flask_cross: { name: '爆裂フラスコ', type: 'bomb', mult: 2.2, desc: '十字2マスの敵に時限ボムを設置（次の攻撃フェイズに爆発）', getCells: (ux, uy) => { const arr = [{x: ux, y: uy}]; for (let d = 1; d <= 2; d++) arr.push({x: ux + d, y: uy}, {x: ux - d, y: uy}, {x: ux, y: uy + d}, {x: ux, y: uy - d}); return arr.filter(c => c.x >= 0 && c.x < COLS && c.y >= 0 && c.y < ROWS); } },
-            persuade_cross: { name: '懐柔の弁舌', type: 'persuade', mult: 1.0, desc: '十字2マスの敵を懐柔（ボス無効・強い敵ほど低確率）し、そのウェーブの間味方にする', getCells: (ux, uy) => { const cells = [[0,0]]; for (let d = 1; d <= 2; d++) { cells.push([d,0],[-d,0],[0,d],[0,-d]); } return cells.filter(([dx,dy]) => { const x = ux+dx, y = uy+dy; return x >= 0 && x < 6 && y >= 0 && y < 8; }).map(([dx,dy]) => ({ x: ux+dx, y: uy+dy })); } },
+            persuade_cross: { name: '懐柔の弁舌', type: 'persuade', mult: 1.0, desc: '十字2マスの敵を懐柔（ボス無効・強い敵ほど低確率）し、そのステージの間味方にする', getCells: (ux, uy) => { const cells = [[0,0]]; for (let d = 1; d <= 2; d++) { cells.push([d,0],[-d,0],[0,d],[0,-d]); } return cells.filter(([dx,dy]) => { const x = ux+dx, y = uy+dy; return x >= 0 && x < 6 && y >= 0 && y < 8; }).map(([dx,dy]) => ({ x: ux+dx, y: uy+dy })); } },
             terraform: { name: '整地ハンマー', type: 'terrain', mult: 1.0, desc: '周囲8マスの岩・トゲを整地し、敵にダメージ', getCells: (ux, uy) => [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]].map(([dx, dy]) => ({ x: ux + dx, y: uy + dy })).filter(c => c.x >= 0 && c.x < COLS && c.y >= 0 && c.y < ROWS) },
             checker5: { name: '市松断絶', type: 'damage', mult: 1.25, desc: '周囲5×5の市松模様マスを攻撃', getCells: (ux, uy) => { const arr = []; for (let dx = -2; dx <= 2; dx++) for (let dy = -2; dy <= 2; dy++) { if ((dx + dy) % 2 === 0 && !(dx === 0 && dy === 0)) arr.push({ x: ux + dx, y: uy + dy }); } return arr.filter(c => c.x >= 0 && c.x < COLS && c.y >= 0 && c.y < ROWS); } },
             knight_leap: { name: '竜騎士の跳躍', type: 'damage', mult: 1.5, desc: '桂馬跳びの8マスを攻撃', getCells: (ux, uy) => [[1,2],[2,1],[-1,2],[-2,1],[1,-2],[2,-1],[-1,-2],[-2,-1]].map(([dx, dy]) => ({ x: ux + dx, y: uy + dy })).filter(c => c.x >= 0 && c.x < COLS && c.y >= 0 && c.y < ROWS) },
@@ -1891,7 +1891,7 @@
             k10: '野ばらの紋章を掲げる、攻める白魔道士。合言葉を知る者の前にだけ現れる。癒しの力ではなく、裁きの光で道を切り開く。',
         };
 
-        // 6ウェーブ構成（地形ギミック＆大型ボス含む）
+        // 6ステージ構成（地形ギミック＆大型ボス含む）
         const WAVES = [
             {
                 wave: 1, title: '岩山の前哨戦',
@@ -2348,7 +2348,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.78';
+        const GAME_VERSION = '1.80';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2489,7 +2489,7 @@
                 return;
             }
             img.src = STAGE_ART[idx];
-            document.getElementById('wave-splash-label').textContent = `WAVE ${idx + 1}`;
+            document.getElementById('wave-splash-label').textContent = `STAGE ${idx + 1}`;
             document.getElementById('wave-splash-title').textContent = WAVES[idx].title;
             box.classList.remove('hidden');
             box.classList.add('flex');
@@ -4649,7 +4649,7 @@
                 return;
             }
 
-            // 次ウェーブへ進む前に生存味方のHPを40%回復
+            // 次ステージへ進む前に生存味方のHPを40%回復
             state.allies.forEach(a => {
                 if (a.hp > 0) a.hp = Math.min(a.maxHp, a.hp + Math.round(a.maxHp * 0.4));
             });
@@ -4658,14 +4658,14 @@
             await maybeShowSummon(state.mimicPresent);
             startBGM('victory');
             const modal = document.getElementById('overlay-modal');
-            document.getElementById('modal-title').textContent = `WAVE ${state.waveIndex + 1} CLEAR!`;
+            document.getElementById('modal-title').textContent = `STAGE ${state.waveIndex + 1} CLEAR!`;
             document.getElementById('modal-desc').textContent = `HPが40%回復しました。次の戦場「${WAVES[state.waveIndex + 1].title}」へ進みますか？`;
             document.getElementById('modal-choices').innerHTML = `
                 <button onclick="nextWave()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black rounded-lg shadow-lg">
-                    次のWAVEへ進む &rarr;
+                    次のSTAGEへ進む &rarr;
                 </button>
                 <button onclick="changeFormationForNextWave()" class="w-full py-3 mt-2 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold rounded-lg border border-amber-500/50">
-                     編成を変更して次のWAVEへ
+                     編成を変更して次のSTAGEへ
                 </button>
             `;
             modal.classList.remove('hidden');
@@ -4725,7 +4725,7 @@
             document.getElementById('modal-desc').textContent = '部隊が全滅しました。編成やジョブを見直して再挑戦しましょう！';
             document.getElementById('modal-choices').innerHTML = `
                 <button onclick="resetGame()" class="w-full py-3 bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold rounded-lg">
-                    WAVE 1から再挑戦する
+                    STAGE 1から再挑戦する
                 </button>
             `;
             modal.classList.remove('hidden');
@@ -4966,7 +4966,7 @@
             const detail = document.getElementById('collection-detail');
             if (!c) { detail.innerHTML = ''; return; }
             if (!state.ownedIds.includes(c.id)) {
-                detail.innerHTML = `<div class="text-center text-slate-400 text-xs py-6"> まだ出会っていない仲間<br><span class="text-slate-500">ウェーブクリア時の召喚で仲間になります</span></div>`;
+                detail.innerHTML = `<div class="text-center text-slate-400 text-xs py-6"> まだ出会っていない仲間<br><span class="text-slate-500">ステージクリア時の召喚で仲間になります</span></div>`;
                 return;
             }
             const job = JOB_CLASSES[c.job] || JOB_CLASSES.warrior;
@@ -4992,7 +4992,7 @@
             if (t.warp) traits.push('スキルで仲間全員を自分の周囲へ転送できる');
             if (t.necro) traits.push('敵を倒すと呪縛ゾーン（継続ダメージ）を残す');
             if (t.bombSet) traits.push('スキルで時限ボムを設置できる');
-            if (t.persuade) traits.push('スキルでボス以外の敵を懐柔できる（強い敵ほど成功率低下・そのウェーブ限り味方になる）');
+            if (t.persuade) traits.push('スキルでボス以外の敵を懐柔できる（強い敵ほど成功率低下・そのステージ限り味方になる）');
             if (t.deathblow) traits.push('即死：攻撃命中時に15%の確率で敵を即死させる（ボスには無効）');
             if (t.freeze) traits.push('凍結：命中時に25%の確率で敵を凍結させ、次の攻撃を封じる（ボスには無効）');
             if (t.shock) traits.push('感電：命中時に25%の確率で敵を感電させ、次の攻撃を封じる（ボスには無効）');
@@ -5121,7 +5121,7 @@
             list.forEach(e => {
                 const div = document.createElement('div');
                 div.className = `relative rounded-xl p-1.5 text-center cursor-pointer border transition bg-slate-900 border-slate-700 hover:border-rose-400 ${enemyCollectionFocus === e.key ? 'ring-2 ring-rose-400' : ''}`;
-                div.innerHTML = `<div class="h-14 flex items-center justify-center overflow-hidden">${e.tint ? `<span style="filter:${e.tint}; display:inline-block;">${enemyArtHtml(e.artKey || e.key, 'h-14 w-auto object-contain', false)}</span>` : enemyArtHtml(e.artKey || e.key, 'h-14 w-auto object-contain', false)}</div><div class="text-[10px] font-bold text-slate-100 truncate">${e.name}</div><div class="text-[9px] text-rose-300 truncate">${e.endless ? 'エンドレス' : 'WAVE ' + e.waves.join('・')}</div>`;
+                div.innerHTML = `<div class="h-14 flex items-center justify-center overflow-hidden">${e.tint ? `<span style="filter:${e.tint}; display:inline-block;">${enemyArtHtml(e.artKey || e.key, 'h-14 w-auto object-contain', false)}</span>` : enemyArtHtml(e.artKey || e.key, 'h-14 w-auto object-contain', false)}</div><div class="text-[10px] font-bold text-slate-100 truncate">${e.name}</div><div class="text-[9px] text-rose-300 truncate">${e.endless ? 'エンドレス' : 'STAGE ' + e.waves.join('・')}</div>`;
                 div.onclick = () => { enemyCollectionFocus = e.key; renderEnemyCollection(); };
                 grid.appendChild(div);
             });
@@ -5140,7 +5140,7 @@
                             ${isBoss ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-rose-600 text-white font-black">FINAL BOSS</span>' : ''}${e.endless ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-violet-600 text-white font-black">ENDLESS BOSS</span>' : ''}
                             ${e.knockback ? '<span class="text-[10px] px-1.5 py-0.5 rounded bg-orange-500 text-black font-black">吹き飛ばし攻撃</span>' : ''}
                         </div>
-                        <div class="text-slate-300 mt-1">${elem.icon}${elem.name}属性 / ${weap.icon}${weap.name} / 登場 ${e.endless ? 'エンドレスのボスエリア' : 'WAVE ' + e.waves.join('・')}</div>
+                        <div class="text-slate-300 mt-1">${elem.icon}${elem.name}属性 / ${weap.icon}${weap.name} / 登場 ${e.endless ? 'エンドレスのボスエリア' : 'STAGE ' + e.waves.join('・')}</div>
                         <div class="text-slate-400 mt-0.5">HP ${e.maxHp} ・ ATK ${e.atk} ・ サイズ ${e.size}×${e.size} ・ 攻撃間隔 ${e.cdMax}ターン</div>
                         <div class="mt-1"><span class="text-rose-300 font-bold">『${e.skillName}』</span> <span class="text-slate-400">${ENEMY_PATTERN_JP[e.pattern] || e.pattern}</span></div>
                         <div class="text-slate-400 mt-1.5 leading-relaxed">${e.profile || ENEMY_PROFILES[e.key] || ''}</div>
@@ -5300,7 +5300,7 @@
                     <div class="text-center py-3">
                         <div class="text-3xl mb-1"></div>
                         <div class="text-xs font-bold text-slate-300">まだ召喚されていない仲間</div>
-                        <div class="text-[11px] text-slate-500 mt-1">ウェーブをクリアすると、魔導書からランダムで1体が召喚されます</div>
+                        <div class="text-[11px] text-slate-500 mt-1">ステージをクリアすると、魔導書からランダムで1体が召喚されます</div>
                     </div>`;
             }
             const startBtn = document.getElementById('formation-start-btn');
@@ -5309,8 +5309,8 @@
                 startBtn.textContent = state.pendingFloorFresh ? 'この編成で深淵へ潜る ▶' : `この編成で B${state.pendingFloor}F へ ▶`;
             } else if (state.pendingWave !== null && state.pendingWave !== undefined) {
                 startBtn.textContent = state.pendingWave > state.waveIndex
-                    ? `この編成で WAVE ${state.pendingWave + 1} へ ▶`
-                    : `この編成で WAVE ${state.waveIndex + 1} を再戦 ▶`;
+                    ? `この編成で STAGE ${state.pendingWave + 1} へ ▶`
+                    : `この編成で STAGE ${state.waveIndex + 1} を再戦 ▶`;
             } else {
                 startBtn.textContent = 'バトル開始 ▶';
             }
@@ -5654,7 +5654,7 @@
         }
 
         function updateHeaderUI() {
-            document.getElementById('wave-badge').textContent = state.endlessFloor > 0 ? `ENDLESS B${state.endlessFloor}F` : `WAVE ${state.waveIndex + 1} / ${WAVES.length}`;
+            document.getElementById('wave-badge').textContent = state.endlessFloor > 0 ? `ENDLESS B${state.endlessFloor}F` : `STAGE ${state.waveIndex + 1} / ${WAVES.length}`;
             document.getElementById('turn-badge').textContent = `TURN ${state.turn}`;
         }
 
