@@ -428,9 +428,9 @@
         .start-glow { animation: startGlow 1.6s ease-in-out infinite; }
         .coin3d { position: relative; width: 120px; height: 120px; transform-style: preserve-3d; will-change: transform; }
         #coin-overlay { perspective: 900px; }
-        .coin-face { position: absolute; inset: 0; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 900; backface-visibility: hidden; border: 5px solid #b45309; }
+        .coin-face { position: absolute; inset: 0; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 44px; font-weight: 900; backface-visibility: hidden; border: 5px solid #38bdf8; }
         .coin-front { background: radial-gradient(circle at 35% 30%, #fde68a, #f59e0b 70%); color: #78350f; }
-        .coin-back { background: radial-gradient(circle at 35% 30%, #e2e8f0, #94a3b8 70%); color: #1e293b; transform: rotateY(180deg); border-color: #64748b; }
+        .coin-back { background: radial-gradient(circle at 35% 30%, #e2e8f0, #94a3b8 70%); color: #1e293b; transform: rotateY(180deg); border-color: #f43f5e; }
         .coin-face { overflow: hidden; padding: 0; background: #0b0d14; }
         .coin-face img { width: 100%; height: 100%; object-fit: cover; border-radius: 9999px; display: block; }
         .coin-flip-heads { animation: coinHeads 3s cubic-bezier(0.12, 0.75, 0.22, 1) both; }
@@ -544,6 +544,19 @@
         </div>
     </div>
 
+    <!-- エンディング（ストーリー全クリア） -->
+    <div id="ending-splash" class="fixed inset-0 z-[95] hidden items-center justify-center bg-black">
+        <img id="ending-splash-img" class="absolute inset-0 w-full h-full object-cover opacity-70">
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/70"></div>
+        <div class="relative text-center px-6 splash-anim max-w-lg">
+            <div class="text-amber-400 font-cinzel font-bold tracking-[0.5em] text-sm sm:text-base mb-3">― ENDING ―</div>
+            <div class="text-3xl sm:text-4xl font-black text-white leading-snug" style="text-shadow: 0 4px 24px rgba(0,0,0,0.9);">終焉の竜は眠り、<br>世界に朝が戻る</div>
+            <p class="mt-6 text-sm sm:text-base text-slate-200 leading-relaxed">長き戦いは終わった。仲間たちの剣と魔法が終焉竜バハムートを退け、大地には静かな夜明けが訪れる。その冒険の記録は、魔導書の最後のページに刻まれた。</p>
+            <div class="mt-6 text-[11px] tracking-[0.35em] text-amber-200/80">THANK YOU FOR PLAYING</div>
+            <button onclick="backToTitle()" class="mt-8 px-8 py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black rounded-lg shadow-lg">タイトルへ戻る</button>
+        </div>
+    </div>
+
     <!-- ==========================================
          タイトル画面
          ========================================== -->
@@ -558,6 +571,7 @@
             <div class="border-t border-slate-700/60"></div>
             <button onclick="openCollection()" class="w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-amber-200 text-sm font-bold border border-amber-500/40 whitespace-nowrap">仲間図鑑</button>
             <button onclick="openEnemyCollection()" class="w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-rose-200 text-sm font-bold border border-rose-500/40 whitespace-nowrap">敵図鑑</button>
+            <button onclick="openHelp()" class="w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-sky-200 text-sm font-bold border border-sky-500/40 whitespace-nowrap">遊び方ガイド</button>
             <button id="reset-data-btn" onclick="resetAllData()" class="w-full py-2.5 rounded-xl bg-slate-900/90 hover:bg-red-950 text-slate-400 text-sm font-bold border border-slate-700 whitespace-nowrap">データリセット</button>
         </div>
         <p class="mt-6 text-[10px] text-slate-500">全6ウェーブ / パーティ最大6人 / オリジナルBGM搭載</p>
@@ -650,7 +664,7 @@
     </div>
 
     <!-- ルール説明モーダル -->
-    <div id="help-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div id="help-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[85] hidden flex items-center justify-center p-4">
         <div class="bg-[#181b24] border border-amber-500/40 rounded-xl max-w-md w-full max-h-[88vh] overflow-y-auto p-5 shadow-2xl space-y-3 text-xs sm:text-sm">
             <div class="flex justify-between items-center border-b border-slate-700 pb-2">
                 <h2 class="text-base font-black text-amber-300"> TERRA TACTICS EX+ 戦術ガイド</h2>
@@ -659,57 +673,100 @@
             <div class="space-y-2.5 text-slate-300 leading-relaxed">
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">1. ジョブごとの操作時間と役割</div>
-                    ・<span class="text-amber-200 font-bold">重騎士 (3.0s)</span>: 高HP・高防御だが操作時間が短い重戦車。<br>
-                    ・<span class="text-emerald-300 font-bold">斥候 (6.5s)</span>: 火力は控えめだが操作時間が長く、味方を運ぶ司令塔。<br>
-                    ・<span class="text-sky-300 font-bold">魔導士・僧侶 (4.5s)</span>: 直接攻撃は弱いが、チェーンに巻き込むと超広範囲魔法や回復が発動！
-                </div>
+                        <div class="mt-1 space-y-1.5">
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-amber-200 font-bold">重騎士 (3.0s)</span>：高HP・高防御だが操作時間が短い重戦車</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-emerald-300 font-bold">斥候 (6.5s)</span>：火力は控えめだが操作時間が長く、味方を運ぶ司令塔</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-sky-300 font-bold">魔導士・僧侶 (4.5s)</span>：直接攻撃は弱いが、チェーンに巻き込むと超広範囲魔法や回復が発動！</span></div>
+                        </div>
+                    </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">2. 挟み撃ち（ピンサー）＆チェーン魔法</div>
-                    敵キャラと岩壁はすり抜け不可。味方を押し出しながら敵を縦または横で挟むと攻撃開始！さらに、挟んだ2人と同じ行・列の直線上にいる味方は<span class="text-sky-300 font-bold">離れていてもチェーン発動</span>し、全身カットインと共に固有範囲スキルを放ちます。
-                </div>
+                        <div class="mt-1 space-y-1.5">
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>敵キャラと岩壁はすり抜け不可。味方を押し出しながら移動しよう</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>敵を縦または横で挟むと攻撃開始！</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>挟んだ2人と同じ行・列の直線上にいる味方は、<span class="text-sky-300 font-bold">離れていてもチェーン発動</span>し、全身カットインと共に固有範囲スキルを放つ</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>間に敵が居る味方は繋がらない</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>チェーンで繋がった人数が多いほど火力倍率が上がる（3人で×1.15、4人で×1.30、5人で×1.45、6人で×1.60）</span></div>
+                        </div>
+                    </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">3. カスタム画像＆立ち絵カットイン</div>
-                    右上の<span class="text-amber-300 font-bold">「 編成・立ち絵」</span>から、お手持ちの画像ファイルをアップロードして盤面アイコンやスキル発動時の全身立ち絵に設定できます！
-                </div>
+                        <div class="mt-1 space-y-1.5">
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>右上の<span class="text-amber-300 font-bold">「編成・立ち絵」</span>から、お手持ちの画像ファイルをアップロードできる</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>盤面アイコンや、スキル発動時の全身立ち絵に設定できる</span></div>
+                        </div>
+                    </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">4. スキル発動率＆スキルブースト（EX+新仕様）</div>
-                    スキルは基礎発動率（魔導士60%〜斥候85%）で判定され、<span class="text-sky-300 font-bold">外れることもあります</span>。発動・不発のたびにスキルブースト（SB）が溜まり、発動率は最大100%まで上昇します。下部の発動%表示が目安です。
-                </div>
+                        <div class="mt-1 space-y-1.5">
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>スキルは基礎発動率（魔導士60%〜斥候85%）で判定され、<span class="text-sky-300 font-bold">外れることもある</span></span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>発動・不発のたびにスキルブースト（SB）が溜まり、発動率は最大100%まで上昇する</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>下部の発動%表示が目安</span></div>
+                        </div>
+                    </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">5. 武器の三すくみ＆P/Cスキル（EX+新仕様）</div>
-                    剣は槍に強く、槍は弓に強く、弓は剣に強い（有利×1.25／不利×0.8、杖は中立）。武器は編成画面で変更可能。<br>
-                    挟んだ本人のスキルは<span class="text-amber-200 font-bold">Pスキル</span>（固有範囲・フル威力）、チェーンした味方は<span class="text-sky-300 font-bold">Cスキル</span>（十字範囲・威力85%）になります。
-                </div>
+                        <div class="mt-1 space-y-1.5">
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>剣は槍に強く、槍は弓に強く、弓は剣に強い（有利×1.25／不利×0.8、杖は中立）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>武器は編成画面で変更可能</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>挟んだ本人のスキルは<span class="text-amber-200 font-bold">Pスキル</span>（固有範囲・フル威力）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>チェーンした味方は<span class="text-sky-300 font-bold">Cスキル</span>（十字範囲・威力85%）</span></div>
+                        </div>
+                    </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">先攻コイントス＆増援＆敗北条件</div>
-                    各ウェーブ開始時にコイントスで先攻を決定（竜の面＝プレイヤー先行／星月の面＝エネミー先行）。<br>
-                    10ターン目に敵の増援が2体現れる。<br>
-                    味方が残り1人になると挟み撃ちができないため、その時点で敗北となる。
-                </div>
+                        <div class="mt-1 space-y-1.5">
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>各ウェーブ開始時にコイントスで先攻を決定（竜の面＝プレイヤー先行／星月の面＝エネミー先行）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>10ターン目に敵の増援が2体現れる</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>味方が残り1人になると挟み撃ちができないため、その時点で敗北となる</span></div>
+                        </div>
+                    </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">6. 吹き飛ばし攻撃に注意（EX+新仕様）</div>
-                    マークの敵（ゴーレム・テンペストホーク・嵐の神官・バハムート等）の攻撃が当たると、味方が敵から離れる方向へ<span class="text-rose-300 font-bold">1マス吹き飛ばされ</span>布陣が崩れます。行き止まりに激突すると追加ダメージ、トゲ床に飛ばされるとトゲダメージも受けます。
-                </div>
+                        <div class="mt-1 space-y-1.5">
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-rose-300 font-bold">マーク</span>の敵（ゴーレム・テンペストホーク・嵐の神官・バハムート等）の攻撃が当たると、味方が敵から離れる方向へ<span class="text-rose-300 font-bold">1マス吹き飛ばされ</span>、布陣が崩れる</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>行き止まりに激突すると追加ダメージを受ける</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>トゲ床に飛ばされるとトゲダメージも受ける</span></div>
+                        </div>
+                    </div>
             </div>
                 <div class="space-y-1">
                     <div class="font-bold text-amber-300">7. コンボ＆バフ＆新ジョブ（EX+追加仕様）</div>
-                    攻撃が当たるたびに<span class="text-amber-300 font-bold">コンボ</span>が増え、1ヒットごとにダメージ+2%（最大+50%）、敵を倒すと追加+1コンボ。画面右上のカウンターに表示されます。<br>
-                    <span class="text-amber-300 font-bold">吟遊詩人</span>の英雄歌は範囲内の味方にATK+30%（2ターン）とSB+10を与えるバフ専門スキル。<span class="text-amber-300 font-bold">レンジャー</span>はトゲ床のダメージを受けません。騎兵は操作時間7.5秒で全職最長、忍者は発動率85%です。<br>
-                    パーティはタイトル画面／ヘッダーの<span class="text-amber-300 font-bold">編成画面</span>で最大6人まで自由に組み替えられます（全13人から選択）。
-                </div>
+                        <div class="mt-1 space-y-1.5">
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>攻撃が当たるたびに<span class="text-amber-300 font-bold">コンボ</span>が増え、1ヒットごとにダメージ+2%（最大+50%）。敵を倒すと追加+1コンボ。画面右上のカウンターに表示される</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-amber-300 font-bold">吟遊詩人</span>の英雄歌は、範囲内の味方にATK+30%（2ターン）とSB+10を与えるバフ専門スキル</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-amber-300 font-bold">レンジャー</span>はトゲ床のダメージを受けない</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>騎兵は操作時間7.5秒で全職最長、忍者は発動率85%</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>パーティはタイトル画面／ヘッダーの<span class="text-amber-300 font-bold">編成画面</span>で最大6人まで自由に組み替えられる（全50人から選択）</span></div>
+                        </div>
+                    </div>
                 <div class="space-y-1">
                     <div class="font-bold text-amber-300">8. 召喚・図鑑・特性（EX+追加仕様）</div>
-                    ウェーブをクリアするたびに、魔導書から<span class="text-amber-300 font-bold">41人の中からランダムで1体召喚</span>されます。初めての仲間には<span class="text-rose-400 font-bold">NEW</span>バッジが付き、すでに仲間になっているキャラが重複すると<span class="text-amber-300 font-bold">レベルアップ（HP・ATK +5%／Lv）</span>します。未所持の仲間がいる間は、20%の確率で必ず未所持の仲間が選ばれます。集めた仲間はタイトル画面の<span class="text-amber-300 font-bold">仲間図鑑</span>で立ち絵とプロフィールが見られます。<br>
-                    ジョブ特性：斥候・忍者・侍・アーチャーは<span class="text-amber-300 font-bold">クリティカル</span>（1.6倍）が発生。斥候と暗黒騎士は<span class="text-purple-300 font-bold">スリップ</span>（継続ダメージ）、黒魔道士は<span class="text-sky-300 font-bold">攻防ダウン</span>を付与。ランサーの挟撃は背後の敵まで<span class="text-amber-300 font-bold">貫通</span>します。<br>
-                    新ジョブ：<span class="text-amber-300 font-bold">時魔道士</span>（遅延＋市松範囲）・<span class="text-amber-300 font-bold">モンク</span>（背水）・<span class="text-amber-300 font-bold">聖騎士</span>（守護＋攻撃回復の十字）・<span class="text-amber-300 font-bold">竜騎士</span>（桂馬跳び範囲＋飛空移動：敵・岩・トゲを飛び越える。ただし敵や岩の上には着地できない）・<span class="text-amber-300 font-bold">召喚士</span>（精霊が3ターン自動攻撃）・<span class="text-amber-300 font-bold">ドワーフ工兵</span>（整地スキルで岩とトゲを除去）。<span class="text-amber-300 font-bold">風水師</span>（泉生成）・<span class="text-amber-300 font-bold">からくり師</span>（地雷）・<span class="text-amber-300 font-bold">空間魔道士</span>（集合転送）・<span class="text-amber-300 font-bold">ネクロマンサー</span>（呪縛）・<span class="text-amber-300 font-bold">錬金術師</span>（時限ボム）も参戦。暗黒騎士は吸収、レンジャーは地形特効を習得。チェーン時は仲間のマスが光り、連携が大きいと「ゴゴゴゴゴ！！」が炸裂します。
-                    話術士：<span class="text-amber-300 font-bold">懐柔</span>スキルでボス以外の敵を味方にできます（精霊と同じ随行枠・そのウェーブ限り）。成功率は敵が強いほど下がります。<br>
-                    七騎士（オマージュ）：<span class="text-amber-300 font-bold">ルディ</span>（鉄壁＋守護スキル）・<span class="text-amber-300 font-bold">クリス</span>（即死15%）・<span class="text-amber-300 font-bold">デロンズ</span>（大鎌＋吸収）・<span class="text-amber-300 font-bold">スパイク</span>（凍結＋戦斧）・<span class="text-amber-300 font-bold">ジェイブ</span>（子竜ペット）・<span class="text-amber-300 font-bold">レイチェル</span>（復活＋不死鳥）・<span class="text-amber-300 font-bold">アイリーン</span>（感電）も召喚で参戦します。<br>
-                    ネタ枠：<span class="text-amber-300 font-bold">ジョニー</span>（サラリーマン／HP10・移動0.5秒）。通常の召喚では絶対に出ず、<span class="text-violet-300 font-bold">エンドレスダンジョンの階層クリア時に1%の確率</span>でドロップする完全レア。チェーンでスキルが発動すると<span class="text-fuchsia-300 font-bold">デバッグモードでボス以外の敵が全員即死</span>します。本人は普通のおじさんです。<br>
-                    隠し要素：初期パーティーの誰かの名前を、古の呪文に変えると……？<br>
-                    隠し要素その2：反乱軍の合言葉は、野に咲く花の名前……？<br>
-                    隠し要素その3：連邦の黒い悪魔、その名が合言葉……？<br>
-                    エンドレスダンジョン：タイトル画面から挑戦できる無限モード。階層ごとに敵とギミックがランダム生成され、敵ステータスは1階層ごとに+5%。5階層ごとにボスエリア（バハムート／ケルベロス／大悪魔のいずれか＋取り巻き）が出現し、色違いの「異色個体」（ステータス+10%）も現れます。ボスの異色個体はそれぞれ固有の名前を持ちます。クリアでHP40%回復、ベスト記録が保存されます。<br>
-                </div>
+                        <div class="mt-1 space-y-1.5">
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ウェーブをクリアするたびに、魔導書から<span class="text-amber-300 font-bold">46人の中からランダムで1体召喚</span>される</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>初めての仲間には<span class="text-rose-400 font-bold">NEW</span>バッジが付き、重複すると<span class="text-amber-300 font-bold">レベルアップ（HP・ATK +5%／Lv）</span>する</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>未所持の仲間がいる間は、20%の確率で必ず未所持の仲間が選ばれる</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>集めた仲間はタイトル画面の<span class="text-amber-300 font-bold">仲間図鑑</span>で立ち絵とプロフィールが見られる</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ジョブ特性：斥候・忍者・侍・アーチャーは<span class="text-amber-300 font-bold">クリティカル</span>（1.6倍）が発生する</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>斥候と暗黒騎士は<span class="text-purple-300 font-bold">スリップ</span>（継続ダメージ）、黒魔道士は<span class="text-sky-300 font-bold">攻防ダウン</span>を付与する</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ランサーの挟撃は背後の敵まで<span class="text-amber-300 font-bold">貫通</span>する</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>新ジョブ：<span class="text-amber-300 font-bold">時魔道士</span>（遅延＋市松範囲）・<span class="text-amber-300 font-bold">モンク</span>（背水）・<span class="text-amber-300 font-bold">聖騎士</span>（守護＋攻撃回復の十字）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-amber-300 font-bold">竜騎士</span>（桂馬跳び範囲＋飛空移動：敵・岩・トゲを飛び越える。ただし敵や岩の上には着地できない）・<span class="text-amber-300 font-bold">召喚士</span>（精霊が3ターン自動攻撃）・<span class="text-amber-300 font-bold">ドワーフ工兵</span>（整地スキルで岩とトゲを除去）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-amber-300 font-bold">風水師</span>（泉生成）・<span class="text-amber-300 font-bold">からくり師</span>（地雷）・<span class="text-amber-300 font-bold">空間魔道士</span>（集合転送）・<span class="text-amber-300 font-bold">ネクロマンサー</span>（呪縛）・<span class="text-amber-300 font-bold">錬金術師</span>（時限ボム）も参戦</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>暗黒騎士は吸収、レンジャーは地形特効を習得する</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>チェーン時は仲間のマスが光り、連携が大きいと「ゴゴゴゴゴ！！」が炸裂する</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>話術士：<span class="text-amber-300 font-bold">懐柔</span>スキルでボス以外の敵を味方にできる（精霊と同じ随行枠・そのウェーブ限り）。成功率は敵が強いほど下がる</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>七騎士（オマージュ）：<span class="text-amber-300 font-bold">ルディ</span>（鉄壁＋守護スキル）・<span class="text-amber-300 font-bold">クリス</span>（即死15%）・<span class="text-amber-300 font-bold">デロンズ</span>（大鎌＋吸収）・<span class="text-amber-300 font-bold">スパイク</span>（凍結＋戦斧）・<span class="text-amber-300 font-bold">ジェイブ</span>（子竜ペット）・<span class="text-amber-300 font-bold">レイチェル</span>（復活＋不死鳥）・<span class="text-amber-300 font-bold">アイリーン</span>（感電）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ネタ枠：<span class="text-amber-300 font-bold">ジョニー</span>（サラリーマン／HP10・移動0.5秒）。通常の召喚では絶対に出ず、<span class="text-violet-300 font-bold">エンドレスダンジョンの階層クリア時に1%の確率</span>でドロップする完全レア</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ジョニーがチェーンでスキルを発動すると、<span class="text-fuchsia-300 font-bold">デバッグモードでボス以外の敵が全員即死</span>する。本人は普通のおじさん</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>隠し要素：初期パーティーの誰かの名前を、古の呪文に変えると……？</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>隠し要素その2：反乱軍の合言葉は、野に咲く花の名前……？</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>隠し要素その3：連邦の黒い悪魔、その名が合言葉……？</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>エンドレスダンジョン：タイトル画面から挑戦できる無限モード。階層ごとに敵とギミックがランダム生成され、敵ステータスは1階層ごとに+5%</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>5階層ごとにボスエリア（バハムート／ケルベロス／大悪魔のいずれか＋取り巻き）が出現し、色違いの「異色個体」（ステータス+10%）も現れる。ボスの異色個体はそれぞれ固有の名前を持つ</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>クリアでHP40%回復、ベスト記録が保存される</span></div>
+                        </div>
+                    </div>
             <button onclick="closeHelp()" class="w-full py-2.5 bg-gradient-to-r from-amber-600 to-yellow-500 text-black font-black rounded-lg">
                 閉じる
             </button>
@@ -2291,7 +2348,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.73';
+        const GAME_VERSION = '1.78';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2791,7 +2848,7 @@
                 playSE('cutin');
                 setTimeout(() => {
                     res.textContent = heads ? 'PLAYER' : 'ENEMY';
-                    res.className = 'text-3xl font-black tracking-[0.35em] ' + (heads ? 'text-amber-300' : 'text-rose-400');
+                    res.className = 'text-3xl font-black tracking-[0.35em] ' + (heads ? 'text-sky-300' : 'text-rose-400');
                     playSE(heads ? 'heal' : 'skill_blast');
                 }, 2650);
                 setTimeout(() => { ov.classList.add('hidden'); ov.classList.remove('flex'); resolve(heads); }, 3150);
@@ -2911,26 +2968,20 @@
                 if (state.phase !== 'PLAYER_DRAGGING' || !state.draggingUnit) return;
                 e.preventDefault();
 
-                // 見た目の中心が入ったマスを目標にする（見た目と論理位置を常に一致させる）
-                moveDraggedUnitVisual(e);
-                const activeUnit = state.draggingUnit;
-                const el = document.getElementById(`unit-${activeUnit.id}`);
-                if (!el) return;
                 const rect = boardEl.getBoundingClientRect();
-                const cellW = rect.width / COLS;
-                const cellH = rect.height / ROWS;
-                const cx = parseFloat(el.style.left || '0') + cellW / 2;
-                const cy = parseFloat(el.style.top || '0') + cellH / 2;
-                let targetX = Math.max(0, Math.min(COLS - 1, Math.floor(cx / cellW)));
-                let targetY = Math.max(0, Math.min(ROWS - 1, Math.floor(cy / cellH)));
-                if (isCellBlockedForAlly(targetX, targetY, activeUnit)) {
-                    // 中心が敵などの塞がったマスに入った時だけ、その隣の空きマスへ滑らせる（遠くのマスへは飛ばさない）
-                    const proj = nearestFreeCellForDrag(targetX, targetY, activeUnit, cx, cy, rect);
-                    if (proj) { targetX = proj.x; targetY = proj.y; }
-                }
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+                moveDraggedUnitVisual(e);
+
+                const relX = Math.max(0, Math.min(rect.width - 1, clientX - rect.left));
+                const relY = Math.max(0, Math.min(rect.height - 1, clientY - rect.top));
+                const targetX = Math.floor((relX / rect.width) * COLS);
+                const targetY = Math.floor((relY / rect.height) * ROWS);
+
+                const activeUnit = state.draggingUnit;
                 if (targetX !== activeUnit.x || targetY !== activeUnit.y) {
                     stepMoveUnit(activeUnit, targetX, targetY);
-                    moveDraggedUnitVisual(e);
                 }
             };
 
@@ -2960,88 +3011,34 @@
 
             const cellW = rect.width / COLS;
             const cellH = rect.height / ROWS;
-            let dragLeft = clientX - rect.left - cellW / 2;
-            let dragTop = clientY - rect.top - cellH / 2;
-            // 当たり判定はアイコン中心の小さい範囲だけ：瓦礫・エネミーのマスにも中心手前まで入り込める
-            const du = state.draggingUnit;
-            const cellLeft = du.x * cellW, cellTop = du.y * cellH;
-            dragLeft = Math.max(cellLeft - cellW * 1.5, Math.min(cellLeft + cellW * 1.5, dragLeft));
-            dragTop = Math.max(cellTop - cellH * 1.5, Math.min(cellTop + cellH * 1.5, dragTop));
-            if (dragLeft > cellLeft && isCellBlockedForAlly(du.x + 1, du.y, du)) dragLeft = Math.min(dragLeft, cellLeft + cellW * 0.30);
-            if (dragLeft < cellLeft && isCellBlockedForAlly(du.x - 1, du.y, du)) dragLeft = Math.max(dragLeft, cellLeft - cellW * 0.30);
-            if (dragTop > cellTop && isCellBlockedForAlly(du.x, du.y + 1, du)) dragTop = Math.min(dragTop, cellTop + cellH * 0.30);
-            if (dragTop < cellTop && isCellBlockedForAlly(du.x, du.y - 1, du)) dragTop = Math.max(dragTop, cellTop - cellH * 0.30);
-            el.style.left = `${Math.max(-cellW * 0.2, Math.min(rect.width - cellW * 0.8, dragLeft))}px`;
-            el.style.top = `${Math.max(-cellH * 0.2, Math.min(rect.height - cellH * 0.8, dragTop))}px`;
-        }
-
-        function nearestFreeCellForDrag(tx, ty, unit, relX, relY, rect) {
-            const cellW = rect.width / COLS;
-            const cellH = rect.height / ROWS;
-            let best = null, bestScore = Infinity;
-            for (let r = 1; r <= 2; r++) {
-                for (let dx = -r; dx <= r; dx++) {
-                    for (let dy = -r; dy <= r; dy++) {
-                        if (Math.max(Math.abs(dx), Math.abs(dy)) !== r) continue;
-                        const nx = tx + dx, ny = ty + dy;
-                        if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) continue;
-                        if (isCellBlockedForAlly(nx, ny, unit)) continue;
-                        const cx = (nx + 0.5) * cellW, cy = (ny + 0.5) * cellH;
-                        const score = (cx - relX) * (cx - relX) + (cy - relY) * (cy - relY);
-                        if (score < bestScore) { bestScore = score; best = { x: nx, y: ny }; }
-                    }
-                }
-                if (best) break;
-            }
-            return best;
+            el.style.left = `${Math.max(-cellW * 0.2, Math.min(rect.width - cellW * 0.8, clientX - rect.left - cellW / 2))}px`;
+            el.style.top = `${Math.max(-cellH * 0.2, Math.min(rect.height - cellH * 0.8, clientY - rect.top - cellH / 2))}px`;
         }
 
         function stepMoveUnit(activeUnit, destX, destY) {
-            if (activeUnit.x === destX && activeUnit.y === destY) return;
-            // BFSで指のマスまでの最短経路を探し、障害物を回り込んで進む（味方はすり替えで通過可、飛行は全マス通過可）
-            const keyOf = (x, y) => x + ',' + y;
-            const prev = new Map();
-            const depthOf = new Map([[keyOf(activeUnit.x, activeUnit.y), 0]]);
-            const visited = new Set([keyOf(activeUnit.x, activeUnit.y)]);
-            const queue = [{ x: activeUnit.x, y: activeUnit.y }];
-            let goal = null;
-            while (queue.length) {
-                const cur = queue.shift();
-                if (cur.x === destX && cur.y === destY) { goal = cur; break; }
-                const dirs = [[1, 0], [-1, 0], [0, 1], [0, -1]]
-                    .map(([dx, dy]) => ({ x: cur.x + dx, y: cur.y + dy }))
-                    .sort((a, b) => (Math.abs(a.x - destX) + Math.abs(a.y - destY)) - (Math.abs(b.x - destX) + Math.abs(b.y - destY)));
-                for (const n of dirs) {
-                    const k = keyOf(n.x, n.y);
-                    if (visited.has(k)) continue;
-                    if (isCellBlockedForAlly(n.x, n.y, activeUnit)) continue;
-                    visited.add(k); prev.set(k, cur);
-                    depthOf.set(k, (depthOf.get(keyOf(cur.x, cur.y)) || 0) + 1);
-                    queue.push(n);
+            let safety = 0;
+            while ((activeUnit.x !== destX || activeUnit.y !== destY) && safety < 10) {
+                safety++;
+                const dx = Math.sign(destX - activeUnit.x);
+                const dy = Math.sign(destY - activeUnit.y);
+                const nextX = activeUnit.x + dx;
+                const nextY = activeUnit.y + dy;
+
+                if (isCellBlockedForAlly(nextX, nextY, activeUnit)) {
+                    // 斜め移動なら縦か横に逸らせないか試す
+                    if (dx !== 0 && dy !== 0) {
+                        if (!isCellBlockedForAlly(activeUnit.x + dx, activeUnit.y, activeUnit)) {
+                            executeSwapOrMove(activeUnit, activeUnit.x + dx, activeUnit.y);
+                            continue;
+                        } else if (!isCellBlockedForAlly(activeUnit.x, activeUnit.y + dy, activeUnit)) {
+                            executeSwapOrMove(activeUnit, activeUnit.x, activeUnit.y + dy);
+                            continue;
+                        }
+                    }
+                    break;
+                } else {
+                    executeSwapOrMove(activeUnit, nextX, nextY);
                 }
-            }
-            if (!goal) {
-                // 目標マスが塞がれている等で届かない場合は、到達できる中で最も目標に近いマスまで進む
-                let best = null, bestScore = Infinity, bestDepth = Infinity;
-                for (const k of visited) {
-                    const p = k.split(',').map(Number);
-                    const d = Math.abs(p[0] - destX) + Math.abs(p[1] - destY);
-                    const dep = depthOf.get(k) || 0;
-                    if (d < bestScore || (d === bestScore && dep < bestDepth)) { bestScore = d; bestDepth = dep; best = { x: p[0], y: p[1] }; }
-                }
-                if (!best || (best.x === activeUnit.x && best.y === activeUnit.y)) return;
-                goal = best;
-            }
-            const path = [];
-            let cur = goal;
-            while (!(cur.x === activeUnit.x && cur.y === activeUnit.y)) {
-                path.unshift(cur);
-                cur = prev.get(keyOf(cur.x, cur.y));
-                if (!cur) return;
-            }
-            for (const step of path) {
-                if (isCellBlockedForAlly(step.x, step.y, activeUnit)) break;
-                executeSwapOrMove(activeUnit, step.x, step.y);
             }
         }
 
@@ -3149,6 +3146,18 @@
         // ==========================================
         // 挟み撃ち（ピンサー）＆チェーン判定
         // ==========================================
+        // 直線上の2点間に敵が居たらチェーンは繋がらない
+        function enemyBlocksLine(x1, y1, x2, y2) {
+            const dx = Math.sign(x2 - x1), dy = Math.sign(y2 - y1);
+            let x = x1 + dx, y = y1 + dy;
+            while (x !== x2 || y !== y2) {
+                const occ = getUnitAt(x, y);
+                if (occ && occ.side === 'enemy') return true;
+                x += dx; y += dy;
+            }
+            return false;
+        }
+
         function detectPincers() {
             const pincerGroups = [];
 
@@ -3221,9 +3230,10 @@
                 if (pincers.length === 2) {
                     const [pa, pb] = pincers;
                     state.allies.forEach(a => {
-                        if (a.hp > 0 && (a.x === pa.x || a.x === pb.x || a.y === pa.y || a.y === pb.y)) {
-                            chainSet.add(a.id);
-                        }
+                        if (a.hp <= 0 || chainSet.has(a.id)) return;
+                        // 挟んだ2人のどちらかと同行・同列で、間に敵が居ない場合のみチェーン対象
+                        const linked = [pa, pb].some(p => (a.x === p.x || a.y === p.y) && !enemyBlocksLine(p.x, p.y, a.x, a.y));
+                        if (linked) chainSet.add(a.id);
                     });
                 }
                 group.allParticipants = chainSet;
@@ -3510,6 +3520,9 @@
                 const participants = [...p.allParticipants]
                     .map(id => state.allies.find(a => a.id === id))
                     .filter(Boolean);
+                // チェーン倍率：繋がった人数が多いほど火力UP（3人×1.15、4人×1.30、5人×1.45、6人×1.60）
+                const chainCount = participants.length;
+                const chainMult = 1 + 0.15 * Math.max(0, chainCount - 2);
 
                 participants.forEach(ally => {
                     const el = document.getElementById(`unit-${ally.id}`);
@@ -3519,8 +3532,12 @@
                     const pa = state.allies.find(a => a.id === pid);
                     if (pa) setTimeout(() => showAttackFlash(pa), i2 * 400);
                 });
-                drawChainLines(participants);
+                drawChainLines(participants, p.pincerAllyIds);
                 playChainEffects(participants, p.pincerAllyIds);
+                if (chainCount >= 3 && livingEnemies.length) {
+                    const fe = livingEnemies[0];
+                    showFloatingText(fe.x + (fe.size || 1) / 2, fe.y - 0.4, `CHAIN ${chainCount}人 ×${chainMult.toFixed(2)}`, '#4ade80', '15px');
+                }
 
                 // 1. まず挟み撃ちの直接打撃ダメージ（重騎士・戦士が高く、魔導士は低い）
                 const pincerAttackers = participants.filter(a => p.pincerAllyIds.has(a.id));
@@ -3545,7 +3562,7 @@
                     for (let ex = 0; ex < (enemy.size || 1); ex++) for (let ey = 0; ey < (enemy.size || 1); ey++) eCellsD.push({ x: enemy.x + ex, y: enemy.y + ey });
                     playSkillEffect(eCellsD, 'slash', (ELEMENTS[(participants[0] || {}).element] || {}).color);
                     const wasAliveD = enemy.hp > 0;
-                    directTotal = Math.round(directTotal * ((enemy.defDownT || 0) > 0 ? 1.25 : 1) * addCombo(1));
+                    directTotal = Math.round(directTotal * chainMult * ((enemy.defDownT || 0) > 0 ? 1.25 : 1) * addCombo(1));
                     enemy.hp = Math.max(0, enemy.hp - directTotal);
                     { const rawSum = contributions.reduce((s, c) => s + c.contrib, 0); if (rawSum > 0 && directTotal > 0) contributions.forEach(({ ally, contrib }) => drainHeal(ally, Math.round(directTotal * contrib / rawSum))); contributions.forEach(({ ally }) => placeCurse(ally, enemy)); }
                     if (wasAliveD && enemy.hp <= 0) addCombo(1);
@@ -3595,11 +3612,11 @@
                         return arr.filter(c => c.x >= 0 && c.x < COLS && c.y >= 0 && c.y < ROWS);
                     };
                     const chainFull = !isPincer && (JOB_TRAITS[ally.job] || {}).chainFull;
-                    const skillInfo = isPincer ? baseSkillInfo : (chainFull ? {
-                        name: baseSkillInfo.name, type: baseSkillInfo.type, mult: baseSkillInfo.mult * 0.95,
+                    const skillInfo = isPincer ? { ...baseSkillInfo, mult: baseSkillInfo.mult * chainMult } : (chainFull ? {
+                        name: baseSkillInfo.name, type: baseSkillInfo.type, mult: baseSkillInfo.mult * chainMult * 0.95,
                         getCells: baseSkillInfo.getCells
                     } : {
-                        name: baseSkillInfo.name, type: baseSkillInfo.type, mult: baseSkillInfo.mult * 0.85,
+                        name: baseSkillInfo.name, type: baseSkillInfo.type, mult: baseSkillInfo.mult * chainMult * 0.85,
                         getCells: (ux, uy) => crossCells(ux, uy, baseSkillInfo.type === 'heal' || baseSkillInfo.type === 'buff')
                     });
                     ally._skillKind = isPincer ? 'P' : 'C';
@@ -4434,6 +4451,8 @@
                     await sleepFx(hitAny ? 520 : 340);
                 } else if (!enemy.isBoss) {
                     moveEnemyAggressively(enemy);
+                    renderUnits();
+                    await sleepFx(200);
                 }
             }
 
@@ -4606,6 +4625,16 @@
         // ==========================================
         // Wave進行＆リザルト
         // ==========================================
+        function showEndingSplash() {
+            const box = document.getElementById('ending-splash');
+            const img = document.getElementById('ending-splash-img');
+            if (!box) { backToTitle(); return; }
+            const art = STAGE_ART[state.waveIndex] || STAGE_ART[0];
+            if (img && art) img.src = art;
+            box.classList.remove('hidden');
+            box.classList.add('flex');
+        }
+
         async function handleWaveClear() {
             state.phase = 'MODAL';
             await sleep(380);
@@ -4613,17 +4642,10 @@
             if (state.endlessFloor > 0) { await handleEndlessFloorClear(); return; }
 
             if (state.waveIndex >= WAVES.length - 1) {
-                const modal = document.getElementById('overlay-modal');
-                document.getElementById('modal-title').textContent = ' ALL WAVES CLEAR!';
-                document.getElementById('modal-desc').textContent = `終焉竜バハムートを討伐し、全${WAVES.length}ウェーブを制覇しました！（最終ウェーブ ${state.turn}ターン）`;
-                document.getElementById('modal-choices').innerHTML = `
-                    <button onclick="resetGame()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-black rounded-lg shadow-lg">
-                        もう一度最初からプレイする
-                    </button>
-                `;
+                // ストーリー最終面クリア＝エンディングへ
                 await maybeShowSummon();
-                modal.classList.remove('hidden');
                 startBGM('victory');
+                showEndingSplash();
                 return;
             }
 
@@ -5854,13 +5876,14 @@
             });
         }
 
-        function drawChainLines(participants) {
+        function drawChainLines(participants, pincerIds) {
             if (participants.length < 2) return;
             const rect = boardEl.getBoundingClientRect();
             const cellW = rect.width / COLS;
             const cellH = rect.height / ROWS;
-            for (let i = 0; i < participants.length - 1; i++) {
-                const a = participants[i], b = participants[i + 1];
+            const pincers = participants.filter(a => !pincerIds || pincerIds.has(a.id));
+            const chained = participants.filter(a => pincerIds && !pincerIds.has(a.id));
+            const drawSeg = (a, b) => {
                 const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                 line.setAttribute('x1', (a.x + 0.5) * cellW);
                 line.setAttribute('y1', (a.y + 0.5) * cellH);
@@ -5870,7 +5893,21 @@
                 line.setAttribute('stroke-width', '3.5');
                 line.setAttribute('stroke-linecap', 'round');
                 fxSvg.appendChild(line);
-            }
+            };
+            // 挟んだ2人の間（敵を貫く軸）を結ぶ
+            if (pincers.length === 2) drawSeg(pincers[0], pincers[1]);
+            // 各ピンサーから、同じ行・列の直線上にいるチェーン味方へまっすぐ結ぶ（方向ごとに一番遠い味方まで1本）
+            pincers.forEach(p => {
+                [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dx, dy]) => {
+                    let far = null;
+                    chained.forEach(c => {
+                        if (enemyBlocksLine(p.x, p.y, c.x, c.y)) return;
+                        if (dx !== 0 && c.y === p.y && Math.sign(c.x - p.x) === dx) { if (!far || Math.abs(c.x - p.x) > Math.abs(far.x - p.x)) far = c; }
+                        if (dy !== 0 && c.x === p.x && Math.sign(c.y - p.y) === dy) { if (!far || Math.abs(c.y - p.y) > Math.abs(far.y - p.y)) far = c; }
+                    });
+                    if (far) drawSeg(p, far);
+                });
+            });
         }
 
         function showFloatingText(gridX, gridY, text, color = '#fff', fontSize = '16px') {
