@@ -2344,6 +2344,19 @@
             renderFormation();
         }
         function quitEndlessToTitle() { location.reload(); }
+        const EQUIP_NAMES = {
+            s1: '蒼穹の剣', s2: '影縫いの短剣', s3: '聖なる錫杖', s4: '疾風の長弓',
+            p1: '重装の鎧', p2: '月影の苦無', p3: '紅蓮の杖', p4: '雷鳴の宝珠', p5: '癒しの聖杯',
+            p6: '豪傑の大剣', p7: '分身の巻物', p8: '名刀・虎徹', p9: '氷結の杖', p10: '風精の羽根飾り',
+            p11: '森の狩人の弓', p12: '星屑の竪琴', p13: '蒼騎士の槍',
+            n1: '天女の舞扇', n2: '貫きの魔槍', n3: '暗黒の魔剣', n4: '黒の魔導書', n5: '必中の天弓',
+            n6: '時の砂時計', n7: '剛拳の鉄甲', n8: '聖騎士の盾', n9: '竜騎士の鎧', n10: '精霊の鈴',
+            n11: '工兵の銘鎚', n12: '地脈の羅針盤', n13: 'からくり仕掛けの歯車', n14: '虚空のマント', n15: '死霊の宝玉',
+            n16: '賢者のフラスコ', n17: '弁舌の扇', n18: '双短剣・燕双飛',
+            k1: '鉄壁の大盾', k2: '死剣の指輪', k3: '魂刈の大鎌', k4: '凍結の戦斧', k5: '子竜の鱗鎧',
+            k6: '不死鳥の羽根', k7: '雷女神の槍', k8: '最新型ノートPC', k9: 'デバッグ用キーボード', k10: '白薔薇の杖', k11: '連邦の黒杖'
+        };
+
         async function handleEndlessFloorClear() {
             const floor = state.endlessFloor;
             state.allies.forEach(a => { if (a.hp > 0) a.hp = Math.min(a.maxHp, a.hp + Math.round(a.maxHp * 0.4)); });
@@ -2357,6 +2370,17 @@
                     savePartyToStorage();
                     johnnyDropped = true;
                     await playSummonSequence(johnny, { type: 'new' });
+                }
+            }
+            const isBossFloor = floor % 5 === 0;
+            if (isBossFloor || Math.random() < 0.35) {
+                const members = getPartyMembers().filter(c => state.ownedIds.includes(c.id));
+                if (members.length) {
+                    const picked = members[Math.floor(Math.random() * members.length)];
+                    const beforeLv = getLevel(picked.id);
+                    state.levels[picked.id] = beforeLv + 1;
+                    savePartyToStorage();
+                    await playSummonSequence(picked, { type: 'equip', equip: EQUIP_NAMES[picked.id] || '謎の装備', before: beforeLv, after: beforeLv + 1 });
                 }
             }
             startBGM('victory');
@@ -4068,7 +4092,7 @@
                 const ov = document.getElementById('summon-overlay');
                 if (!ov) { resolve(); return; }
                 const book = document.getElementById('summon-book');
-                if (SUMMON_BOOK_ART) { book.src = SUMMON_BOOK_ART; book.style.display = ''; }
+                if (SUMMON_BOOK_ART && !(result && result.type === 'equip')) { book.src = SUMMON_BOOK_ART; book.style.display = ''; }
                 else book.style.display = 'none';
                 document.getElementById('summon-art').innerHTML = charArtHtml(char, 'max-h-[44vh] w-auto object-contain');
                 document.getElementById('summon-name').textContent = char.name;
@@ -4076,10 +4100,14 @@
                 document.getElementById('summon-job').textContent = `${char.title || ''} ／ ${job.name}`;
                 const tagEl = document.getElementById('summon-tag');
                 const subEl = document.getElementById('summon-sub');
-                if (result && result.type === 'levelup') {
+                if (result && result.type === 'equip') {
+                    tagEl.textContent = '🎁 TREASURE 🎁';
+                    tagEl.className = 'text-[13px] tracking-[0.45em] text-emerald-300 font-black';
+                    subEl.textContent = `宝箱から【${result.equip}】を入手！ ${char.name}の装備が強化された　Lv ${result.before} → Lv ${result.after}（タップで閉じる）`;
+                } else if (result && result.type === 'levelup') {
                     tagEl.textContent = '⬆ LEVEL UP ⬆';
                     tagEl.className = 'text-[13px] tracking-[0.45em] text-sky-300 font-black';
-                    subEl.textContent = `Lv ${result.before} → Lv ${result.after}　HP・ATKが +5% アップ！（タップで閉じる）`;
+                    subEl.textContent = `Lv ${result.before ?? result.from} → Lv ${result.after ?? result.to}　HP・ATKが +5% アップ！（タップで閉じる）`;
                 } else {
                     tagEl.textContent = '✦ NEW ALLY ✦';
                     tagEl.className = 'text-[13px] tracking-[0.45em] text-amber-300 font-black';
