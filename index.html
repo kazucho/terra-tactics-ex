@@ -2264,7 +2264,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.65';
+        const GAME_VERSION = '1.66';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3386,7 +3386,7 @@
                 if (exploded) playSE('skill_blast', 1.2);
                 renderFieldMarks();
                 renderUnits();
-                await sleep(420);
+                await sleepFx(420);
                 processEnemySplits(); if (state.enemies.filter(e => e.hp > 0).length === 0) { await handleWaveClear(); return; }
             }
             state.allies.forEach(a => {
@@ -3424,7 +3424,7 @@
                     });
                     renderUnits();
                     renderPartyBar();
-                    if (burstHit) await sleep(480);
+                    if (burstHit) await sleepFx(480);
                 }
             }
             await spiritAttack();
@@ -3435,7 +3435,7 @@
 
             if (pincers.length === 0) {
                 showFloatingText(COLS / 2, ROWS / 2, 'NO PINCER...', '#94a3b8', '16px');
-                await sleep(500);
+                await sleepFx(500);
                 await proceedToEnemyTurn();
                 return;
             }
@@ -3519,7 +3519,7 @@
                     });
                 }
                 renderUnits();
-                await sleep(360);
+                await sleepFx(360);
 
                 // 2. 参加キャラ（挟撃＋チェーン）が順番に全身カットイン＆広範囲ユニークスキル発動！
                 for (const ally of participants) {
@@ -3529,16 +3529,6 @@
                     if (baseSkillInfo.type === 'damage' && !anyEnemyAlive) continue;
 
                     const isPincer = p.pincerAllyIds.has(ally.id);
-                    // スキル発動率判定（本家仕様：不発でもスキルブーストSBが溜まっていく）
-                    const rate = getSkillRate(ally);
-                    if (Math.random() * 100 >= rate) {
-                        ally.sb = Math.min(40, (ally.sb || 0) + 4);
-                        showFloatingText(ally.x + 0.5, ally.y, 'スキル不発… SB+4%', '#94a3b8', '12px');
-                        renderPartyBar();
-                        await sleep(260);
-                        continue;
-                    }
-                    ally.sb = Math.min(40, (ally.sb || 0) + 1);
 
                     // Pスキル=固有範囲そのまま / Cスキル（チェーン）=十字範囲・威力85%（本家仕様）
                     const crossCells = (ux, uy, withSelf) => {
@@ -3556,11 +3546,31 @@
                     });
                     ally._skillKind = isPincer ? 'P' : 'C';
 
+                    // 対象マスを先に算出し、対象が無い攻撃スキルは発動しない（整地は岩・トゲも対象）
+                    const targetCells = skillInfo.getCells(ally.x, ally.y);
+                    const ATTACK_TYPES = ['damage', 'omni', 'pull', 'debug_death', 'bomb', 'persuade', 'terrain'];
+                    if (ATTACK_TYPES.includes(skillInfo.type)) {
+                        const hasEnemy = targetCells.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'enemy' && occ.unit.hp > 0; });
+                        const hasGround = skillInfo.type === 'terrain' && targetCells.some(cell => { const t = getTerrainAt(cell.x, cell.y); return t && (t.type === 'rock' || t.type === 'spike'); });
+                        if (!hasEnemy && !hasGround) continue;
+                    }
+
+                    // スキル発動率判定（本家仕様：不発でもスキルブーストSBが溜まっていく）
+                    const rate = getSkillRate(ally);
+                    if (Math.random() * 100 >= rate) {
+                        ally.sb = Math.min(40, (ally.sb || 0) + 4);
+                        showFloatingText(ally.x + 0.5, ally.y, 'スキル不発… SB+4%', '#94a3b8', '12px');
+                        renderPartyBar();
+                        await sleepFx(260);
+                        continue;
+                    }
+                    ally.sb = Math.min(40, (ally.sb || 0) + 1);
+
                     // 全画面立ち絵カットイン再生！
                     await playFullScreenCutin(ally);
 
-                    // 対象マス算出＆盤面フラッシュ演出
-                    const targetCells = skillInfo.getCells(ally.x, ally.y);
+                    // 盤面フラッシュ演出
+
                     const theme = CUTIN_THEMES[ally.cutinTheme] || CUTIN_THEMES.crimson;
                     flashSkillTiles(targetCells, theme.tileColor);
                     playSkillEffect(targetCells, effectKindFor(ally, skillInfo), (ELEMENTS[ally.element] || {}).color);
@@ -3580,7 +3590,7 @@
                         });
                         renderUnits();
                         renderPartyBar();
-                        await sleep(320);
+                        await sleepFx(320);
                     } else if (skillInfo.type === 'regen') {
                         playSE('heal');
                         targetCells.forEach(cell => {
@@ -3592,7 +3602,7 @@
                         });
                         renderUnits();
                         renderPartyBar();
-                        await sleep(320);
+                        await sleepFx(320);
                     } else if (skillInfo.type === 'pull') {
                         playSE('skill_slash', 0.8);
                         playSkillEffect(targetCells, 'dark', '#a78bfa');
@@ -3618,7 +3628,7 @@
                             }
                         });
                         renderUnits();
-                        if (pulledAny) await sleep(320);
+                        if (pulledAny) await sleepFx(320);
                     } else if (skillInfo.type === 'buff') {
                         playSE('heal');
                         targetCells.forEach(cell => {
@@ -3632,7 +3642,7 @@
                         });
                         renderUnits();
                         renderPartyBar();
-                        await sleep(320);
+                        await sleepFx(320);
                     } else if (skillInfo.type === 'summon') {
                         playSE('heal');
                         const power = Math.round(ally.atk * skillInfo.mult * jobInfo.skillPowerMult * boost);
@@ -3640,7 +3650,7 @@
                         showFloatingText(ally.x + 0.5, ally.y - 0.2, ' 精霊召喚！ 3ターン自動攻撃', '#fcd34d', '14px');
                         renderUnits();
                         renderPartyBar();
-                        await sleep(320);
+                        await sleepFx(320);
                     } else if (skillInfo.type === 'hybrid') {
                         playSE('skill_blast', 0.95);
                         const healValH = Math.round(ally.atk * skillInfo.mult * jobInfo.skillPowerMult * boost);
@@ -3673,7 +3683,7 @@
                         });
                         renderUnits();
                         renderPartyBar();
-                        await sleep(340);
+                        await sleepFx(340);
                     } else if (skillInfo.type === 'terrain') {
                         playSE('skill_blast', 0.9);
                         let cleared = 0;
@@ -3701,7 +3711,7 @@
                             if (enemy.hp > 0) applyOnHitTraits(ally, enemy);
                         });
                         renderUnits();
-                        await sleep(340);
+                        await sleepFx(340);
                     } else if (skillInfo.type === 'create') {
                         playSE('heal');
                         let made = 0;
@@ -3713,7 +3723,7 @@
                             showFloatingText(cell.x + 0.5, cell.y + 0.3, '泉生成!', '#34d399', '12px');
                         });
                         if (made) renderTerrain();
-                        await sleep(320);
+                        await sleepFx(320);
                     } else if (skillInfo.type === 'trap') {
                         playSE('skill_blast', 0.8);
                         if (!state.mines) state.mines = [];
@@ -3724,7 +3734,7 @@
                             showFloatingText(cell.x + 0.5, cell.y + 0.3, '地雷設置!', '#fbbf24', '12px');
                         });
                         renderFieldMarks();
-                        await sleep(320);
+                        await sleepFx(320);
                     } else if (skillInfo.type === 'warp') {
                         playSE('cutin');
                         const spots = [];
@@ -3747,7 +3757,7 @@
                             showFloatingText(a.x + 0.5, a.y, '転送!', '#c4b5fd', '13px');
                         });
                         renderUnits();
-                        await sleep(380);
+                        await sleepFx(380);
                     } else if (skillInfo.type === 'persuade') {
                         playSE('heal', 0.9);
                         const seenP = new Set();
@@ -3771,7 +3781,7 @@
                         }
                         renderUnits();
                         renderPartyBar();
-                        await sleep(320);
+                        await sleepFx(320);
                     } else if (skillInfo.type === 'debug_death') {
                         if (ally._skillKind === 'C') {
                             let kills = 0;
@@ -3832,7 +3842,7 @@
                             }
                         });
                         renderFieldMarks();
-                        await sleep(320);
+                        await sleepFx(320);
                     } else if (skillInfo.type === 'omni') {
                         playSE('skill_blast', 0.95);
                         boardEl.classList.add('board-shake');
@@ -3870,7 +3880,7 @@
                             drainHeal(ally, dmg);
                         });
                         renderUnits();
-                        await sleep(340);
+                        await sleepFx(340);
                     } else {
                         playSE('skill_blast', 0.95);
                         boardEl.classList.add('board-shake');
@@ -3912,7 +3922,7 @@
                         });
 
                         renderUnits();
-                        await sleep(340);
+                        await sleepFx(340);
                     }
                 }
 
@@ -3925,7 +3935,7 @@
             if (state.combo >= 5) {
                 showFloatingText(3, 3.2, `${state.combo} COMBO!!`, '#fbbf24', '30px');
                 playSE('cutin');
-                await sleep(500);
+                await sleepFx(500);
             }
 
             if (state.enemies.filter(e => e.hp > 0).length === 0) {
@@ -4047,7 +4057,8 @@
             }
             box.innerHTML = inner;
             layer.appendChild(box);
-            setTimeout(() => box.remove(), 820);
+            if (fxScale() !== 1 && box.getAnimations) box.getAnimations({ subtree: true }).forEach(a => { a.playbackRate = 1 / fxScale(); });
+            setTimeout(() => box.remove(), 820 * fxScale());
         }
 
         function flashSkillTiles(cells, color) {
@@ -4062,7 +4073,8 @@
                 div.style.background = `radial-gradient(circle, #ffffff 0%, ${color} 60%, transparent 100%)`;
                 skillVfxLayer.appendChild(div);
             });
-            setTimeout(() => { skillVfxLayer.innerHTML = ''; }, 580);
+            if (fxScale() !== 1 && skillVfxLayer.getAnimations) skillVfxLayer.getAnimations({ subtree: true }).forEach(a => { a.playbackRate = 1 / fxScale(); });
+            setTimeout(() => { skillVfxLayer.innerHTML = ''; }, 580 * fxScale());
         }
 
         function getElementMultiplier(atkElem, defElem) {
@@ -4214,7 +4226,7 @@
                             playSkillEffect([{ x: wounded.x, y: wounded.y }], 'holy', '#fde68a');
                             showFloatingText(wounded.x + (wounded.size || 1) / 2, wounded.y + 0.3, `回復 +${heal}`, '#4ade80', '14px');
                             enemy.cd = enemy.cdMax;
-                            if (!enemy.isBoss) tryStepEnemySmartly(enemy);
+                            if (!enemy.isBoss) moveEnemyAggressively(enemy);
                             renderUnits();
                             renderPartyBar();
                             await sleep(420);
@@ -4346,13 +4358,13 @@
                             }
                         }
                     }
-                    if (!enemy.isBoss) tryStepEnemySmartly(enemy);
+                    if (!enemy.isBoss) moveEnemyAggressively(enemy);
 
                     renderUnits();
                     renderPartyBar();
-                    await sleep(hitAny ? 520 : 340);
+                    await sleepFx(hitAny ? 520 : 340);
                 } else if (!enemy.isBoss) {
-                    tryStepEnemySmartly(enemy);
+                    moveEnemyAggressively(enemy);
                 }
             }
 
@@ -4430,6 +4442,55 @@
                 if (score > bestScore) { bestScore = score; best = c; }
             }
             enemy.x = best.x; enemy.y = best.y;
+        }
+
+        function moveEnemyAggressively(enemy) {
+            if (enemy.isBoss) return;
+            const canHitFrom = (x, y) => {
+                const kx = enemy.x, ky = enemy.y;
+                enemy.x = x; enemy.y = y;
+                const cells = getEnemyAttackCells(enemy);
+                enemy.x = kx; enemy.y = ky;
+                return state.allies.some(a => a.hp > 0 && cells.some(c => c.x === a.x && c.y === a.y));
+            };
+            if (canHitFrom(enemy.x, enemy.y)) { tryStepEnemySmartly(enemy); return; }
+            // 攻撃が届かない間は2マス接近する（BFSで射程に入れる最短経路を進む）
+            for (let step = 0; step < 2; step++) {
+                const size = enemy.size || 1;
+                const keyOf = (x, y) => x + ',' + y;
+                const prev = new Map();
+                const visited = new Set([keyOf(enemy.x, enemy.y)]);
+                const queue = [{ x: enemy.x, y: enemy.y }];
+                let goal = null;
+                while (queue.length && !goal) {
+                    const cur = queue.shift();
+                    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+                        const nx = cur.x + dx, ny = cur.y + dy, k = keyOf(nx, ny);
+                        if (visited.has(k)) continue;
+                        if (nx < 0 || ny < 0 || nx + size > COLS || ny + size > ROWS) continue;
+                        let blocked = false;
+                        for (let cx = 0; cx < size && !blocked; cx++) for (let cy = 0; cy < size && !blocked; cy++) {
+                            const t = getTerrainAt(nx + cx, ny + cy);
+                            if (t && t.type === 'rock') blocked = true;
+                            const occ = getUnitAt(nx + cx, ny + cy);
+                            if (occ && occ.unit !== enemy) blocked = true;
+                        }
+                        if (blocked) continue;
+                        visited.add(k); prev.set(k, cur);
+                        if (canHitFrom(nx, ny)) { goal = { x: nx, y: ny }; break; }
+                        queue.push({ x: nx, y: ny });
+                    }
+                }
+                if (!goal) { tryStepEnemySmartly(enemy); break; }
+                let cur = goal;
+                while (true) {
+                    const p = prev.get(keyOf(cur.x, cur.y));
+                    if (!p || (p.x === enemy.x && p.y === enemy.y)) break;
+                    cur = p;
+                }
+                enemy.x = cur.x; enemy.y = cur.y;
+                if (canHitFrom(enemy.x, enemy.y)) break;
+            }
         }
 
         function getEnemyAttackCells(enemy) {
@@ -5756,7 +5817,8 @@
             el.style.color = color;
             el.style.fontSize = fontSize;
             popupLayer.appendChild(el);
-            setTimeout(() => el.remove(), 960);
+            if (fxScale() !== 1 && el.getAnimations) el.getAnimations({ subtree: true }).forEach(a => { a.playbackRate = 1 / fxScale(); });
+            setTimeout(() => el.remove(), 960 * fxScale());
         }
 
         function openHelp() { document.getElementById('help-modal').classList.remove('hidden'); }
@@ -5768,6 +5830,8 @@
             location.reload();
         }
         function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+        function fxScale() { return state.cutinSpeedMode === 0 ? 2 : 1; }
+        function sleepFx(ms) { return sleep(ms * fxScale()); }
 
         window.onload = initGame;
     </script>
