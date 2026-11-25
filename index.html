@@ -422,8 +422,8 @@
                 <span id="turn-badge" class="text-[10px] bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-300 border border-slate-700/80">TURN 1</span>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
-                <button id="btn-sound" onclick="toggleSound()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs flex items-center justify-center transition" title="効果音">音</button>
-                <button id="btn-bgm" onclick="toggleBGM()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs flex items-center justify-center transition" title="BGM ON/OFF">曲</button>
+                <button id="btn-sound" onclick="toggleSound()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs flex items-center justify-center transition" title="効果音"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fcd34d" class="w-5 h-5 block mx-auto"><path d="M3.5 9v6h3.8L17 20.5v-17L7.3 9H3.5Z"/><path d="M19 9.2a3.6 3.6 0 0 1 0 5.6M20.8 6.8a6.4 6.4 0 0 1 0 10.4" fill="none" stroke="#fcd34d" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+                <button id="btn-bgm" onclick="toggleBGM()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs flex items-center justify-center transition" title="BGM ON/OFF"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fcd34d" class="w-5 h-5 block mx-auto"><path d="M9.5 18.6a2.9 2.9 0 1 1-2-2.75V5.2L19 3v12.4a2.9 2.9 0 1 1-2-2.75V5.9l-7.5 1.9Z"/></svg></button>
                 <button onclick="openHelp()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs font-bold flex items-center justify-center transition">？</button>
             </div>
         </div>
@@ -556,7 +556,7 @@
                 </div>
             </div>
             <div class="px-4 py-3 bg-[#10121a] border-t border-slate-700 shrink-0">
-                <button id="formation-start-btn" onclick="startBattleFromFormation()" class="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:brightness-110 text-black text-lg font-black tracking-widest shadow-lg start-glow"> バトル開始 </button>
+                <button id="formation-start-btn" onclick="startBattleFromFormation()" class="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:brightness-110 text-black text-lg font-black tracking-widest shadow-lg start-glow"><img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%231c1917%22%3E%3Cpath%20d%3D%22M11%203h2v11h-2z%22%2F%3E%3Cpath%20d%3D%22M11%203%2012%201l1%202z%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2214%22%20width%3D%2212%22%20height%3D%222%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%2216%22%20width%3D%222%22%20height%3D%224%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2221.4%22%20r%3D%221.6%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt=""> バトル開始 </button>
             </div>
         </div>
     </div>
@@ -714,29 +714,29 @@
 
         // ジョブ（クラス）定義
         const JOB_CLASSES = {
-            geomancer: { name: '風水師', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: ' 風水師', desc: '地脈を読み、戦場に魔力泉を生み出す地形の魔術師。' },
-            karakuri: { name: 'からくり師', moveTime: 5.0, directMult: 0.9, skillPowerMult: 1.0, badge: ' からくり師', desc: '地雷を仕掛ける罠の専門家。敵の足元に死を置く。' },
-            warper: { name: '空間魔道士', moveTime: 6.0, directMult: 0.35, skillPowerMult: 1.0, badge: ' 空間魔道士', desc: '仲間全員を自分の周囲へ転送する、次元を操る魔道士。' },
-            necromancer: { name: 'ネクロマンサー', moveTime: 5.0, directMult: 0.35, skillPowerMult: 1.35, badge: ' ネクロマンサー', desc: '倒した敵の地に呪縛を残す死霊術師。死がさらなる死を呼ぶ。' },
-            alchemist: { name: '錬金術師', moveTime: 5.0, directMult: 0.4, skillPowerMult: 1.0, badge: ' 錬金術師', desc: '敵に時限ボムを仕掛ける爆弾魔。次の攻撃開始とともに大爆発。' },
-            orator: { name: '話術士', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: ' 話術士', desc: '言葉で敵を懐柔する調停者。味方になった敵はそのウェーブの間、共に戦う。' },
-            whitemage: { name: '白魔道士', moveTime: 5.0, directMult: 0.35, skillPowerMult: 1.5, badge: ' 白魔道士', desc: '野ばらの紋章を掲げる攻撃型の白魔道士。広範囲の攻撃白魔法ホーリーノヴァを放つ。合言葉を知る者だけが仲間にできる。' },
-            developer: { name: '開発者', moveTime: 5.0, directMult: 1.05, skillPowerMult: 1.45, badge: ' 開発者', desc: '世界の理を書き換える隠れ開発者。15パズルの封印を解いた者だけが仲間にできる。' },
-            thief: { name: 'シーフ', moveTime: 6.0, directMult: 0.95, skillPowerMult: 1.35, badge: ' シーフ', desc: '短剣二本で前線に立つ戦闘特化のシーフ。クリティカル率30%。スキル【不意打ち×騙し討ち】は隣接する敵への特大ダメージ（ウェポンスキル）。' },
-            salaryman: { name: 'サラリーマン', moveTime: 0.5, directMult: 0.1, skillPowerMult: 1.0, badge: ' サラリーマン', desc: '眼鏡の中年サラリーマン。HP10の紙装甲だが移動は爆速。チェーンでスキルが発動すると様子がおかしくなる。' },
-            wallknight: { name: '鉄壁騎士', moveTime: 6.0, directMult: 0.9, skillPowerMult: 1.0, badge: ' 鉄壁騎士', desc: '鉄壁の守りで仲間を庇う騎士。隣接する味方の被ダメージを大きく軽減する。' },
-            deathbringer: { name: '死剣士', moveTime: 4.5, directMult: 1.25, skillPowerMult: 1.3, badge: ' 死剣士', desc: '死の呪いを宿す剣士。攻撃命中時に稀に敵を即死させる（ボスには無効）。' },
-            reaper: { name: '死鎌騎士', moveTime: 5.0, directMult: 1.2, skillPowerMult: 1.25, badge: ' 死鎌騎士', desc: '大鎌で魂を刈る暗黒騎士。与えたダメージの一部を吸収して回復する。' },
-            frostwarrior: { name: '凍結戦士', moveTime: 5.0, directMult: 1.15, skillPowerMult: 1.2, badge: ' 凍結戦士', desc: '氷の戦斧を振るう戦士。命中時に敵を凍結させ、次の攻撃を封じる（ボスには無効）。' },
-            wyvernlancer: { name: '竜槍騎士', moveTime: 5.5, directMult: 1.15, skillPowerMult: 1.25, badge: ' 竜槍騎士', desc: '子竜を連れた槍騎士。相棒の子竜が毎ターン自動で敵を攻撃する。' },
-            phoenixknight: { name: '不死鳥騎士', moveTime: 5.0, directMult: 1.0, skillPowerMult: 1.1, badge: ' 不死鳥騎士', desc: '不死鳥の加護を持つ騎士。スキルで仲間を復活させ、一度だけ自らも蘇る。' },
-            amazoness: { name: 'アマゾネス', moveTime: 5.0, directMult: 1.1, skillPowerMult: 1.2, badge: ' アマゾネス', desc: '雷をまとう女戦士。命中時に敵を感電させ、次の攻撃を封じる（ボスには無効）。' },
-            dwarf: { name: 'ドワーフ工兵', moveTime: 6.0, directMult: 1.1, skillPowerMult: 1.0, badge: ' ドワーフ工兵', desc: 'ギミックマスを整地する職人。岩とトゲを打ち砕き、戦場を切り開く。' },
+            geomancer: { name: '風水師', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: '風水師', desc: '地脈を読み、戦場に魔力泉を生み出す地形の魔術師。' },
+            karakuri: { name: 'からくり師', moveTime: 5.0, directMult: 0.9, skillPowerMult: 1.0, badge: 'からくり師', desc: '地雷を仕掛ける罠の専門家。敵の足元に死を置く。' },
+            warper: { name: '空間魔道士', moveTime: 6.0, directMult: 0.35, skillPowerMult: 1.0, badge: '空間魔道士', desc: '仲間全員を自分の周囲へ転送する、次元を操る魔道士。' },
+            necromancer: { name: 'ネクロマンサー', moveTime: 5.0, directMult: 0.35, skillPowerMult: 1.35, badge: 'ネクロマンサー', desc: '倒した敵の地に呪縛を残す死霊術師。死がさらなる死を呼ぶ。' },
+            alchemist: { name: '錬金術師', moveTime: 5.0, directMult: 0.4, skillPowerMult: 1.0, badge: '錬金術師', desc: '敵に時限ボムを仕掛ける爆弾魔。次の攻撃開始とともに大爆発。' },
+            orator: { name: '話術士', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: '話術士', desc: '言葉で敵を懐柔する調停者。味方になった敵はそのウェーブの間、共に戦う。' },
+            whitemage: { name: '白魔道士', moveTime: 5.0, directMult: 0.35, skillPowerMult: 1.5, badge: '白魔道士', desc: '野ばらの紋章を掲げる攻撃型の白魔道士。広範囲の攻撃白魔法ホーリーノヴァを放つ。合言葉を知る者だけが仲間にできる。' },
+            developer: { name: '開発者', moveTime: 5.0, directMult: 1.05, skillPowerMult: 1.45, badge: '開発者', desc: '世界の理を書き換える隠れ開発者。15パズルの封印を解いた者だけが仲間にできる。' },
+            thief: { name: 'シーフ', moveTime: 6.0, directMult: 0.95, skillPowerMult: 1.35, badge: 'シーフ', desc: '短剣二本で前線に立つ戦闘特化のシーフ。クリティカル率30%。スキル【不意打ち×騙し討ち】は隣接する敵への特大ダメージ（ウェポンスキル）。' },
+            salaryman: { name: 'サラリーマン', moveTime: 0.5, directMult: 0.1, skillPowerMult: 1.0, badge: 'サラリーマン', desc: '眼鏡の中年サラリーマン。HP10の紙装甲だが移動は爆速。チェーンでスキルが発動すると様子がおかしくなる。' },
+            wallknight: { name: '鉄壁騎士', moveTime: 6.0, directMult: 0.9, skillPowerMult: 1.0, badge: '鉄壁騎士', desc: '鉄壁の守りで仲間を庇う騎士。隣接する味方の被ダメージを大きく軽減する。' },
+            deathbringer: { name: '死剣士', moveTime: 4.5, directMult: 1.25, skillPowerMult: 1.3, badge: '死剣士', desc: '死の呪いを宿す剣士。攻撃命中時に稀に敵を即死させる（ボスには無効）。' },
+            reaper: { name: '死鎌騎士', moveTime: 5.0, directMult: 1.2, skillPowerMult: 1.25, badge: '死鎌騎士', desc: '大鎌で魂を刈る暗黒騎士。与えたダメージの一部を吸収して回復する。' },
+            frostwarrior: { name: '凍結戦士', moveTime: 5.0, directMult: 1.15, skillPowerMult: 1.2, badge: '凍結戦士', desc: '氷の戦斧を振るう戦士。命中時に敵を凍結させ、次の攻撃を封じる（ボスには無効）。' },
+            wyvernlancer: { name: '竜槍騎士', moveTime: 5.5, directMult: 1.15, skillPowerMult: 1.25, badge: '竜槍騎士', desc: '子竜を連れた槍騎士。相棒の子竜が毎ターン自動で敵を攻撃する。' },
+            phoenixknight: { name: '不死鳥騎士', moveTime: 5.0, directMult: 1.0, skillPowerMult: 1.1, badge: '不死鳥騎士', desc: '不死鳥の加護を持つ騎士。スキルで仲間を復活させ、一度だけ自らも蘇る。' },
+            amazoness: { name: 'アマゾネス', moveTime: 5.0, directMult: 1.1, skillPowerMult: 1.2, badge: 'アマゾネス', desc: '雷をまとう女戦士。命中時に敵を感電させ、次の攻撃を封じる（ボスには無効）。' },
+            dwarf: { name: 'ドワーフ工兵', moveTime: 6.0, directMult: 1.1, skillPowerMult: 1.0, badge: 'ドワーフ工兵', desc: 'ギミックマスを整地する職人。岩とトゲを打ち砕き、戦場を切り開く。' },
             timemage: { name: '時魔道士', moveTime: 5.0, directMult: 0.4, skillPowerMult: 1.45, badge: '⏳ 時魔道士', desc: '命中した敵の攻撃カウントを遅らせる妨害魔道士。市松模様に時空を断ち切る。' },
-            monk: { name: 'モンク', moveTime: 4.5, directMult: 1.3, skillPowerMult: 1.35, badge: ' モンク', desc: '拳で戦う武闘家。HPが減るほど燃え上がる背水の闘志を持つ。' },
-            paladin: { name: '聖騎士', moveTime: 5.0, directMult: 1.0, skillPowerMult: 1.1, badge: ' 聖騎士', desc: '隣接する仲間を守護し、攻撃と回復を兼ねる聖なる十字を放つ。' },
-            dragoon: { name: '竜騎士', moveTime: 5.5, directMult: 1.15, skillPowerMult: 1.3, badge: ' 竜騎士', desc: '桂馬跳びの軌道で離れた敵を貫く、空を駆ける槍騎士。' },
-            summoner: { name: '召喚士', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.3, badge: ' 召喚士', desc: '精霊を召喚して自動攻撃させる。手数を増やす戦術の要。' },
+            monk: { name: 'モンク', moveTime: 4.5, directMult: 1.3, skillPowerMult: 1.35, badge: 'モンク', desc: '拳で戦う武闘家。HPが減るほど燃え上がる背水の闘志を持つ。' },
+            paladin: { name: '聖騎士', moveTime: 5.0, directMult: 1.0, skillPowerMult: 1.1, badge: '聖騎士', desc: '隣接する仲間を守護し、攻撃と回復を兼ねる聖なる十字を放つ。' },
+            dragoon: { name: '竜騎士', moveTime: 5.5, directMult: 1.15, skillPowerMult: 1.3, badge: '竜騎士', desc: '桂馬跳びの軌道で離れた敵を貫く、空を駆ける槍騎士。' },
+            summoner: { name: '召喚士', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.3, badge: '召喚士', desc: '精霊を召喚して自動攻撃させる。手数を増やす戦術の要。' },
             knight: { name: '重騎士', moveTime: 3.0, directMult: 1.15, skillPowerMult: 1.0, badge: '重騎士(3.0s)', desc: '操作時間は短いが最高峰のHPと防御力を誇る前衛の要' },
             scout: { name: '斥候', moveTime: 6.5, directMult: 0.75, skillPowerMult: 0.9, badge: '斥候(6.5s)', desc: '操作時間が非常に長く、盤面全体を組み替える運び屋' },
             warrior: { name: '戦士', moveTime: 4.5, directMult: 1.30, skillPowerMult: 1.1, badge: '戦士(4.5s)', desc: '直接の挟み撃ち物理火力に優れた万能アタッカー' },
@@ -754,35 +754,35 @@
             dancer: { name: '踊り子', moveTime: 5.5, directMult: 0.8, skillPowerMult: 1.0, badge: '踊り子(5.5s)', desc: '扇の舞で周囲と十字の広範囲を薙ぐ舞踏戦士。火力は控えめだが範囲と手数で圧倒する' },
             lancer: { name: 'ランサー', moveTime: 5.0, directMult: 1.15, skillPowerMult: 1.15, badge: 'ランサー(5.0s)', desc: '挟み撃ちが敵を貫通して背後の敵まで届く槍の達人。十字2マスの貫通槍も持つ' },
             darkknight: { name: '暗黒騎士', moveTime: 4.5, directMult: 1.2, skillPowerMult: 1.2, badge: '暗黒騎士(4.5s)', desc: '攻撃した敵にスリップダメージを付与し、闇の蝕みで苦しめ続ける騎士' },
-            archmage: { name: '極魔道士', moveTime: 5.0, directMult: 0.3, skillPowerMult: 1.5, badge: ' 極魔道士', desc: '全属性を操る極悪の大魔道士。スキル【全属性開放】は火・氷・雷・風・土・光・闇の7属性を同時に叩き込み、相手の弱点を突く。隠しキャラ。' },
+            archmage: { name: '極魔道士', moveTime: 5.0, directMult: 0.3, skillPowerMult: 1.5, badge: '極魔道士', desc: '全属性を操る極悪の大魔道士。スキル【全属性開放】は火・氷・雷・風・土・光・闇の7属性を同時に叩き込み、相手の弱点を突く。隠しキャラ。' },
             blackmage: { name: '黒魔道士', moveTime: 4.5, directMult: 0.35, skillPowerMult: 1.6, badge: '黒魔道士(4.5s)', desc: '攻撃した敵の攻撃と防御を下げる弱体特化の魔道士。広範囲の暗黒爆発も放つ' },
             archer: { name: 'アーチャー', moveTime: 5.5, directMult: 0.95, skillPowerMult: 1.25, badge: 'アーチャー(5.5s)', desc: '遠距離狙撃の名手。チェーン時も威力が落ちず、クリティカル率が非常に高い' }
         };
 
         // 属性定義
         const ELEMENTS = {
-            fire: { name: '炎', icon: '', color: '#f87171', strong: 'wind', weak: 'thunder' },
-            thunder: { name: '雷', icon: '', color: '#60a5fa', strong: 'fire', weak: 'wind' },
-            wind: { name: '風', icon: '', color: '#4ade80', strong: 'thunder', weak: 'fire' },
-            earth: { name: '地', icon: '', color: '#fbbf24', strong: 'thunder', weak: 'wind' },
-            ice: { name: '氷', icon: '', color: '#7dd3fc', strong: 'earth', weak: 'fire' },
-            light: { name: '光', icon: '', color: '#e879f9', strong: 'dark', weak: 'dark' },
-            dark: { name: '闇', icon: '', color: '#a78bfa', strong: 'light', weak: 'light' }
+            fire: { name: '炎', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23f87171%22%3E%3Cpath%20d%3D%22M12%201.8c.9%203.9%205.2%206.2%205.2%2011a5.2%205.2%200%200%201-10.4%200c0-3.2%202-5.3%203.2-7.6.4%201.9%201.3%203%202.4%203.6-.3-2.3-.6-4.9-.4-7Z%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', color: '#f87171', strong: 'wind', weak: 'thunder' },
+            thunder: { name: '雷', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%2360a5fa%22%3E%3Cpath%20d%3D%22M13%202%205%2014h6l-2%208%208-12h-6z%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', color: '#60a5fa', strong: 'fire', weak: 'wind' },
+            wind: { name: '風', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%234ade80%22%3E%3Cpath%20d%3D%22M3.5%209.5h10a2.8%202.8%200%201%200-2.8-2.8M2.5%2013.5h13.5a2.8%202.8%200%201%201-2.8%202.8M4.5%2017.5h6%22%20fill%3D%22none%22%20stroke%3D%22%234ade80%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', color: '#4ade80', strong: 'thunder', weak: 'fire' },
+            earth: { name: '地', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23fbbf24%22%3E%3Cpath%20d%3D%22M2.5%2019.5%209%206.5l4%206.5%203-4%205.5%2010.5Z%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', color: '#fbbf24', strong: 'thunder', weak: 'wind' },
+            ice: { name: '氷', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%237dd3fc%22%3E%3Cpath%20d%3D%22M12%202.5v19M4.8%207.2l14.4%209.6M19.2%207.2%204.8%2016.8%22%20stroke%3D%22%237dd3fc%22%20stroke-width%3D%221.9%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', color: '#7dd3fc', strong: 'earth', weak: 'fire' },
+            light: { name: '光', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23e879f9%22%3E%3Cpath%20d%3D%22M12%202l1.9%207.1L21%2011l-7.1%201.9L12%2020l-1.9-7.1L3%2011l7.1-1.9Z%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', color: '#e879f9', strong: 'dark', weak: 'dark' },
+            dark: { name: '闇', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23a78bfa%22%3E%3Cpath%20d%3D%22M20.5%2015.5A8.8%208.8%200%201%201%208.5%203.5a7%207%200%200%200%2012%2012Z%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', color: '#a78bfa', strong: 'light', weak: 'light' }
         };
 
         // 武器種＆三すくみ定義（剣→槍→弓→剣、杖は中立）※本家テラバトル仕様
         const WEAPONS = {
-            hammer: { name: '槌', icon: '' },
-            fist: { name: '拳', icon: '' },
-            scythe: { name: '鎌', icon: '' },
-            axe: { name: '斧', icon: '' },
-            laptop: { name: 'ノートPC', icon: '' },
-            dagger: { name: '短剣', icon: '' },
-            sword: { name: '剣', icon: '', strong: 'spear' },
-            spear: { name: '槍', icon: '', strong: 'bow' },
-            bow: { name: '弓', icon: '', strong: 'sword' },
-            staff: { name: '杖', icon: '', strong: null },
-            fan: { name: '扇', icon: '', strong: null }
+            hammer: { name: '槌', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Crect%20x%3D%224.5%22%20y%3D%224%22%20width%3D%2215%22%20height%3D%226%22%20rx%3D%221.2%22%2F%3E%3Crect%20x%3D%2210.9%22%20y%3D%2210%22%20width%3D%222.2%22%20height%3D%2211.5%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">' },
+            fist: { name: '拳', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Cpath%20d%3D%22M7.6%2021.5c-1.9-2.8-2.1-5.8-.7-8.4V7a2.1%202.1%200%200%201%204.2%200V5.2a2.1%202.1%200%200%201%204.2%200V7a2.1%202.1%200%200%201%204.2%200v6.2c0%204.6-2.9%208.3-6.9%208.3H7.6Z%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">' },
+            scythe: { name: '鎌', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Cpath%20d%3D%22M20.5%202.5C15%203.5%2011%206.5%209%2011.5c4-2.5%208-5.5%2011.5-9Z%22%2F%3E%3Cpath%20d%3D%22M9.5%2011%205.5%2021.5%22%20stroke%3D%22%23d9e2ec%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">' },
+            axe: { name: '斧', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Cpath%20d%3D%22M14.5%202.5c3.8.6%206%203%206.5%207-2.8-1.8-5.8-2.6-9-2.4%200-2%20.8-3.6%202.5-4.6Z%22%2F%3E%3Cpath%20d%3D%22M13.5%206%208.5%2021%22%20stroke%3D%22%23d9e2ec%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">' },
+            laptop: { name: 'ノートPC', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Crect%20x%3D%225%22%20y%3D%224.5%22%20width%3D%2214%22%20height%3D%2210.5%22%20rx%3D%221.2%22%2F%3E%3Crect%20x%3D%226.8%22%20y%3D%226.3%22%20width%3D%2210.4%22%20height%3D%226.9%22%20fill%3D%22%231e293b%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2216.5%22%20width%3D%2218%22%20height%3D%222.6%22%20rx%3D%221.2%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">' },
+            dagger: { name: '短剣', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Cpath%20d%3D%22M11%206h2v7h-2z%22%2F%3E%3Cpath%20d%3D%22M11%206l1-2.6L13%206z%22%2F%3E%3Crect%20x%3D%227.5%22%20y%3D%2213%22%20width%3D%229%22%20height%3D%221.8%22%20rx%3D%220.9%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%2215%22%20width%3D%222%22%20height%3D%224%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2220.4%22%20r%3D%221.4%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">' },
+            sword: { name: '剣', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Cpath%20d%3D%22M11%203h2v11h-2z%22%2F%3E%3Cpath%20d%3D%22M11%203%2012%201l1%202z%22%2F%3E%3Crect%20x%3D%226%22%20y%3D%2214%22%20width%3D%2212%22%20height%3D%222%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%2216%22%20width%3D%222%22%20height%3D%224%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2221.4%22%20r%3D%221.6%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', strong: 'spear' },
+            spear: { name: '槍', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Cpath%20d%3D%22M12%201l3%207h-6z%22%2F%3E%3Crect%20x%3D%2211%22%20y%3D%228%22%20width%3D%222%22%20height%3D%2214%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', strong: 'bow' },
+            bow: { name: '弓', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Cpath%20d%3D%22M7%202C15%207%2015%2017%207%2022%22%20fill%3D%22none%22%20stroke%3D%22%23d9e2ec%22%20stroke-width%3D%222%22%2F%3E%3Cpath%20d%3D%22M7%202v20%22%20stroke%3D%22%23d9e2ec%22%20stroke-width%3D%221.3%22%2F%3E%3Cpath%20d%3D%22M3%2012h15%22%20stroke%3D%22%23d9e2ec%22%20stroke-width%3D%221.6%22%2F%3E%3Cpath%20d%3D%22M18.5%2012%2015.5%2010.4v3.2z%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', strong: 'sword' },
+            staff: { name: '杖', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Crect%20x%3D%2211%22%20y%3D%228%22%20width%3D%222%22%20height%3D%2214%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%225%22%20r%3D%223.4%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', strong: null },
+            fan: { name: '扇', icon: '<img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23d9e2ec%22%3E%3Cpath%20d%3D%22M12%2020.5%203.5%208.5a10.5%2010.5%200%200%201%2017%200Z%22%2F%3E%3Cpath%20d%3D%22M12%2020.5%2012%209.5M12%2020.5%206.8%2011M12%2020.5l5.2-9.5%22%20stroke%3D%22%231e293b%22%20stroke-width%3D%221%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2220.3%22%20r%3D%221.5%22%2F%3E%3C%2Fsvg%3E" class="inline-block w-[1.15em] h-[1.15em] -mt-[0.18em]" alt="">', strong: null }
         };
         const JOB_WEAPONS = { archmage: 'staff', thief: 'dagger', whitemage: 'staff', developer: 'staff', salaryman: 'laptop', wallknight: 'sword', deathbringer: 'sword', reaper: 'scythe', frostwarrior: 'axe', wyvernlancer: 'spear', phoenixknight: 'sword', amazoness: 'spear', orator: 'staff', geomancer: 'staff', karakuri: 'fist', warper: 'staff', necromancer: 'staff', alchemist: 'staff', dwarf: 'hammer', timemage: 'staff', monk: 'fist', paladin: 'sword', dragoon: 'spear', summoner: 'staff', knight: 'spear', scout: 'bow', warrior: 'sword', mage: 'staff', healer: 'staff', ninja: 'sword', samurai: 'sword', cavalry: 'spear', ranger: 'bow', bard: 'staff', mage_fire: 'staff', mage_ice: 'staff', mage_thunder: 'staff', mage_wind: 'staff', dancer: 'fan', lancer: 'spear', darkknight: 'sword', blackmage: 'staff', archer: 'bow' };
         // ジョブ別スキル基礎発動率（本家仕様：発動・不発でスキルブーストSBが上昇）
@@ -1811,7 +1811,7 @@
 
         function toggleSound() {
             soundEnabled = !soundEnabled;
-            const sb = document.getElementById('btn-sound'); sb.textContent = '音'; sb.classList.toggle('opacity-40', !soundEnabled);
+            document.getElementById('btn-sound').classList.toggle('opacity-40', !soundEnabled);
             if (soundEnabled) initAudio();
         }
 
@@ -4824,13 +4824,13 @@
                     <div>
                         <label class="block text-[11px] text-slate-400 mb-1">属性</label>
                         <select onchange="updateCharField('element', this.value)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white font-bold">
-                            ${Object.entries(ELEMENTS).map(([k, v]) => `<option value="${k}" ${c.element === k ? 'selected' : ''}>${v.icon} ${v.name}</option>`).join('')}
+                            ${Object.entries(ELEMENTS).map(([k, v]) => `<option value="${k}" ${c.element === k ? 'selected' : ''}>${v.name}</option>`).join('')}
                         </select>
                     </div>
                     <div>
                         <label class="block text-[11px] text-slate-400 mb-1">武器（三すくみ）</label>
                         <select onchange="updateCharField('weapon', this.value)" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white font-bold">
-                            ${Object.entries(WEAPONS).map(([k, v]) => `<option value="${k}" ${(c.weapon || JOB_WEAPONS[c.job] || 'sword') === k ? 'selected' : ''}>${v.icon} ${v.name}</option>`).join('')}
+                            ${Object.entries(WEAPONS).map(([k, v]) => `<option value="${k}" ${(c.weapon || JOB_WEAPONS[c.job] || 'sword') === k ? 'selected' : ''}>${v.name}</option>`).join('')}
                         </select>
                     </div>
                     <div>
@@ -5166,7 +5166,7 @@
                         <div class="h-full ${hpPct < 30 ? 'bg-red-500' : 'bg-emerald-400'}" style="width:${hpPct}%"></div>
                     </div>
                     <div class="flex justify-between text-[9px] font-mono text-slate-400 mt-0.5">
-                        <span>${elem.icon}${job.name} ${WEAPONS[getWeaponOf(ally)].icon} 発動${getSkillRate(ally)}%${ally.buffAtk > 1 ? ' 🔺' : ''}${state.spirit && state.spirit.ownerId === ally.id ? ` 🔮精霊${state.spirit.turnsLeft}` : ''}${ally.job === 'orator' && state.charmed ? ` 💬${state.charmed.name}` : ''}${state.pet && state.pet.ownerId === ally.id ? ' 🐉子竜' : ''}${(ally.bunshin || 0) > 0 ? ` 👥分身×${ally.bunshin}` : ''}</span>
+                        <span>${elem.icon}${job.name} ${WEAPONS[getWeaponOf(ally)].icon} 発動${getSkillRate(ally)}%${ally.buffAtk > 1 ? ' 強化中' : ''}${state.spirit && state.spirit.ownerId === ally.id ? ` 精霊${state.spirit.turnsLeft}` : ''}${ally.job === 'orator' && state.charmed ? ` ${state.charmed.name}` : ''}${state.pet && state.pet.ownerId === ally.id ? ' 子竜' : ''}${(ally.bunshin || 0) > 0 ? ` 分身×${ally.bunshin}` : ''}</span>
                         <span>${ally.hp}/${ally.maxHp}</span>
                     </div>
                 `;
