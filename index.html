@@ -42,6 +42,7 @@
 
         /* 6x8 盤面 */
         #board-container {
+            container-type: inline-size;
             position: relative;
             aspect-ratio: 6 / 8;
             width: 100%;
@@ -146,6 +147,7 @@
             width: 100%;
             height: 100%;
             border-radius: 10px;
+            border-radius: 1.2cqw;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -156,22 +158,51 @@
         }
 
         /* 属性別フレーム */
-        .unit.ally .unit-inner { background: linear-gradient(145deg, #0b1220, #020617); border: 2px solid #38bdf8; }
+        .unit.ally .unit-inner { background: linear-gradient(145deg, #0b1220, #020617); border-style: solid; border-color: #38bdf8; border-width: 1px; border-width: 0.27cqw; }
 
         .unit.enemy { cursor: default; z-index: 16; }
-        .unit.enemy .unit-inner { background: linear-gradient(145deg, #160b12, #020617); border: 2px solid #fb7185; }
+        .unit.enemy .unit-inner { background: linear-gradient(145deg, #160b12, #020617); border-style: solid; border-color: #fb7185; border-width: 1px; border-width: 0.27cqw; }
         .unit.enemy.boss .unit-inner {
             background: linear-gradient(145deg, #4c0519, #140207);
-            border: 2.5px solid #f43f5e;
+            border-style: solid; border-color: #f43f5e; border-width: 1.5px; border-width: 0.4cqw;
             box-shadow: inset 0 0 16px rgba(244, 63, 94, 0.55), 0 4px 14px rgba(0,0,0,0.85);
         }
 
         /* 挟み撃ち・連鎖発光 */
         .unit.pincer-active .unit-inner {
-            box-shadow: 0 0 18px 4px #fbbf24, inset 0 0 10px #fef08a !important;
-            border-color: #fef08a !important;
             animation: unitPop 0.35s ease;
         }
+
+        /* スキル発動ズーム＋属性ネオン枠 */
+        .unit.skill-zoom { transform: scale(1.25); z-index: 45; }
+        .unit.skill-zoom.elem-fire .unit-inner { border-color: #f87171; box-shadow: 0 0 14px 3px rgba(248,113,113,0.95), 0 0 30px 9px rgba(239,68,68,0.55), inset 0 0 10px rgba(248,113,113,0.65); }
+        .unit.skill-zoom.elem-thunder .unit-inner { border-color: #60a5fa; box-shadow: 0 0 14px 3px rgba(96,165,250,0.95), 0 0 30px 9px rgba(59,130,246,0.55), inset 0 0 10px rgba(96,165,250,0.65); }
+        .unit.skill-zoom.elem-wind .unit-inner { border-color: #4ade80; box-shadow: 0 0 14px 3px rgba(74,222,128,0.95), 0 0 30px 9px rgba(34,197,94,0.55), inset 0 0 10px rgba(74,222,128,0.65); }
+        .unit.skill-zoom.elem-earth .unit-inner { border-color: #fbbf24; box-shadow: 0 0 14px 3px rgba(251,191,36,0.95), 0 0 30px 9px rgba(245,158,11,0.55), inset 0 0 10px rgba(251,191,36,0.65); }
+        .unit.skill-zoom.elem-light .unit-inner { border-color: #e879f9; box-shadow: 0 0 14px 3px rgba(232,121,249,0.95), 0 0 30px 9px rgba(217,70,239,0.55), inset 0 0 10px rgba(232,121,249,0.65); }
+        .unit.skill-zoom.elem-ice .unit-inner { border-color: #67e8f9; box-shadow: 0 0 14px 3px rgba(103,232,249,0.95), 0 0 30px 9px rgba(34,211,238,0.55), inset 0 0 10px rgba(103,232,249,0.65); }
+        .unit.skill-zoom.elem-dark .unit-inner { border-color: #a78bfa; box-shadow: 0 0 14px 3px rgba(167,139,250,0.95), 0 0 30px 9px rgba(139,92,246,0.55), inset 0 0 10px rgba(167,139,250,0.65); }
+
+        /* 盤面チップ＆体力バー（マス比スケーリング） */
+        .unit-chip {
+            position: absolute; right: 2.5%; bottom: 13.5%; z-index: 10;
+            display: flex; align-items: center;
+            gap: 3px; gap: 0.45cqw;
+            background: rgba(2, 6, 23, 0.78);
+            border-style: solid; border-color: rgba(251, 191, 36, 0.75); border-width: 1px; border-width: 0.14cqw;
+            border-radius: 4px; border-radius: 0.8cqw;
+            padding: 1px 3px; padding: 0.35cqw 0.7cqw;
+            font-size: 8px; font-size: 1.67cqw; line-height: 1; color: #f1f5f9;
+            white-space: nowrap;
+        }
+        .unit-chip img { width: 1em !important; height: 1em !important; margin-top: 0 !important; }
+        .unit-hp {
+            position: absolute; left: 4%; right: 4%; bottom: 4%; z-index: 10;
+            height: 3px; height: 0.75cqw;
+            background: rgba(0, 0, 0, 0.5); border-radius: 9999px; overflow: hidden;
+        }
+        .unit-hp > div { height: 100%; }
+        .unit-badges { font-size: 8px; font-size: 1.35cqw; }
         .unit.chain-active .unit-inner {
             box-shadow: 0 0 15px 3px #38bdf8, inset 0 0 8px #bae6fd !important;
             border-color: #7dd3fc !important;
@@ -2260,7 +2291,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.69';
+        const GAME_VERSION = '1.70';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3569,6 +3600,7 @@
 
                     const theme = CUTIN_THEMES[ally.cutinTheme] || CUTIN_THEMES.crimson;
                     flashSkillTiles(targetCells, theme.tileColor);
+                    zoomSkillUser(ally);
                     playSkillEffect(targetCells, effectKindFor(ally, skillInfo), (ELEMENTS[ally.element] || {}).color);
 
                     const jobInfo = JOB_CLASSES[ally.job] || JOB_CLASSES.warrior;
@@ -3843,6 +3875,7 @@
                         playSE('skill_blast', 0.95);
                         boardEl.classList.add('board-shake');
                         setTimeout(() => boardEl.classList.remove('board-shake'), 300);
+                        zoomSkillUser(ally);
                         ['fire', 'ice', 'thunder', 'wind', 'earth', 'holy'].forEach(kind => playSkillEffect(targetCells, kind, null));
                         const hitEnemyMap = new Map();
                         targetCells.forEach(cell => {
@@ -3965,6 +3998,14 @@
             if (getWeaponOf(enemy) !== 'staff') return 'slash';
             return { fire: 'fire', ice: 'ice', thunder: 'thunder', wind: 'wind', earth: 'earth', light: 'dark', dark: 'dark' }[enemy.element] || 'dark';
         }
+        function zoomSkillUser(unit) {
+            if (!unit) return;
+            const el = document.getElementById('unit-' + unit.id);
+            if (!el) return;
+            el.classList.add('skill-zoom');
+            setTimeout(() => el.classList.remove('skill-zoom'), 900 * fxScale());
+        }
+
         function playSkillEffect(cells, kind, accent) {
             if (!cells || !cells.length) return;
             const layer = document.getElementById('effect-layer');
@@ -4237,6 +4278,7 @@
 
                     showFloatingText(enemy.x + (enemy.size || 1) / 2, enemy.y, `${enemy.name}の攻撃！`, '#fda4af', '13px');
                     flashSkillTiles(targets, 'rgba(225, 29, 72, 0.75)');
+                    zoomSkillUser(enemy);
                     playSkillEffect(targets, effectKindForEnemy(enemy), (ELEMENTS[enemy.element] || {}).color);
 
                     let hitAny = false;
@@ -5664,11 +5706,11 @@
                 el.innerHTML = `
                     <div class="unit-inner">
                         ${avatarHtml}
-                        <div class="absolute right-1 bottom-[13px] z-10 flex items-center gap-[3px] bg-slate-950/75 border border-amber-400/70 rounded px-1 py-[2px] text-[10px] leading-none text-slate-100">
+                        <div class="unit-chip">
                             ${elem.icon}${WEAPONS[getWeaponOf(ally)].icon}<span class="font-mono font-bold">${job.moveTime.toFixed(1)}s</span>
                         </div>
-                        <div class="absolute left-1 right-1 bottom-1 h-1 bg-black/50 rounded-full overflow-hidden">
-                            <div class="h-full bg-emerald-400/90 transition-all" style="width:${hpPct}%"></div>
+                        <div class="unit-hp">
+                            <div class="bg-emerald-400/90 transition-all" style="width:${hpPct}%"></div>
                         </div>
                     </div>
                 `;
@@ -5684,7 +5726,7 @@
 
                 const el = document.createElement('div');
                 el.id = `unit-${enemy.id}`;
-                el.className = `unit enemy ${enemy.isBoss ? 'boss' : ''}`;
+                el.className = `unit enemy elem-${enemy.element} ${enemy.isBoss ? 'boss' : ''}`;
                 el.style.width = `${(100 / COLS) * size}%`;
                 el.style.height = `${(100 / ROWS) * size}%`;
                 el.style.left = `${(enemy.x / COLS) * 100}%`;
@@ -5706,12 +5748,12 @@
                 el.innerHTML = `
                     <div class="unit-inner">
                         ${enemyAvatar}
-                        <div class="absolute top-1 left-1 z-10 flex flex-col items-start gap-0.5 text-[8px] leading-none">${statusBadges}</div>
-                        <div class="absolute right-1 bottom-[13px] z-10 flex items-center gap-[3px] bg-slate-950/75 border border-amber-400/70 rounded px-1 py-[2px] text-[10px] leading-none">
+                        <div class="unit-badges absolute top-[3%] left-[3%] z-10 flex flex-col items-start gap-0.5 leading-none">${statusBadges}</div>
+                        <div class="unit-chip">
                             ${elem.icon}${WEAPONS[getWeaponOf(enemy)].icon}<span class="font-mono font-black ${enemy.cd === 1 ? 'text-red-400 animate-pulse' : 'text-amber-300'}">${enemy.cd}</span>
                         </div>
-                        <div class="absolute left-1 right-1 bottom-1 h-1 bg-black/50 rounded-full overflow-hidden">
-                            <div class="h-full bg-gradient-to-r from-rose-600/90 to-red-400/90 transition-all" style="width:${hpPct}%"></div>
+                        <div class="unit-hp">
+                            <div class="bg-gradient-to-r from-rose-600/90 to-red-400/90 transition-all" style="width:${hpPct}%"></div>
                         </div>
                     </div>
                 `;
