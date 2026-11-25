@@ -2264,7 +2264,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.63';
+        const GAME_VERSION = '1.64';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2928,15 +2928,15 @@
             const cellH = rect.height / ROWS;
             let dragLeft = clientX - rect.left - cellW / 2;
             let dragTop = clientY - rect.top - cellH / 2;
-            // 瓦礫・エネミー方向だけ小さく引っ掛ける。味方・空きマス方向は自由に動かせる
+            // 当たり判定はアイコン中心の小さい範囲だけ：瓦礫・エネミーのマスにも中心手前まで入り込める
             const du = state.draggingUnit;
             const cellLeft = du.x * cellW, cellTop = du.y * cellH;
             dragLeft = Math.max(cellLeft - cellW * 1.5, Math.min(cellLeft + cellW * 1.5, dragLeft));
             dragTop = Math.max(cellTop - cellH * 1.5, Math.min(cellTop + cellH * 1.5, dragTop));
-            if (dragLeft > cellLeft && isCellBlockedForAlly(du.x + 1, du.y, du)) dragLeft = Math.min(dragLeft, cellLeft + cellW * 0.12);
-            if (dragLeft < cellLeft && isCellBlockedForAlly(du.x - 1, du.y, du)) dragLeft = Math.max(dragLeft, cellLeft - cellW * 0.12);
-            if (dragTop > cellTop && isCellBlockedForAlly(du.x, du.y + 1, du)) dragTop = Math.min(dragTop, cellTop + cellH * 0.12);
-            if (dragTop < cellTop && isCellBlockedForAlly(du.x, du.y - 1, du)) dragTop = Math.max(dragTop, cellTop - cellH * 0.12);
+            if (dragLeft > cellLeft && isCellBlockedForAlly(du.x + 1, du.y, du)) dragLeft = Math.min(dragLeft, cellLeft + cellW * 0.38);
+            if (dragLeft < cellLeft && isCellBlockedForAlly(du.x - 1, du.y, du)) dragLeft = Math.max(dragLeft, cellLeft - cellW * 0.38);
+            if (dragTop > cellTop && isCellBlockedForAlly(du.x, du.y + 1, du)) dragTop = Math.min(dragTop, cellTop + cellH * 0.38);
+            if (dragTop < cellTop && isCellBlockedForAlly(du.x, du.y - 1, du)) dragTop = Math.max(dragTop, cellTop - cellH * 0.38);
             el.style.left = `${Math.max(-cellW * 0.2, Math.min(rect.width - cellW * 0.8, dragLeft))}px`;
             el.style.top = `${Math.max(-cellH * 0.2, Math.min(rect.height - cellH * 0.8, dragTop))}px`;
         }
