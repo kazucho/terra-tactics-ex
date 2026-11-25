@@ -564,14 +564,14 @@
         <h1 class="font-cinzel text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 via-amber-400 to-amber-600 text-center leading-tight" style="filter: drop-shadow(0 4px 14px rgba(0,0,0,0.8));">TERRA<br>TACTICS EX+</h1>
         <p class="mt-3 text-slate-300 text-xs sm:text-sm tracking-widest">― 挟み撃ちタクティカルパズルRPG ―</p>
         <div class="mt-10 flex flex-col gap-3 w-80 max-w-[85vw]">
-            <button onclick="enterFormation()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black font-black start-glow whitespace-nowrap"><span class="block font-cinzel text-xl tracking-[0.35em] leading-none">story</span><span class="block text-[10px] font-bold opacity-70 tracking-[0.3em] mt-1">冒険をはじめる</span></button>
-            <button onclick="enterEndlessFormation()" class="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-500 text-white font-black shadow-[0_0_25px_rgba(139,92,246,0.4)] whitespace-nowrap"><span class="block font-cinzel text-lg tracking-[0.35em] leading-none">endless</span><span class="block text-[10px] font-bold opacity-75 tracking-[0.3em] mt-1">エンドレスダンジョン</span></button>
+            <button onclick="enterFormation()" class="w-full py-4 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black font-black start-glow whitespace-nowrap"><span class="block font-cinzel text-xl tracking-[0.35em] leading-none">story</span></button>
+            <button onclick="enterEndlessFormation()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-purple-500 text-white font-black shadow-[0_0_25px_rgba(139,92,246,0.4)] whitespace-nowrap"><span class="block font-cinzel text-lg tracking-[0.35em] leading-none">endless</span></button>
             <p id="endless-best-label" class="h-4 -mt-1 text-center text-[11px] text-violet-300"></p>
             <div class="border-t border-slate-700/60"></div>
-            <button onclick="openCollection()" class="w-full py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-amber-200 border border-amber-500/40 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">characters</span><span class="block text-[9px] font-bold opacity-60 tracking-[0.3em] mt-0.5">仲間図鑑</span></button>
-            <button onclick="openEnemyCollection()" class="w-full py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-rose-200 border border-rose-500/40 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">monsters</span><span class="block text-[9px] font-bold opacity-60 tracking-[0.3em] mt-0.5">敵図鑑</span></button>
-            <button onclick="openHelp()" class="w-full py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-sky-200 border border-sky-500/40 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">guide</span><span class="block text-[9px] font-bold opacity-60 tracking-[0.3em] mt-0.5">遊び方ガイド</span></button>
-            <button id="reset-data-btn" onclick="resetAllData()" class="w-full py-2 rounded-xl bg-slate-900/90 hover:bg-red-950 text-slate-400 border border-slate-700 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">all clear</span><span class="block text-[9px] font-bold opacity-60 tracking-[0.3em] mt-0.5">データリセット</span></button>
+            <button onclick="openCollection()" class="w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-amber-200 border border-amber-500/40 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">characters</span></button>
+            <button onclick="openEnemyCollection()" class="w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-rose-200 border border-rose-500/40 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">monsters</span></button>
+            <button onclick="openHelp()" class="w-full py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-sky-200 border border-sky-500/40 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">guide</span></button>
+            <button id="reset-data-btn" onclick="resetAllData()" class="w-full py-2.5 rounded-xl bg-slate-900/90 hover:bg-red-950 text-slate-400 border border-slate-700 whitespace-nowrap"><span class="block font-cinzel text-sm font-bold tracking-[0.3em] leading-none">all clear</span></button>
         </div>
         <p class="mt-6 text-[10px] text-slate-500">全6ステージ / パーティ最大6人 / オリジナルBGM搭載</p>
         <p id="version-label" class="absolute bottom-3 right-4 font-mono text-[10px] tracking-[0.2em] text-slate-500"></p>
@@ -685,7 +685,7 @@
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>敵を縦または横で挟むと攻撃開始！</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>挟んだ2人と同じ行・列の直線上にいる味方は、<span class="text-sky-300 font-bold">離れていてもチェーン発動</span>し、全身カットインと共に固有範囲スキルを放つ</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>間に敵が居る味方は繋がらない</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>チェーンで繋がった人数が多いほど火力倍率が上がる（3人で×1.15、4人で×1.30、5人で×1.45、6人で×1.60）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>チェーンで繋がった人数が多いほど火力倍率が上がる（3人で×1.10、4人で×1.20、5人で×1.30、6人で×1.40）</span></div>
                         </div>
                     </div>
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
@@ -2347,7 +2347,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.81';
+        const GAME_VERSION = '1.83';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3139,7 +3139,12 @@
             phaseLabel.className = 'font-bold text-red-400 truncate';
 
             await sleep(200);
-            await resolvePincerAttacks();
+            try {
+                await resolvePincerAttacks();
+            } catch (err) {
+                // 解決中に例外が出ても、敵ターンへ進めてゲームを止めない
+                if (state.phase === 'BATTLE_RESOLVING') await proceedToEnemyTurn();
+            }
         }
 
         // ==========================================
@@ -3494,9 +3499,9 @@
                     if (burstHit) await sleepFx(480);
                 }
             }
-            await spiritAttack();
-            await petAttack();
-            if (state.charmed) await charmedAttack();
+            await spiritAttack().catch(() => {});
+            await petAttack().catch(() => {});
+            if (state.charmed) await charmedAttack().catch(() => {});
             processEnemySplits(); if (state.enemies.filter(e => e.hp > 0).length === 0) { await handleWaveClear(); return; }
             const pincers = detectPincers();
 
@@ -3519,9 +3524,9 @@
                 const participants = [...p.allParticipants]
                     .map(id => state.allies.find(a => a.id === id))
                     .filter(Boolean);
-                // チェーン倍率：繋がった人数が多いほど火力UP（3人×1.15、4人×1.30、5人×1.45、6人×1.60）
+                // チェーン倍率：繋がった人数が多いほど火力UP（3人×1.10、4人×1.20、5人×1.30、6人×1.40）
                 const chainCount = participants.length;
-                const chainMult = 1 + 0.15 * Math.max(0, chainCount - 2);
+                const chainMult = 1 + 0.10 * Math.max(0, chainCount - 2);
 
                 participants.forEach(ally => {
                     const el = document.getElementById(`unit-${ally.id}`);
