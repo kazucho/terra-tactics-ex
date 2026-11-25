@@ -2291,7 +2291,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.70';
+        const GAME_VERSION = '1.71';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2897,6 +2897,7 @@
                 state.activeMoveLimit = jobInfo.moveTime;
                 state.timeLeft = jobInfo.moveTime;
 
+                document.querySelectorAll('.skill-zoom').forEach(el2 => el2.classList.remove('skill-zoom'));
                 unitEl.classList.add('dragging');
                 phaseLabel.textContent = `${ally.name}【${jobInfo.name}】移動中！(${jobInfo.moveTime.toFixed(1)}秒)`;
                 phaseLabel.className = 'font-bold text-yellow-200 truncate animate-pulse';
@@ -2910,21 +2911,22 @@
                 if (state.phase !== 'PLAYER_DRAGGING' || !state.draggingUnit) return;
                 e.preventDefault();
 
-                const rect = boardEl.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-                const relX = Math.max(0, Math.min(rect.width - 1, clientX - rect.left));
-                const relY = Math.max(0, Math.min(rect.height - 1, clientY - rect.top));
-                const targetX = Math.floor((relX / rect.width) * COLS);
-                const targetY = Math.floor((relY / rect.height) * ROWS);
-
+                // まず見た目をクランプ済みの位置に置き、その「中心」が入ったマスを移動目標にする（判定は中心の小さい範囲のみ）
+                moveDraggedUnitVisual(e);
                 const activeUnit = state.draggingUnit;
+                const el = document.getElementById(`unit-${activeUnit.id}`);
+                if (!el) return;
+                const rect = boardEl.getBoundingClientRect();
+                const cellW = rect.width / COLS;
+                const cellH = rect.height / ROWS;
+                const cx = parseFloat(el.style.left || '0') + cellW / 2;
+                const cy = parseFloat(el.style.top || '0') + cellH / 2;
+                const targetX = Math.max(0, Math.min(COLS - 1, Math.floor(cx / cellW)));
+                const targetY = Math.max(0, Math.min(ROWS - 1, Math.floor(cy / cellH)));
                 if (targetX !== activeUnit.x || targetY !== activeUnit.y) {
                     stepMoveUnit(activeUnit, targetX, targetY);
+                    moveDraggedUnitVisual(e);
                 }
-
-                moveDraggedUnitVisual(e);
             };
 
             const onPointerUp = () => {
@@ -2960,10 +2962,10 @@
             const cellLeft = du.x * cellW, cellTop = du.y * cellH;
             dragLeft = Math.max(cellLeft - cellW * 1.5, Math.min(cellLeft + cellW * 1.5, dragLeft));
             dragTop = Math.max(cellTop - cellH * 1.5, Math.min(cellTop + cellH * 1.5, dragTop));
-            if (dragLeft > cellLeft && isCellBlockedForAlly(du.x + 1, du.y, du)) dragLeft = Math.min(dragLeft, cellLeft + cellW * 0.38);
-            if (dragLeft < cellLeft && isCellBlockedForAlly(du.x - 1, du.y, du)) dragLeft = Math.max(dragLeft, cellLeft - cellW * 0.38);
-            if (dragTop > cellTop && isCellBlockedForAlly(du.x, du.y + 1, du)) dragTop = Math.min(dragTop, cellTop + cellH * 0.38);
-            if (dragTop < cellTop && isCellBlockedForAlly(du.x, du.y - 1, du)) dragTop = Math.max(dragTop, cellTop - cellH * 0.38);
+            if (dragLeft > cellLeft && isCellBlockedForAlly(du.x + 1, du.y, du)) dragLeft = Math.min(dragLeft, cellLeft + cellW * 0.30);
+            if (dragLeft < cellLeft && isCellBlockedForAlly(du.x - 1, du.y, du)) dragLeft = Math.max(dragLeft, cellLeft - cellW * 0.30);
+            if (dragTop > cellTop && isCellBlockedForAlly(du.x, du.y + 1, du)) dragTop = Math.min(dragTop, cellTop + cellH * 0.30);
+            if (dragTop < cellTop && isCellBlockedForAlly(du.x, du.y - 1, du)) dragTop = Math.max(dragTop, cellTop - cellH * 0.30);
             el.style.left = `${Math.max(-cellW * 0.2, Math.min(rect.width - cellW * 0.8, dragLeft))}px`;
             el.style.top = `${Math.max(-cellH * 0.2, Math.min(rect.height - cellH * 0.8, dragTop))}px`;
         }
