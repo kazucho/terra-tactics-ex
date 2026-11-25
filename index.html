@@ -24,6 +24,7 @@
 
         body {
             background-color: var(--dark-bg);
+            background-image: radial-gradient(ellipse 90% 42% at 50% -8%, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0) 60%);
             color: #e2e8f0;
             font-family: 'Noto Sans JP', sans-serif;
             overflow: hidden;
@@ -35,8 +36,24 @@
         .font-cinzel { font-family: 'Cinzel', serif; }
 
         .fancy-border {
-            border: 1px solid rgba(212, 175, 55, 0.35);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.85), inset 0 0 12px rgba(212, 175, 55, 0.06);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            background-image: radial-gradient(circle at 7px 7px, #ffe9a8 1.6px, #d4af37 2.6px, rgba(212, 175, 55, 0.25) 4.2px, rgba(212, 175, 55, 0) 5.5px), radial-gradient(circle at calc(100% - 7px) 7px, #ffe9a8 1.6px, #d4af37 2.6px, rgba(212, 175, 55, 0.25) 4.2px, rgba(212, 175, 55, 0) 5.5px), radial-gradient(circle at 7px calc(100% - 7px), #ffe9a8 1.6px, #d4af37 2.6px, rgba(212, 175, 55, 0.25) 4.2px, rgba(212, 175, 55, 0) 5.5px), radial-gradient(circle at calc(100% - 7px) calc(100% - 7px), #ffe9a8 1.6px, #d4af37 2.6px, rgba(212, 175, 55, 0.25) 4.2px, rgba(212, 175, 55, 0) 5.5px), linear-gradient(180deg, rgba(255, 216, 130, 0.055), rgba(0, 0, 0, 0.14));
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.85), inset 0 0 0 1px rgba(0, 0, 0, 0.65), inset 0 0 0 2px rgba(212, 175, 55, 0.22), inset 0 0 14px rgba(212, 175, 55, 0.05);
+        }
+
+        header.fancy-border { position: relative; }
+        header.fancy-border::before {
+            content: "◆";
+            position: absolute;
+            top: -7px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            line-height: 1;
+            color: #d4af37;
+            background: #101219;
+            padding: 2px 6px;
+            text-shadow: 0 0 6px rgba(212, 175, 55, 0.8);
         }
 
         /* 6x8 盤面 */
@@ -44,14 +61,12 @@
             container-type: inline-size;
             position: relative;
             aspect-ratio: 6 / 8;
-            width: 100%;
-            max-width: 430px;
-            max-height: 67vh;
+            width: min(430px, 100%, calc((100dvh - 25.5rem) * 0.75));
             margin: 0 auto;
             background: #0f1118;
             border: 2px solid #6b5523;
             border-radius: 10px;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.95), 0 0 18px rgba(212, 175, 55, 0.18);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.95), 0 0 18px rgba(212, 175, 55, 0.18), inset 0 0 0 1px rgba(0,0,0,0.7), inset 0 0 0 2px rgba(212, 175, 55, 0.28);
             overflow: hidden;
         }
 
@@ -447,10 +462,10 @@
 <body class="h-screen w-screen flex flex-col justify-between p-2 sm:p-3 max-w-2xl mx-auto">
 
     <!-- ヘッダー -->
-    <header class="bg-[#13151d] px-3 py-2 rounded-xl fancy-border shrink-0 space-y-1.5">
+    <header class="bg-[#13151d] px-3 py-1.5 rounded-xl fancy-border shrink-0 space-y-1">
         <div class="flex items-center justify-between gap-2">
             <div class="flex items-center gap-2 whitespace-nowrap min-w-0">
-                <span id="wave-badge" class="text-base font-black text-amber-300">STAGE 1 / 6</span>
+                <span id="wave-badge" class="text-base font-black text-amber-300 font-cinzel tracking-wider">STAGE 1 / 6</span>
                 <span id="turn-badge" class="text-[10px] bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-300 border border-slate-700/80">TURN 1</span>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
@@ -466,16 +481,16 @@
     </header>
 
     <!-- 操作タイムバー＆地形凡例 -->
-    <section class="my-1 bg-[#13151d] px-3 py-1.5 rounded-xl fancy-border shrink-0">
-        <div class="flex items-center justify-between text-xs mb-1">
+    <section class="my-0.5 bg-[#13151d] px-3 py-1 rounded-xl fancy-border shrink-0">
+        <div class="flex items-center justify-between text-xs mb-0.5">
             <span id="phase-label" class="font-bold text-amber-300 truncate">味方をドラッグして敵を挟み撃て！</span>
             <span id="timer-text" class="font-mono font-bold text-slate-300 shrink-0 ml-2">操作時間: キャラ別</span>
         </div>
-        <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-700/80">
+        <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-700/80">
             <div id="timer-bar" class="h-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-200 w-full transition-all duration-75"></div>
         </div>
         <!-- 地形ミニガイド -->
-        <div class="flex items-center gap-2 text-[10px] text-slate-400 mt-1 pt-1 border-t border-slate-800/80">
+        <div class="flex items-center gap-2 text-[10px] text-slate-400 mt-0.5 pt-0.5 border-t border-slate-800/80">
             <div class="flex items-center gap-3 overflow-x-auto whitespace-nowrap flex-1 py-0.5">
                 <span> 岩壁：通行不可</span>
                 <span class="text-red-400"> トゲ床：踏むと12%傷（レンジャー無効）</span>
@@ -485,7 +500,7 @@
     </section>
 
     <!-- 6x8 メイン盤面 -->
-    <main class="flex-1 flex items-center justify-center min-h-0 my-0.5">
+    <main class="flex-1 flex items-center justify-center min-h-0">
         <div id="board-container">
             <div id="grid-layer"></div>
             <div id="terrain-layer"></div>
@@ -507,8 +522,8 @@
     </main>
 
     <!-- 下部パーティステータスカード（最大6体） -->
-    <footer class="bg-[#13151d] p-2 rounded-xl fancy-border shrink-0">
-        <div id="party-bar" class="grid gap-2"></div>
+    <footer class="bg-[#13151d] p-1.5 rounded-xl fancy-border shrink-0">
+        <div id="party-bar" class="grid gap-1.5"></div>
     </footer>
 
     <!-- ==========================================
@@ -588,21 +603,21 @@
             <div class="px-4 py-3 bg-[#10121a] border-b border-slate-700 flex items-center justify-between shrink-0">
                 <div>
                     <h2 class="text-base sm:text-lg font-black text-amber-300"> パーティ編成</h2>
-                    <p class="text-[11px] text-slate-400">出撃メンバーを最大6人まで選べます（一覧をタップで追加／解除、メンバー枠タップで詳細）</p>
+                    <p class="text-[11px] text-slate-400">出撃メンバーを最大6人まで選べます（一覧をタップで追加／解除、メンバー枠はタップで詳細・2回タップで外す）</p>
                 </div>
                 <span id="formation-count" class="text-sm font-black text-amber-300 shrink-0"></span>
             </div>
             <div class="p-3 pb-0 space-y-3 shrink-0">
                 <div>
                     <div class="text-[11px] font-bold text-slate-400 mb-1.5">出撃メンバー</div>
-                    <div id="formation-slots" class="grid grid-cols-3 sm:grid-cols-6 gap-2"></div>
+                    <div id="formation-slots" class="grid grid-cols-6 gap-1.5"></div>
                 </div>
                 <div id="formation-detail" class="bg-slate-900/70 border border-slate-700 rounded-xl p-3 max-h-[38vh] overflow-y-auto"></div>
             </div>
             <div class="flex-1 overflow-y-auto p-3">
                 <div>
                     <div class="text-[11px] font-bold text-slate-400 mb-1.5">キャラクター一覧</div>
-                    <div id="formation-roster" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+                    <div id="formation-roster" class="grid grid-cols-2 sm:grid-cols-4 gap-2"></div>
                 </div>
             </div>
             <div class="px-4 py-3 bg-[#10121a] border-t border-slate-700 shrink-0">
@@ -2350,7 +2365,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.88';
+        const GAME_VERSION = '1.91';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -5233,6 +5248,7 @@
             else if (state.partyIds.length < 6) state.partyIds.push(id);
             renderFormation();
         }
+        let slotTapState = { id: null, t: 0 };
         function renderFormation() {
             document.getElementById('formation-count').textContent = `${state.partyIds.length} / 6人`;
             const slots = document.getElementById('formation-slots');
@@ -5242,12 +5258,24 @@
                 const c = id ? state.partyConfig.find(x => x.id === id) : null;
                 const div = document.createElement('div');
                 if (c) {
-                    div.className = 'relative bg-slate-900 border border-amber-500/60 rounded-xl p-1.5 text-center cursor-pointer';
-                    div.innerHTML = `<div class="h-16 flex items-center justify-center overflow-hidden">${charArtHtml(c, 'h-16 w-auto object-contain')}</div><div class="text-[10px] font-bold text-slate-100 truncate">${c.name}</div><div class="text-[9px] text-amber-300">${(JOB_CLASSES[c.job] || {}).name || ''}</div><span class="absolute top-0.5 left-1 text-[10px] font-black text-amber-300">${i + 1}</span>`;
-                    div.onclick = () => { state.rosterFocusId = c.id; renderFormation(); };
+                    div.className = 'relative bg-slate-900 border border-amber-500/60 rounded-lg p-1 text-center cursor-pointer';
+                    div.innerHTML = `<div class="h-10 flex items-center justify-center overflow-hidden">${charArtHtml(c, 'h-10 w-auto object-contain')}</div><div class="text-[9px] font-bold text-slate-100 truncate">${c.name}</div><span class="absolute top-0.5 left-1 text-[9px] font-black text-amber-300">${i + 1}</span>`;
+                    div.onclick = () => {
+                        const nowTap = Date.now();
+                        if (slotTapState.id === c.id && nowTap - slotTapState.t < 320) {
+                            slotTapState = { id: null, t: 0 };
+                            const ri = state.partyIds.indexOf(c.id);
+                            if (ri >= 0) state.partyIds.splice(ri, 1);
+                            renderFormation();
+                        } else {
+                            slotTapState = { id: c.id, t: nowTap };
+                            state.rosterFocusId = c.id;
+                            renderFormation();
+                        }
+                    };
                 } else {
                     div.className = 'bg-slate-950/60 border border-dashed border-slate-700 rounded-xl p-1.5 text-center flex items-center justify-center text-slate-600 text-[10px] font-bold';
-                    div.style.minHeight = '104px';
+                    div.style.minHeight = '58px';
                     div.textContent = 'EMPTY';
                 }
                 slots.appendChild(div);
@@ -5258,8 +5286,8 @@
                 const selIdx = state.partyIds.indexOf(c.id);
                 const focus = state.rosterFocusId === c.id;
                 const div = document.createElement('div');
-                div.className = `relative rounded-xl p-1.5 text-center cursor-pointer border transition ${selIdx >= 0 ? 'bg-amber-500/15 border-amber-400' : 'bg-slate-900 border-slate-700 hover:border-slate-500'} ${focus ? 'ring-2 ring-sky-400' : ''}`;
-                div.innerHTML = `<div class="h-14 flex items-center justify-center overflow-hidden">${charArtHtml(c, 'h-14 w-auto object-contain')}</div><div class="text-[10px] font-bold text-slate-100 truncate">${c.name}</div><div class="text-[9px] text-slate-400">${(JOB_CLASSES[c.job] || {}).name || ''} ${ELEMENTS[c.element] ? ELEMENTS[c.element].icon : ''}</div>${selIdx >= 0 ? `<span class="absolute top-0.5 right-1 bg-amber-400 text-black text-[9px] font-black rounded-full w-4 h-4 flex items-center justify-center">${selIdx + 1}</span>` : ''}`;
+                div.className = `relative rounded-xl p-2 text-center cursor-pointer border transition ${selIdx >= 0 ? 'bg-amber-500/15 border-amber-400' : 'bg-slate-900 border-slate-700 hover:border-slate-500'} ${focus ? 'ring-2 ring-sky-400' : ''}`;
+                div.innerHTML = `<div class="h-24 flex items-center justify-center overflow-hidden">${charArtHtml(c, 'h-24 w-auto object-contain')}</div><div class="text-[11px] font-bold text-slate-100 truncate">${c.name}</div><div class="text-[9px] text-slate-400">${(JOB_CLASSES[c.job] || {}).name || ''} ${ELEMENTS[c.element] ? ELEMENTS[c.element].icon : ''}</div>${selIdx >= 0 ? `<span class="absolute top-0.5 right-1 bg-amber-400 text-black text-[9px] font-black rounded-full w-4 h-4 flex items-center justify-center">${selIdx + 1}</span>` : ''}`;
                 div.onclick = () => togglePartyMember(c.id);
                 rosterEl.appendChild(div);
                 if (!state.ownedIds.includes(c.id)) {
@@ -5862,7 +5890,7 @@
                         : `<span>${ally.iconEmoji}</span>`;
 
                 const card = document.createElement('div');
-                card.className = `p-1.5 rounded-lg border transition ${isDead ? 'bg-slate-950/60 border-slate-800 opacity-40' : 'bg-slate-900/90 border-slate-700'}`;
+                card.className = `p-1.5 rounded-lg border transition ${isDead ? 'bg-slate-950/60 border-slate-800 opacity-40' : 'bg-slate-900/90 border-[#8a6d2f]/70'}`;
                 card.innerHTML = `
                     <div class="flex items-center justify-between text-[10px] mb-0.5 gap-1">
                         <div class="flex items-center gap-1 truncate">
@@ -6020,8 +6048,8 @@
 
     <!-- 仲間図鑑 -->
     <div id="collection-screen" class="fixed inset-0 bg-black/92 backdrop-blur-md z-[85] hidden flex items-center justify-center p-2 sm:p-4" style="background: rgba(0,0,0,0.92);">
-        <div class="bg-[#161923] border border-amber-500/50 rounded-2xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
-            <div class="px-4 py-3 bg-[#10121a] border-b border-slate-700 flex items-center justify-between shrink-0">
+        <div class="bg-[#161923] border-2 border-amber-500/60 rounded-2xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="px-4 py-3 bg-[#10121a] border-b border-amber-500/30 flex items-center justify-between shrink-0">
                 <div>
                     <h2 class="text-base sm:text-lg font-black text-amber-300"> 仲間図鑑</h2>
                     <p class="text-[11px] text-slate-400">集めた仲間の立ち絵とプロフィールが見られます</p>
@@ -6058,8 +6086,8 @@
     </div>
 
     <div id="enemy-collection-screen" class="fixed inset-0 bg-black/92 backdrop-blur-md z-[86] hidden flex items-center justify-center p-2 sm:p-4" style="background: rgba(0,0,0,0.92);">
-        <div class="bg-[#1a1216] border border-rose-500/50 rounded-2xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
-            <div class="px-4 py-3 bg-[#140d10] border-b border-slate-700 flex items-center justify-between shrink-0">
+        <div class="bg-[#1a1216] border-2 border-rose-500/60 rounded-2xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="px-4 py-3 bg-[#140d10] border-b border-rose-500/30 flex items-center justify-between shrink-0">
                 <div>
                     <h2 class="text-base sm:text-lg font-black text-rose-300"> 敵図鑑</h2>
                     <p class="text-[11px] text-slate-400">戦場に現れる敵の生態と攻撃パターンが見られます</p>
