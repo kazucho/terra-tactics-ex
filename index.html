@@ -2366,7 +2366,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.101';
+        const GAME_VERSION = '1.102';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4546,13 +4546,19 @@
                             playSkillEffect([{ x: wounded.x, y: wounded.y }], 'holy', '#fde68a');
                             showFloatingText(wounded.x + (wounded.size || 1) / 2, wounded.y + 0.3, `回復 +${heal}`, '#4ade80', '14px');
                             enemy.cd = enemy.cdMax;
-                            if (!enemy.isBoss) moveEnemyAggressively(enemy);
+                            moveEnemyAggressively(enemy);
                             renderUnits();
                             renderPartyBar();
                             await sleep(420);
                             continue;
                         }
                     }
+                    // 攻撃前に移動する（ボス含む・毎ターン移動可）。射程に誰もいなければ空振りしない
+                    moveEnemyAggressively(enemy);
+                    renderUnits();
+                    const preTargets = getEnemyAttackCells(enemy);
+                    const canHitNow = preTargets.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'ally'; });
+                    if (!canHitNow) { enemy.cd = 1; await sleepFx(200); continue; }
                     await playEnemyCutin(enemy);
                     const targets = getEnemyAttackCells(enemy);
                     playSE('skill_blast', 0.65);
@@ -4679,12 +4685,10 @@
                             }
                         }
                     }
-                    if (!enemy.isBoss) moveEnemyAggressively(enemy);
-
                     renderUnits();
                     renderPartyBar();
                     await sleepFx(hitAny ? 520 : 340);
-                } else if (!enemy.isBoss) {
+                } else {
                     moveEnemyAggressively(enemy);
                     renderUnits();
                     await sleepFx(200);
@@ -4768,7 +4772,6 @@
         }
 
         function moveEnemyAggressively(enemy) {
-            if (enemy.isBoss) return;
             const canHitFrom = (x, y) => {
                 const kx = enemy.x, ky = enemy.y;
                 enemy.x = x; enemy.y = y;
