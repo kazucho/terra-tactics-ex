@@ -2260,7 +2260,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.59';
+        const GAME_VERSION = '1.60';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2847,8 +2847,6 @@
                 const clientX = e.touches ? e.touches[0].clientX : e.clientX;
                 const clientY = e.touches ? e.touches[0].clientY : e.clientY;
 
-                moveDraggedUnitVisual(e);
-
                 const relX = Math.max(0, Math.min(rect.width - 1, clientX - rect.left));
                 const relY = Math.max(0, Math.min(rect.height - 1, clientY - rect.top));
                 const targetX = Math.floor((relX / rect.width) * COLS);
@@ -2858,6 +2856,8 @@
                 if (targetX !== activeUnit.x || targetY !== activeUnit.y) {
                     stepMoveUnit(activeUnit, targetX, targetY);
                 }
+
+                moveDraggedUnitVisual(e);
             };
 
             const onPointerUp = () => {
@@ -2886,8 +2886,15 @@
 
             const cellW = rect.width / COLS;
             const cellH = rect.height / ROWS;
-            el.style.left = `${Math.max(-cellW * 0.2, Math.min(rect.width - cellW * 0.8, clientX - rect.left - cellW / 2))}px`;
-            el.style.top = `${Math.max(-cellH * 0.2, Math.min(rect.height - cellH * 0.8, clientY - rect.top - cellH / 2))}px`;
+            let dragLeft = clientX - rect.left - cellW / 2;
+            let dragTop = clientY - rect.top - cellH / 2;
+            // 瓦礫・エネミーには引っ掛かる：見た目も論理位置のマスから半マス以上はみ出さない
+            const du = state.draggingUnit;
+            const cellLeft = du.x * cellW, cellTop = du.y * cellH;
+            dragLeft = Math.max(cellLeft - cellW * 0.45, Math.min(cellLeft + cellW * 0.45, dragLeft));
+            dragTop = Math.max(cellTop - cellH * 0.45, Math.min(cellTop + cellH * 0.45, dragTop));
+            el.style.left = `${Math.max(-cellW * 0.2, Math.min(rect.width - cellW * 0.8, dragLeft))}px`;
+            el.style.top = `${Math.max(-cellH * 0.2, Math.min(rect.height - cellH * 0.8, dragTop))}px`;
         }
 
         function stepMoveUnit(activeUnit, destX, destY) {
