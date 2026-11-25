@@ -156,14 +156,10 @@
         }
 
         /* 属性別フレーム */
-        .elem-fire .unit-inner { background: linear-gradient(145deg, #7f1d1d, #3b0707); border: 2px solid #f87171; }
-        .elem-thunder .unit-inner { background: linear-gradient(145deg, #1e3a8a, #0f172a); border: 2px solid #60a5fa; }
-        .elem-wind .unit-inner { background: linear-gradient(145deg, #14532d, #052e16); border: 2px solid #4ade80; }
-        .elem-earth .unit-inner { background: linear-gradient(145deg, #78350f, #271303); border: 2px solid #fbbf24; }
-        .elem-light .unit-inner { background: linear-gradient(145deg, #581c87, #2e1065); border: 2px solid #e879f9; }
+        .unit.ally .unit-inner { background: linear-gradient(145deg, #0b1220, #020617); border: 2px solid #38bdf8; }
 
         .unit.enemy { cursor: default; z-index: 16; }
-        .unit.enemy .unit-inner { background: linear-gradient(145deg, #27272a, #09090b); border: 2px solid #a1a1aa; }
+        .unit.enemy .unit-inner { background: linear-gradient(145deg, #160b12, #020617); border: 2px solid #fb7185; }
         .unit.enemy.boss .unit-inner {
             background: linear-gradient(145deg, #4c0519, #140207);
             border: 2.5px solid #f43f5e;
@@ -2264,7 +2260,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.66';
+        const GAME_VERSION = '1.67';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -5660,20 +5656,19 @@
 
                 const presetIcon = (!ally.customIconData && PRESET_ART[ally.presetArt]) ? PRESET_ART[ally.presetArt].icon : '';
                 const avatarHtml = ally.customIconData
-                    ? `<img src="${ally.customIconData}" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg object-cover border border-white/40 shadow">`
+                    ? `<img src="${ally.customIconData}" class="absolute inset-0 w-full h-full object-cover">`
                     : presetIcon
-                        ? `<img src="${presetIcon}" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg object-cover border border-white/40 shadow">`
-                        : `<div class="text-xl sm:text-2xl leading-none drop-shadow">${ally.iconEmoji}</div>`;
+                        ? `<img src="${presetIcon}" class="absolute inset-0 w-full h-full object-cover">`
+                        : `<div class="absolute inset-0 flex items-center justify-center text-4xl leading-none drop-shadow">${ally.iconEmoji}</div>`;
 
                 el.innerHTML = `
                     <div class="unit-inner">
-                        <span class="text-[9px] absolute top-0.5 left-1 z-10">${elem.icon}</span>
-                        <span class="text-[8px] font-mono font-bold bg-black/70 text-amber-200 px-1 rounded absolute top-0.5 right-0.5 z-10">${job.moveTime}s</span>
-                        <span class="text-[9px] absolute bottom-0.5 left-1 z-10">${WEAPONS[getWeaponOf(ally)].icon}</span>
                         ${avatarHtml}
-                        <div class="text-[9px] font-black text-white truncate max-w-[92%] mt-0.5 drop-shadow">${ally.name}</div>
-                        <div class="w-[82%] h-1.5 bg-black/80 rounded-full overflow-hidden mt-0.5 border border-white/20">
-                            <div class="h-full bg-emerald-400 transition-all" style="width:${hpPct}%"></div>
+                        <div class="absolute right-1 bottom-[13px] z-10 flex items-center gap-[3px] bg-slate-950/75 border border-amber-400/70 rounded px-1 py-[2px] text-[10px] leading-none text-slate-100">
+                            ${elem.icon}${WEAPONS[getWeaponOf(ally)].icon}<span class="font-mono font-bold">${job.moveTime.toFixed(1)}s</span>
+                        </div>
+                        <div class="absolute left-1 right-1 bottom-1 h-1 bg-black/50 rounded-full overflow-hidden">
+                            <div class="h-full bg-emerald-400/90 transition-all" style="width:${hpPct}%"></div>
                         </div>
                     </div>
                 `;
@@ -5705,21 +5700,18 @@
                 const ePreset = PRESET_ART[enemy.presetArt];
                 const tintStyle = enemy.tint ? ` style="filter:${enemy.tint}"` : '';
                 const enemyAvatar = ePreset
-                    ? (enemy.isBoss
-                        ? `<img src="${ePreset.full}" class="h-16 sm:h-24 w-auto object-contain drop-shadow"${tintStyle}>`
-                        : `<img src="${ePreset.icon}" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover border border-rose-300/40 shadow"${tintStyle}>`)
-                    : `<div class="${enemy.isBoss ? 'text-4xl sm:text-5xl' : 'text-xl sm:text-2xl'} leading-none">${enemy.icon}</div>`;
+                    ? `<img src="${enemy.isBoss ? ePreset.full : ePreset.icon}" class="absolute inset-0 w-full h-full object-cover"${tintStyle}>`
+                    : `<div class="absolute inset-0 flex items-center justify-center ${enemy.isBoss ? 'text-6xl' : 'text-4xl'} leading-none">${enemy.icon}</div>`;
 
                 el.innerHTML = `
                     <div class="unit-inner">
-                        <span class="text-[10px] absolute top-1 left-1.5">${elem.icon}</span>
-                        <span class="text-[10px] sm:text-xs font-black px-1.5 rounded border ${cdClass} absolute top-1 right-1">${enemy.cd}</span>
-                        <span class="text-[9px] absolute bottom-0.5 left-1 z-10">${WEAPONS[getWeaponOf(enemy)].icon}${enemy.effect === 'knockback' ? '' : ''}</span>
                         ${enemyAvatar}
-                        <div class="text-[9px] font-bold text-rose-200 truncate max-w-[92%] mt-0.5">${enemy.name}</div>
-                        <div class="text-[8px] leading-none mt-0.5">${statusBadges}</div>
-                        <div class="w-[85%] h-1.5 bg-black/80 rounded-full overflow-hidden mt-0.5 border border-rose-500/40">
-                            <div class="h-full bg-gradient-to-r from-rose-600 to-red-400 transition-all" style="width:${hpPct}%"></div>
+                        <div class="absolute top-1 left-1 z-10 flex flex-col items-start gap-0.5 text-[8px] leading-none">${statusBadges}</div>
+                        <div class="absolute right-1 bottom-[13px] z-10 flex items-center gap-[3px] bg-slate-950/75 border border-amber-400/70 rounded px-1 py-[2px] text-[10px] leading-none">
+                            ${elem.icon}${WEAPONS[getWeaponOf(enemy)].icon}<span class="font-mono font-black ${enemy.cd === 1 ? 'text-red-400 animate-pulse' : 'text-amber-300'}">${enemy.cd}</span>
+                        </div>
+                        <div class="absolute left-1 right-1 bottom-1 h-1 bg-black/50 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-rose-600/90 to-red-400/90 transition-all" style="width:${hpPct}%"></div>
                         </div>
                     </div>
                 `;
