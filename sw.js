@@ -1,4 +1,4 @@
-const CACHE = 'terra-tactics-ex-v80';
+const CACHE = 'terra-tactics-ex-v81';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => {
     e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
@@ -8,6 +8,7 @@ self.addEventListener('activate', e => {
 });
 self.addEventListener('fetch', e => {
     if (e.request.method !== 'GET') return;
+    if (new URL(e.request.url).pathname.endsWith('/sw.js')) return; // バージョンチェック用は常にネットワークから取得
     e.respondWith(
         caches.match(e.request, { ignoreSearch: true }).then(hit => hit || fetch(e.request).then(res => {
             const copy = res.clone();

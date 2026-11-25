@@ -10,8 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="TERRA TACTICS">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-512.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -2348,7 +2347,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.80';
+        const GAME_VERSION = '1.81';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -5936,6 +5935,41 @@
         function sleepFx(ms) { return sleep(ms * fxScale()); }
 
         window.onload = initGame;
+
+        // ===== 起動時バージョンチェック（サーバーのsw.jsと比べて古ければ自動で最新化） =====
+        (function setupAutoUpdate() {
+            if (!('serviceWorker' in navigator)) return;
+            const hadController = !!navigator.serviceWorker.controller;
+            let reloading = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                // 新しいSWが有効化されたら一度だけ自動リロードして最新画面にする
+                if (!hadController || reloading) return;
+                reloading = true;
+                location.reload();
+            });
+            (async () => {
+                try {
+                    const res = await fetch('sw.js', { cache: 'no-store' });
+                    if (!res.ok) return;
+                    const text = await res.text();
+                    const m = text.match(/terra-tactics-ex-v(\d+)/);
+                    if (!m) return;
+                    const serverVer = parseInt(m[1], 10);
+                    const localVer = parseInt(GAME_VERSION.split('.')[1], 10);
+                    if (!serverVer || serverVer <= localVer) return;
+                    const KEY = 'tt_update_tried_v';
+                    if (sessionStorage.getItem(KEY) === String(serverVer)) return; // リロードループ防止
+                    sessionStorage.setItem(KEY, String(serverVer));
+                    const regs = await navigator.serviceWorker.getRegistrations();
+                    await Promise.all(regs.map(r => r.update().catch(() => {})));
+                    if (window.caches) {
+                        const keys = await caches.keys();
+                        await Promise.all(keys.map(k => caches.delete(k)));
+                    }
+                    location.reload();
+                } catch (e) { /* オフライン・ローカル表示時は無視 */ }
+            })();
+        })();
     </script>
     <style>
         @keyframes summonBookPulse { 0% { transform: scale(0.92); filter: drop-shadow(0 0 12px rgba(167,139,250,0.5)); } 55% { transform: scale(1.06); filter: drop-shadow(0 0 44px rgba(251,191,36,0.95)); } 100% { transform: scale(1.0); filter: drop-shadow(0 0 26px rgba(167,139,250,0.8)); } }
