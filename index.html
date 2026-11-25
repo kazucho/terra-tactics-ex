@@ -2926,7 +2926,7 @@
             band.className = `cutin-band ${theme.bandClass}`;
             const wInfo = WEAPONS[getWeaponOf(ally)] || WEAPONS.sword;
             const kindLabel = ally._skillKind === 'C' ? 'CHAIN SKILL' : (ally._skillKind === 'P' ? 'PINCER SKILL' : '');
-            subEl.textContent = `${ally._subLabel || jobInfo.name} ・ ${ally.name} ${wInfo.icon}${kindLabel ? ' ・ ' + kindLabel : ''}`;
+            subEl.innerHTML = `${ally._subLabel || jobInfo.name} ・ ${ally.name} ${wInfo.icon}${kindLabel ? ' ・ ' + kindLabel : ''}`;
             titleEl.textContent = `『${ally.skillName}！』`;
 
             if (ally.customFullArtData) {
