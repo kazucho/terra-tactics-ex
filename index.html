@@ -2580,7 +2580,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.141';
+        const GAME_VERSION = '1.142';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -5603,6 +5603,36 @@ const SE_AUDIO = {
             });
         }
 
+        // 覚醒演出のリプレイ（図鑑からいつでも見直せる）
+        function replayAwakening(id) {
+            const char = state.partyConfig.find(c => c.id === id);
+            if (!char) return;
+            const aArt = PRESET_ART[char.presetArt] || {};
+            const before = char.customFullArtData || aArt.full || '';
+            const after = char.customAwFullArtData || aArt.awFull || '';
+            if (!before || !after || before === after) return;
+            const ov = document.getElementById('summon-overlay');
+            if (!ov) return;
+            const book = document.getElementById('summon-book');
+            if (book) book.style.display = 'none';
+            document.getElementById('summon-art').innerHTML = `<div class="awfx-wrap"><img src="${before}" class="max-h-[44vh] w-auto object-contain"><img src="${after}" class="awfx-aw max-h-[44vh] w-auto object-contain"><div class="awfx-flash"></div><div class="awfx-label">覚　醒</div></div>`;
+            document.getElementById('summon-name').textContent = char.name;
+            const job = JOB_CLASSES[char.job] || JOB_CLASSES.warrior;
+            document.getElementById('summon-job').textContent = `${char.title || ''} ／ ${job.name}`;
+            const tagEl = document.getElementById('summon-tag');
+            tagEl.textContent = ' AWAKENING ';
+            tagEl.className = 'text-[13px] tracking-[0.45em] text-fuchsia-300 font-black';
+            document.getElementById('summon-sub').textContent = `${char.name}の覚醒の瞬間（リプレイ）　姿が変わった（タップで閉じる）`;
+            ov.classList.remove('hidden'); ov.classList.add('flex');
+            ov.classList.remove('summon-play'); void ov.offsetWidth; ov.classList.add('summon-play');
+            playFanfare();
+            const startedAt = Date.now();
+            let done = false;
+            const finish = () => { if (done) return; done = true; ov.classList.add('hidden'); ov.classList.remove('flex'); ov.onclick = null; };
+            ov.onclick = () => { if (Date.now() - startedAt > 2400) finish(); };
+            setTimeout(finish, 6500);
+        }
+
         let collectionFocusId = null;
         let codexShowAw = null;
         function openCollection() {
@@ -5660,7 +5690,7 @@ const SE_AUDIO = {
             const hasAwArt = !!(isAwakened(c) && awBeforeSrc && awAfterSrc && awBeforeSrc !== awAfterSrc);
             const showAw = hasAwArt && (codexShowAw === null ? true : codexShowAw);
             const detailArtHtml = hasAwArt ? `<img src="${showAw ? awAfterSrc : awBeforeSrc}" class="max-h-52 w-auto object-contain">` : charArtHtml(c, 'max-h-52 w-auto object-contain');
-            const awToggleHtml = hasAwArt ? `<div class="flex gap-1 mt-1.5"><button onclick="event.stopPropagation(); codexSetArt(false)" class="px-2 py-0.5 rounded text-[9px] font-bold border ${!showAw ? 'bg-fuchsia-500 text-white border-fuchsia-400' : 'bg-slate-800 text-slate-300 border-slate-600'}">覚醒前</button><button onclick="event.stopPropagation(); codexSetArt(true)" class="px-2 py-0.5 rounded text-[9px] font-bold border ${showAw ? 'bg-fuchsia-500 text-white border-fuchsia-400' : 'bg-slate-800 text-slate-300 border-slate-600'}">覚醒後</button></div>` : '';
+            const awToggleHtml = hasAwArt ? `<div class="flex gap-1 mt-1.5"><button onclick="event.stopPropagation(); codexSetArt(false)" class="px-2 py-0.5 rounded text-[9px] font-bold border ${!showAw ? 'bg-fuchsia-500 text-white border-fuchsia-400' : 'bg-slate-800 text-slate-300 border-slate-600'}">覚醒前</button><button onclick="event.stopPropagation(); codexSetArt(true)" class="px-2 py-0.5 rounded text-[9px] font-bold border ${showAw ? 'bg-fuchsia-500 text-white border-fuchsia-400' : 'bg-slate-800 text-slate-300 border-slate-600'}">覚醒後</button></div><button onclick="event.stopPropagation(); replayAwakening('${c.id}')" class="mt-1.5 px-2.5 py-1 rounded text-[10px] font-bold border bg-fuchsia-600/30 text-fuchsia-200 border-fuchsia-500/60">覚醒演出を再生</button>` : '';
             const job = JOB_CLASSES[c.job] || JOB_CLASSES.warrior;
             const pat = SKILL_PATTERNS[c.skillPattern] || SKILL_PATTERNS.cross_slash;
             const elem = ELEMENTS[c.element] || ELEMENTS.fire;
