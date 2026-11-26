@@ -2573,7 +2573,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.123';
+        const GAME_VERSION = '1.124';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4029,62 +4029,86 @@
                     showFloatingText(fe.x + (fe.size || 1) / 2, fe.y - 0.4, `CHAIN ${chainCount}人 ×${chainMult.toFixed(2)}`, '#4ade80', '15px');
                 }
 
-                // 1. まず挟み撃ちの直接打撃ダメージ（重騎士・戦士が高く、魔導士は低い）
+                // 1. 直接打撃は事前に計算だけしておき、実際の着弾は各キャラの番（カットイン→自分の挟撃→自分のスキル）の中で自分の分だけ当てる
                 const pincerAttackers = participants.filter(a => p.pincerAllyIds.has(a.id));
-                boardEl.classList.add('board-shake');
-                setTimeout(() => boardEl.classList.remove('board-shake'), 260);
-
+                const directPlans = new Map();
                 for (const enemy of livingEnemies) {
-                    if (enemy.hp <= 0) continue;
-                    let directTotal = 0;
-                    let anyCrit = false;
                     const contributions = [];
                     pincerAttackers.forEach(ally => {
                         const jobInfo = JOB_CLASSES[ally.job] || JOB_CLASSES.warrior;
                         const elemMult = getElementMultiplier(ally.element, enemy.element);
                         const weapMult = getWeaponMultiplier(ally, enemy);
                         let contrib = Math.round(ally.atk * jobInfo.directMult * elemMult * weapMult * (ally.buffAtk || 1) * desperateMult(ally) * terrainMult(ally, enemy) * dragonMult(ally, enemy));
-                        if (rollCrit(ally)) { contrib = Math.round(contrib * 1.6); anyCrit = true; }
-                        contributions.push({ ally, contrib });
-                        directTotal += contrib;
+                        let crit = false;
+                        if (rollCrit(ally)) { contrib = Math.round(contrib * 1.6); crit = true; }
+                        contributions.push({ ally, contrib, crit });
                     });
-                    const eCellsD = [];
-                    for (let ex = 0; ex < (enemy.size || 1); ex++) for (let ey = 0; ey < (enemy.size || 1); ey++) eCellsD.push({ x: enemy.x + ex, y: enemy.y + ey });
-                    { const mainAtkD = contributions.reduce((m, c) => (!m || c.contrib > m.contrib) ? c : m, null); const hkD = mainAtkD ? hitKindOf(mainAtkD.ally, false) : 'slash'; const kindD = hkD === 'blunt' ? 'blunt' : hkD === 'shot' ? 'shot' : (hkD === 'magic' ? ({ fire: 'fire', ice: 'ice', thunder: 'thunder', wind: 'wind', earth: 'earth', light: 'holy', dark: 'dark' }[(mainAtkD || {}).element] || 'fire') : 'slash'); playSkillEffect(eCellsD, kindD, mainAtkD ? (ELEMENTS[mainAtkD.ally.element] || {}).color : undefined); }
-                    const wasAliveD = enemy.hp > 0;
-                    directTotal = Math.round(directTotal * chainMult * ((enemy.defDownT || 0) > 0 ? 1.25 : 1) * addCombo(1));
-                    enemy.hp = Math.max(0, enemy.hp - directTotal);
-                    { const mainAtk = contributions.reduce((m, c) => (!m || c.contrib > m.contrib) ? c : m, null); if (mainAtk && directTotal > 0) queueHitReaction(enemy, hitKindOf(mainAtk.ally, false), (ELEMENTS[mainAtk.ally.element] || {}).color); }
-                    { const rawSum = contributions.reduce((s, c) => s + c.contrib, 0); if (rawSum > 0 && directTotal > 0) contributions.forEach(({ ally, contrib }) => drainHeal(ally, Math.round(directTotal * contrib / rawSum))); contributions.forEach(({ ally }) => placeCurse(ally, enemy)); }
-                    if (wasAliveD && enemy.hp <= 0) addCombo(1);
-                    playSE('skill_blast', 1.2);
-                    const cx = enemy.x + (enemy.size || 1) / 2;
-                    const cy = enemy.y + (enemy.size || 1) / 2;
-                    showFloatingText(cx, cy, `挟撃 -${directTotal}`, '#fde047', '18px');
-                    if (anyCrit) showFloatingText(cx, cy - 0.55, 'CRITICAL!', '#fbbf24', '15px');
-                    if (enemy.hp > 0) contributions.forEach(({ ally }) => applyOnHitTraits(ally, enemy));
-                    contributions.forEach(({ ally, contrib }) => {
-                        if (!(JOB_TRAITS[ally.job] || {}).pierce) return;
-                        const dx = Math.sign(enemy.x - ally.x), dy = Math.sign(enemy.y - ally.y);
-                        if (dx === 0 && dy === 0) return;
-                        const sz = enemy.size || 1;
-                        const bx = dx > 0 ? enemy.x + sz : (dx < 0 ? enemy.x - 1 : enemy.x);
-                        const by = dy > 0 ? enemy.y + sz : (dy < 0 ? enemy.y - 1 : enemy.y);
-                        if (bx < 0 || bx >= COLS || by < 0 || by >= ROWS) return;
-                        const occ = getUnitAt(bx, by);
-                        if (!occ || occ.side !== 'enemy' || occ.unit.id === enemy.id || occ.unit.hp <= 0) return;
-                        const behind = occ.unit;
-                        const pd = Math.round(contrib * 0.8 * ((behind.defDownT || 0) > 0 ? 1.25 : 1));
-                        const wasAliveP = behind.hp > 0;
-                        behind.hp = Math.max(0, behind.hp - pd);
-                        if (wasAliveP && behind.hp <= 0) addCombo(1);
-                        showFloatingText(behind.x + (behind.size || 1) / 2, behind.y + 0.3, `貫通! -${pd}`, '#93c5fd', '14px');
-                        queueHitReaction(behind, 'slash', (ELEMENTS[ally.element] || {}).color);
-                        renderUnits();
-                    });
+                    directPlans.set(enemy.id, { contributions, comboMult: null, done: new Set() });
                 }
-                renderUnits();
-                await sleepFx(430);
+                const boardFxKindFor = (ally, isSkill) => {
+                    const hk = hitKindOf(ally, isSkill);
+                    if (hk === 'blunt') return 'blunt';
+                    if (hk === 'shot') return 'shot';
+                    if (hk === 'magic') return ({ fire: 'fire', ice: 'ice', thunder: 'thunder', wind: 'wind', earth: 'earth', light: 'holy', dark: 'dark' }[ally.element] || 'fire');
+                    return 'slash';
+                };
+                const applyDirectHit = async (ally) => {
+                    let hitAny = false;
+                    for (const enemy of livingEnemies) {
+                        if (enemy.hp <= 0) continue;
+                        const plan = directPlans.get(enemy.id);
+                        if (!plan || plan.done.has(ally.id)) continue;
+                        const c = plan.contributions.find(x => x.ally.id === ally.id);
+                        if (!c) continue;
+                        plan.done.add(ally.id);
+                        hitAny = true;
+                        const eCellsD = [];
+                        for (let ex = 0; ex < (enemy.size || 1); ex++) for (let ey = 0; ey < (enemy.size || 1); ey++) eCellsD.push({ x: enemy.x + ex, y: enemy.y + ey });
+                        playSkillEffect(eCellsD, boardFxKindFor(ally, false), (ELEMENTS[ally.element] || {}).color);
+                        if (plan.comboMult == null) plan.comboMult = addCombo(1);
+                        const dmg = Math.round(c.contrib * chainMult * ((enemy.defDownT || 0) > 0 ? 1.25 : 1) * plan.comboMult);
+                        const wasAliveD = enemy.hp > 0;
+                        enemy.hp = Math.max(0, enemy.hp - dmg);
+                        queueHitReaction(enemy, hitKindOf(ally, false), (ELEMENTS[ally.element] || {}).color);
+                        drainHeal(ally, dmg);
+                        placeCurse(ally, enemy);
+                        if (wasAliveD && enemy.hp <= 0) addCombo(1);
+                        playSE('skill_blast', 1.2);
+                        const cx = enemy.x + (enemy.size || 1) / 2;
+                        const cy = enemy.y + (enemy.size || 1) / 2;
+                        showFloatingText(cx, cy, `挟撃 -${dmg}`, '#fde047', '18px');
+                        if (c.crit) showFloatingText(cx, cy - 0.55, 'CRITICAL!', '#fbbf24', '15px');
+                        if (enemy.hp > 0) applyOnHitTraits(ally, enemy);
+                        if ((JOB_TRAITS[ally.job] || {}).pierce) {
+                            const dx = Math.sign(enemy.x - ally.x), dy = Math.sign(enemy.y - ally.y);
+                            if (dx !== 0 || dy !== 0) {
+                                const sz = enemy.size || 1;
+                                const bx = dx > 0 ? enemy.x + sz : (dx < 0 ? enemy.x - 1 : enemy.x);
+                                const by = dy > 0 ? enemy.y + sz : (dy < 0 ? enemy.y - 1 : enemy.y);
+                                if (bx >= 0 && bx < COLS && by >= 0 && by < ROWS) {
+                                    const occ = getUnitAt(bx, by);
+                                    if (occ && occ.side === 'enemy' && occ.unit.id !== enemy.id && occ.unit.hp > 0) {
+                                        const behind = occ.unit;
+                                        const pd = Math.round(c.contrib * 0.8 * ((behind.defDownT || 0) > 0 ? 1.25 : 1));
+                                        const wasAliveP = behind.hp > 0;
+                                        behind.hp = Math.max(0, behind.hp - pd);
+                                        if (wasAliveP && behind.hp <= 0) addCombo(1);
+                                        showFloatingText(behind.x + (behind.size || 1) / 2, behind.y + 0.3, `貫通! -${pd}`, '#93c5fd', '14px');
+                                        queueHitReaction(behind, 'slash', (ELEMENTS[ally.element] || {}).color);
+                                    }
+                                }
+                            }
+                        }
+                        renderUnits();
+                    }
+                    if (hitAny) {
+                        boardEl.classList.add('board-shake');
+                        setTimeout(() => boardEl.classList.remove('board-shake'), 260);
+                        renderPartyBar();
+                        await sleepFx(300);
+                    }
+                    return hitAny;
+                };
 
                 // 2. 参加キャラ（挟撃＋チェーン）が順番に全身カットイン＆広範囲ユニークスキル発動！
                 for (const ally of participants) {
@@ -4117,7 +4141,7 @@
                     if (ATTACK_TYPES.includes(skillInfo.type)) {
                         const hasEnemy = targetCells.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'enemy' && occ.unit.hp > 0; });
                         const hasGround = skillInfo.type === 'terrain' && targetCells.some(cell => { const t = getTerrainAt(cell.x, cell.y); return t && (t.type === 'rock' || t.type === 'spike'); });
-                        if (!hasEnemy && !hasGround) continue;
+                        if (!hasEnemy && !hasGround) { await applyDirectHit(ally); continue; }
                     }
 
                     // スキル発動率判定（本家仕様：不発でもスキルブーストSBが溜まっていく）
@@ -4126,13 +4150,14 @@
                         ally.sb = Math.min(40, (ally.sb || 0) + 4);
                         showFloatingText(ally.x + 0.5, ally.y, 'スキル不発… SB+4%', '#94a3b8', '12px');
                         renderPartyBar();
-                        await sleepFx(260);
+                        if (!await applyDirectHit(ally)) await sleepFx(260);
                         continue;
                     }
                     ally.sb = Math.min(40, (ally.sb || 0) + 1);
 
                     // 全画面立ち絵カットイン再生！
                     await playFullScreenCutin(ally);
+                    await applyDirectHit(ally);
                     try { const _mel = magicElementFor(ally, skillInfo); if (_mel) playMagicFx(_mel); } catch (e) {}
 
                     // 盤面フラッシュ演出
