@@ -2580,7 +2580,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.137';
+        const GAME_VERSION = '1.138';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -6204,6 +6204,48 @@ const SE_AUDIO = {
                 : aArtEd.awFull
                     ? `<img src="${aArtEd.awFull}" class="h-28 w-auto object-contain mx-auto">`
                     : `<div class="h-28 flex items-center justify-center text-slate-500 text-[10px]">覚醒絵なし</div>`;
+            const awUnlocked = isAwakened(c);
+            const awSectionHtml = awUnlocked ? `
+                <!-- 覚醒後の画像（Lv6から自動で切り替わり） -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-slate-900/70 p-3 rounded-xl border border-fuchsia-900/60 space-y-2">
+                        <div class="font-bold text-fuchsia-300 text-xs">3. 覚醒後の盤面アイコン（Lv6〜）</div>
+                        <div class="flex items-center gap-3">
+                            ${awIconPreviewHtml}
+                            <div class="flex-1 space-y-1.5">
+                                <label class="block w-full text-center py-1.5 px-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg cursor-pointer text-xs font-bold text-sky-300">
+                                     画像をアップロード
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'awIcon')">
+                                </label>
+                                ${c.customAwIconData ? `<button onclick="clearCustomImage('awIcon')" class="w-full py-1 text-[10px] text-rose-400 underline">カスタム覚醒アイコンを解除</button>` : `<p class="text-[10px] text-slate-500">未設定なら用意された覚醒アイコンになります</p>`}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/70 p-3 rounded-xl border border-fuchsia-900/60 space-y-2">
+                        <div class="font-bold text-fuchsia-300 text-xs">4. 覚醒後の全身立ち絵（Lv6〜）</div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-20 bg-slate-950 rounded-lg border border-slate-700 p-1 overflow-hidden">
+                                ${awFullPreviewHtml}
+                            </div>
+                            <div class="flex-1 space-y-1.5">
+                                <label class="block w-full text-center py-1.5 px-2 bg-fuchsia-600/30 hover:bg-fuchsia-600/50 border border-fuchsia-500/60 rounded-lg cursor-pointer text-xs font-bold text-fuchsia-200">
+                                     覚醒イラストを選択
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'awFull')">
+                                </label>
+                                <p class="text-[10px] text-slate-400">Lv6（覚醒）から自動でこの姿に切り替わります。覚醒の瞬間の演出にも使われます</p>
+                                ${c.customAwFullArtData ? `<button onclick="clearCustomImage('awFull')" class="text-[10px] text-rose-400 underline">カスタム覚醒絵を解除</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ` : `
+                <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-800 flex items-center gap-3">
+                    <div class="w-14 h-14 shrink-0 rounded-xl bg-slate-950 border-2 border-slate-700 flex items-center justify-center text-2xl text-slate-600 font-black">？</div>
+                    <div>
+                        <div class="font-bold text-slate-400 text-xs">覚醒後の画像（未開放）</div>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Lv6で覚醒すると開放されます。それまで姿はお楽しみに</p>
+                    </div>
+                </div>`;
 
             bodyEl.innerHTML = `
                 <!-- 基本情報 -->
@@ -6261,38 +6303,7 @@ const SE_AUDIO = {
                     </div>
                 </div>
 
-                <!-- 覚醒後の画像（Lv6から自動で切り替わり） -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div class="bg-slate-900/70 p-3 rounded-xl border border-fuchsia-900/60 space-y-2">
-                        <div class="font-bold text-fuchsia-300 text-xs">3. 覚醒後の盤面アイコン（Lv6〜）</div>
-                        <div class="flex items-center gap-3">
-                            ${awIconPreviewHtml}
-                            <div class="flex-1 space-y-1.5">
-                                <label class="block w-full text-center py-1.5 px-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg cursor-pointer text-xs font-bold text-sky-300">
-                                     画像をアップロード
-                                    <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'awIcon')">
-                                </label>
-                                ${c.customAwIconData ? `<button onclick="clearCustomImage('awIcon')" class="w-full py-1 text-[10px] text-rose-400 underline">カスタム覚醒アイコンを解除</button>` : `<p class="text-[10px] text-slate-500">未設定なら用意された覚醒アイコンになります</p>`}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-slate-900/70 p-3 rounded-xl border border-fuchsia-900/60 space-y-2">
-                        <div class="font-bold text-fuchsia-300 text-xs">4. 覚醒後の全身立ち絵（Lv6〜）</div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-20 bg-slate-950 rounded-lg border border-slate-700 p-1 overflow-hidden">
-                                ${awFullPreviewHtml}
-                            </div>
-                            <div class="flex-1 space-y-1.5">
-                                <label class="block w-full text-center py-1.5 px-2 bg-fuchsia-600/30 hover:bg-fuchsia-600/50 border border-fuchsia-500/60 rounded-lg cursor-pointer text-xs font-bold text-fuchsia-200">
-                                     覚醒イラストを選択
-                                    <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'awFull')">
-                                </label>
-                                <p class="text-[10px] text-slate-400">Lv6（覚醒）から自動でこの姿に切り替わります。覚醒の瞬間の演出にも使われます</p>
-                                ${c.customAwFullArtData ? `<button onclick="clearCustomImage('awFull')" class="text-[10px] text-rose-400 underline">カスタム覚醒絵を解除</button>` : ''}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                ${awSectionHtml}
 
                 <!-- 属性・ステータス -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-900/70 p-3 rounded-xl border border-slate-800">
