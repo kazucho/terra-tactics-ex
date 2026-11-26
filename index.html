@@ -278,11 +278,18 @@
         .hit-slash .unit-inner img, .hit-blunt .unit-inner img { animation: hitFlashK 0.34s steps(1, end); }
         .hit-magic .unit-inner img { animation: hitHueK 0.54s ease-in-out; }
         .hit-mark { position: absolute; pointer-events: none; z-index: 30; }
-        .hit-mark.slash { left: 6%; width: 88%; height: 9%; border-radius: 9999px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.98) 42%, rgba(190,235,255,0.98) 55%, transparent); opacity: 0; }
-        .hit-mark.slash.s1 { top: 24%; animation: slashSweepK 0.26s ease-out forwards; }
-        .hit-mark.slash.s2 { top: 55%; animation: slashSweepK 0.26s ease-out 0.07s forwards; }
+        .hit-mark.fx { inset: 0; width: 100%; height: 100%; }
+        .hit-mark.fx svg { width: 100%; height: 100%; display: block; overflow: visible; }
+        .fx-slash-path { fill: none; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: slashDrawK 0.32s ease-out forwards; }
+        .fx-slash-path.p2 { animation-delay: 0.06s; }
+        @keyframes slashDrawK { 0% { stroke-dashoffset: 100; opacity: 1; } 55% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+        .fx-star { transform-box: fill-box; transform-origin: center; opacity: 0; animation: starPopK 0.38s ease-out forwards; }
+        @keyframes starPopK { 0% { opacity: 0; transform: scale(0.3) rotate(-14deg); } 30% { opacity: 1; } 100% { opacity: 0; transform: scale(1.25) rotate(6deg); } }
+        .fx-orb { transform-box: fill-box; transform-origin: center; opacity: 0; animation: orbPopK 0.5s ease-out forwards; }
+        @keyframes orbPopK { 0% { opacity: 0; transform: scale(0.25); } 35% { opacity: 0.95; } 100% { opacity: 0; transform: scale(1.5); } }
+        .fx-ring { transform-box: fill-box; transform-origin: center; opacity: 0; animation: ringPopK 0.45s ease-out forwards; }
+        @keyframes ringPopK { 0% { opacity: 0.9; transform: scale(0.3); } 100% { opacity: 0; transform: scale(1.35); } }
         @keyframes slashSweepK { 0% { opacity: 0; transform: rotate(-30deg) translateX(-30%); } 25% { opacity: 1; } 100% { opacity: 0; transform: rotate(-30deg) translateX(24%); } }
-        .hit-mark.burst { left: 50%; top: 44%; width: 58%; aspect-ratio: 1; border-radius: 9999px; border: 3px solid rgba(255,240,200,0.95); box-shadow: 0 0 14px rgba(255,210,120,0.8) inset; opacity: 0; animation: burstK 0.36s ease-out forwards; }
         @keyframes burstK { 0% { opacity: 0.95; transform: translate(-50%,-50%) scale(0.3); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(1.2); } }
 
         @keyframes boardShake {
@@ -2557,7 +2564,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.119';
+        const GAME_VERSION = '1.120';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3852,7 +3859,7 @@
             const dmg = Math.round(sp.power * ((target.defDownT || 0) > 0 ? 1.25 : 1));
             const wasAlive = target.hp > 0;
             target.hp = Math.max(0, target.hp - dmg);
-            queueHitReaction(target, 'magic');
+            queueHitReaction(target, 'magic', '#fcd34d');
             if (wasAlive && target.hp <= 0) addCombo(1);
             showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `精霊 -${dmg}`, '#fcd34d', '15px');
             sp.turnsLeft--;
@@ -3881,7 +3888,7 @@
             const dmg = Math.round(pet.power * ((target.defDownT || 0) > 0 ? 1.25 : 1));
             const wasAlive = target.hp > 0;
             target.hp = Math.max(0, target.hp - dmg);
-            queueHitReaction(target, 'magic');
+            queueHitReaction(target, 'magic', '#fb923c');
             if (wasAlive && target.hp <= 0) addCombo(1);
             showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `子竜 -${dmg}`, '#fdba74', '15px');
             renderUnits();
@@ -3902,7 +3909,7 @@
             const dmg = Math.round(ch.power * ((target.defDownT || 0) > 0 ? 1.25 : 1));
             const wasAlive = target.hp > 0;
             target.hp = Math.max(0, target.hp - dmg);
-            queueHitReaction(target, 'magic');
+            queueHitReaction(target, 'magic', '#f9a8d4');
             if (wasAlive && target.hp <= 0) addCombo(1);
             showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `${ch.name} -${dmg}`, '#f9a8d4', '15px');
             renderUnits();
@@ -3920,7 +3927,7 @@
                     if (victim) {
                         exploded = true;
                         victim.hp = Math.max(0, victim.hp - b.power);
-                        queueHitReaction(victim, 'magic');
+                        queueHitReaction(victim, 'magic', '#fb923c');
                         showFloatingText(b.x + 0.5, b.y, `爆発! -${b.power}`, '#fb923c', '17px');
                     }
                 }
@@ -4037,7 +4044,7 @@
                     const wasAliveD = enemy.hp > 0;
                     directTotal = Math.round(directTotal * chainMult * ((enemy.defDownT || 0) > 0 ? 1.25 : 1) * addCombo(1));
                     enemy.hp = Math.max(0, enemy.hp - directTotal);
-                    { const mainAtk = contributions.reduce((m, c) => (!m || c.contrib > m.contrib) ? c : m, null); if (mainAtk && directTotal > 0) queueHitReaction(enemy, hitKindOf(mainAtk.ally, false)); }
+                    { const mainAtk = contributions.reduce((m, c) => (!m || c.contrib > m.contrib) ? c : m, null); if (mainAtk && directTotal > 0) queueHitReaction(enemy, hitKindOf(mainAtk.ally, false), (ELEMENTS[mainAtk.ally.element] || {}).color); }
                     { const rawSum = contributions.reduce((s, c) => s + c.contrib, 0); if (rawSum > 0 && directTotal > 0) contributions.forEach(({ ally, contrib }) => drainHeal(ally, Math.round(directTotal * contrib / rawSum))); contributions.forEach(({ ally }) => placeCurse(ally, enemy)); }
                     if (wasAliveD && enemy.hp <= 0) addCombo(1);
                     playSE('skill_blast', 1.2);
@@ -4062,7 +4069,7 @@
                         behind.hp = Math.max(0, behind.hp - pd);
                         if (wasAliveP && behind.hp <= 0) addCombo(1);
                         showFloatingText(behind.x + (behind.size || 1) / 2, behind.y + 0.3, `貫通! -${pd}`, '#93c5fd', '14px');
-                        queueHitReaction(behind, 'slash');
+                        queueHitReaction(behind, 'slash', (ELEMENTS[ally.element] || {}).color);
                         renderUnits();
                     });
                 }
@@ -4411,7 +4418,7 @@
                             const wasAliveS = enemy.hp > 0;
                             enemy.hp = Math.max(0, enemy.hp - dmg);
                             if (wasAliveS && enemy.hp <= 0) { addCombo(1); placeCurse(ally, enemy); }
-                            queueHitReaction(enemy, hitKindOf(ally, true));
+                            queueHitReaction(enemy, hitKindOf(ally, true), (ELEMENTS[ally.element] || {}).color);
                             const cx = enemy.x + (enemy.size || 1) / 2;
                             const cy = enemy.y + (enemy.size || 1) / 2;
                             showFloatingText(cx, cy - 0.2, `全属性開放! -${dmg}`, '#f0abfc', '21px');
@@ -4447,7 +4454,7 @@
                             const wasAliveS = enemy.hp > 0;
                             enemy.hp = Math.max(0, enemy.hp - dmg);
                             if (wasAliveS && enemy.hp <= 0) { addCombo(1); placeCurse(ally, enemy); }
-                            queueHitReaction(enemy, hitKindOf(ally, true));
+                            queueHitReaction(enemy, hitKindOf(ally, true), (ELEMENTS[ally.element] || {}).color);
                             const cx = enemy.x + (enemy.size || 1) / 2;
                             const cy = enemy.y + (enemy.size || 1) / 2;
                             const label = critS ? `CRITICAL! -${dmg}` : (elemMult > 1 ? `WEAK! -${dmg}` : `-${dmg}`);
@@ -4836,7 +4843,7 @@
                             }
                             if (!hitAllies.includes(ally)) hitAllies.push(ally);
 
-                            queueHitReaction(ally, hitKindOf(enemy, true));
+                            queueHitReaction(ally, hitKindOf(enemy, true), (ELEMENTS[enemy.element] || {}).color);
                         }
                     });
 
@@ -6277,9 +6284,9 @@
             if (w === 'staff' || w === 'fan') return 'blunt';
             return 'slash';
         }
-        function queueHitReaction(unit, kind) {
+        function queueHitReaction(unit, kind, color) {
             if (!unit || !unit.id) return;
-            pendingHitFx.set(unit.id, { kind: kind || 'slash', until: Date.now() + 720 });
+            pendingHitFx.set(unit.id, { kind: kind || 'slash', color: color || '#ffffff', until: Date.now() + 720 });
         }
         function applyPendingHitFx(el, unit) {
             const hfx = pendingHitFx.get(unit.id);
@@ -6288,14 +6295,21 @@
             el.classList.add('hit-' + hfx.kind);
             if (el.dataset.hfxApplied) return;
             el.dataset.hfxApplied = '1';
+            const col = hfx.color || '#ffffff';
+            let svg = '';
             if (hfx.kind === 'slash') {
-                const m1 = document.createElement('div'); m1.className = 'hit-mark slash s1'; el.appendChild(m1);
-                const m2 = document.createElement('div'); m2.className = 'hit-mark slash s2'; el.appendChild(m2);
-                setTimeout(() => { m1.remove(); m2.remove(); }, 480);
+                svg = `<svg viewBox="0 0 100 100"><path class="fx-slash-path" pathLength="100" d="M10 84 Q48 34 92 8" stroke="${col}" stroke-width="10"/><path class="fx-slash-path" pathLength="100" d="M10 84 Q48 34 92 8" stroke="#ffffff" stroke-width="4"/><path class="fx-slash-path p2" pathLength="100" d="M4 56 Q38 14 76 0" stroke="${col}" stroke-width="6" opacity="0.85"/></svg>`;
             } else if (hfx.kind === 'blunt') {
-                const m = document.createElement('div'); m.className = 'hit-mark burst'; el.appendChild(m);
-                setTimeout(() => m.remove(), 420);
+                const star = (R, r) => { const p = []; for (let i = 0; i < 24; i++) { const rad = i % 2 === 0 ? R : r; const a = Math.PI * i / 12 - Math.PI / 2; p.push(`${(50 + rad * Math.cos(a)).toFixed(1)},${(46 + rad * Math.sin(a)).toFixed(1)}`); } return p.join(' '); };
+                svg = `<svg viewBox="0 0 100 100"><polygon class="fx-star" points="${star(38, 15)}" fill="${col}"/><polygon class="fx-star" points="${star(21, 8)}" fill="#ffffff"/></svg>`;
+            } else {
+                svg = `<svg viewBox="0 0 100 100"><circle class="fx-ring" cx="50" cy="48" r="30" fill="none" stroke="${col}" stroke-width="4"/><circle class="fx-orb" cx="34" cy="36" r="13" fill="${col}"/><circle class="fx-orb" cx="63" cy="55" r="17" fill="${col}" style="animation-delay:.06s"/><circle class="fx-orb" cx="44" cy="70" r="10" fill="#ffffff" style="animation-delay:.12s"/></svg>`;
             }
+            const m = document.createElement('div');
+            m.className = 'hit-mark fx';
+            m.innerHTML = svg;
+            el.appendChild(m);
+            setTimeout(() => m.remove(), 580);
         }
 
         function renderUnits() {
