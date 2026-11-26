@@ -2573,7 +2573,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.124';
+        const GAME_VERSION = '1.125';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4137,12 +4137,48 @@
 
                     // 対象マスを先に算出し、対象が無い攻撃スキルは発動しない（整地は岩・トゲも対象）
                     const targetCells = skillInfo.getCells(ally.x, ally.y);
-                    const ATTACK_TYPES = ['damage', 'omni', 'pull', 'debug_death', 'bomb', 'persuade', 'terrain'];
-                    if (ATTACK_TYPES.includes(skillInfo.type)) {
-                        const hasEnemy = targetCells.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'enemy' && occ.unit.hp > 0; });
-                        const hasGround = skillInfo.type === 'terrain' && targetCells.some(cell => { const t = getTerrainAt(cell.x, cell.y); return t && (t.type === 'rock' || t.type === 'spike'); });
-                        if (!hasEnemy && !hasGround) { await applyDirectHit(ally); continue; }
+                    // 今の盤面で「何の効果も無い」スキルは発動しない（挟撃対象が倒れていても、バフ・デバフ・回復・整地など自分の対象が居れば発動する）
+                    const enemyInCells = targetCells.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'enemy' && occ.unit.hp > 0; });
+                    const allyInCells = targetCells.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'ally' && occ.unit.hp > 0; });
+                    const hurtAllyInCells = targetCells.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'ally' && occ.unit.hp > 0 && occ.unit.hp < occ.unit.maxHp; });
+                    let skillUseful = true;
+                    switch (skillInfo.type) {
+                        case 'damage': case 'omni': case 'pull': case 'debug_death': case 'bomb': case 'persuade':
+                            skillUseful = enemyInCells; break;
+                        case 'terrain':
+                            skillUseful = enemyInCells || targetCells.some(cell => { const t = getTerrainAt(cell.x, cell.y); return t && (t.type === 'rock' || t.type === 'spike'); }); break;
+                        case 'hybrid':
+                            skillUseful = enemyInCells || hurtAllyInCells; break;
+                        case 'heal':
+                            skillUseful = hurtAllyInCells; break;
+                        case 'regen': case 'buff': case 'guard_buff':
+                            skillUseful = allyInCells; break;
+                        case 'revive':
+                            skillUseful = state.allies.some(a => a.hp <= 0) || hurtAllyInCells; break;
+                        case 'trap':
+                            skillUseful = targetCells.some(cell => !getUnitAt(cell.x, cell.y) && !(state.mines || []).some(m => m.x === cell.x && m.y === cell.y)); break;
+                        case 'create':
+                            skillUseful = targetCells.some(cell => !getUnitAt(cell.x, cell.y) && !getTerrainAt(cell.x, cell.y)); break;
+                        case 'warp': {
+                            const othersW = state.allies.filter(a => a.id !== ally.id && a.hp > 0);
+                            skillUseful = false;
+                            if (othersW.length) {
+                                for (let dx = -1; dx <= 1 && !skillUseful; dx++) for (let dy = -1; dy <= 1; dy++) {
+                                    if (dx === 0 && dy === 0) continue;
+                                    const nx = ally.x + dx, ny = ally.y + dy;
+                                    if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) continue;
+                                    const t = getTerrainAt(nx, ny);
+                                    if (t && t.type === 'rock') continue;
+                                    if (getUnitAt(nx, ny)) continue;
+                                    skillUseful = true; break;
+                                }
+                            }
+                            break;
+                        }
+                        default:
+                            skillUseful = true;
                     }
+                    if (!skillUseful) { await applyDirectHit(ally); continue; }
 
                     // スキル発動率判定（本家仕様：不発でもスキルブーストSBが溜まっていく）
                     const rate = getSkillRate(ally);
