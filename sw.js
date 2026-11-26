@@ -1,6 +1,7 @@
-const CACHE = 'terra-tactics-ex-v134';
-const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
+const CACHE = 'terra-tactics-ex-v135';
+const ASSETS = ['./manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => {
+    // index.html（約28MB）は先読みしない。更新チェックを軽く・速く終えるため（初回表示時にfetch側でキャッシュされる）
     e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
