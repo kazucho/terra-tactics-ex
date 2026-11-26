@@ -2585,7 +2585,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.129';
+        const GAME_VERSION = '1.130';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3545,6 +3545,27 @@
                     y++;
                 }
             }
+
+            // 角の特例（本家仕様）：四隅の敵は、角に隣接する2マス（縦の隣・横の隣）の両方に味方がいればL字挟撃が成立（壁＋味方1体では不可）
+            const cornerDefs = [
+                { ex: 0, ey: 0, a: [1, 0], b: [0, 1] },
+                { ex: COLS - 1, ey: 0, a: [COLS - 2, 0], b: [COLS - 1, 1] },
+                { ex: 0, ey: ROWS - 1, a: [1, ROWS - 1], b: [0, ROWS - 2] },
+                { ex: COLS - 1, ey: ROWS - 1, a: [COLS - 2, ROWS - 1], b: [COLS - 1, ROWS - 2] }
+            ];
+            cornerDefs.forEach(c => {
+                const e = getUnitAt(c.ex, c.ey);
+                if (!e || e.side !== 'enemy') return;
+                const ua = getUnitAt(c.a[0], c.a[1]);
+                const ub = getUnitAt(c.b[0], c.b[1]);
+                if (ua && ua.side === 'ally' && ub && ub.side === 'ally') {
+                    pincerGroups.push({
+                        enemyIds: new Set([e.unit.id]),
+                        pincerAllyIds: new Set([ua.unit.id, ub.unit.id]),
+                        axis: 'C'
+                    });
+                }
+            });
 
             // チェーン味方探索（本家仕様：挟んだ2人と同じ行・列の直線上にいる味方は、間に空きマスや敵があっても全員チェーン発動）
             pincerGroups.forEach(group => {
