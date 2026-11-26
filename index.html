@@ -2580,7 +2580,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.142';
+        const GAME_VERSION = '1.143';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -5670,9 +5670,16 @@ const SE_AUDIO = {
                     : `<div class="h-14 flex items-center justify-center text-3xl text-slate-700">？</div><div class="text-[10px] font-bold text-slate-600 truncate">？？？</div><div class="text-[9px] text-slate-700 truncate">未召喚</div>`;
                 div.onclick = () => { collectionFocusId = c.id; codexShowAw = null; renderCollection(); };
                 grid.appendChild(div);
+                const cellAwakened = isOwned && isAwakened(c);
+                if (cellAwakened) {
+                    const ab = document.createElement('div');
+                    ab.className = 'absolute top-0.5 right-0.5 bg-fuchsia-500 text-white text-[8px] font-black px-1 py-px rounded shadow';
+                    ab.textContent = '覚醒';
+                    div.appendChild(ab);
+                }
                 if (isOwned && state.newIds.includes(c.id)) {
                     const nb = document.createElement('div');
-                    nb.className = 'absolute top-0.5 right-0.5 bg-rose-500 text-white text-[8px] font-black px-1 py-px rounded shadow';
+                    nb.className = `absolute ${cellAwakened ? 'top-4' : 'top-0.5'} right-0.5 bg-rose-500 text-white text-[8px] font-black px-1 py-px rounded shadow`;
                     nb.textContent = 'NEW';
                     div.appendChild(nb);
                 }
