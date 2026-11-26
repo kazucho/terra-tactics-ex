@@ -247,14 +247,16 @@
         @keyframes fxShake { 0%, 100% { transform: translate(0, 0); } 15% { transform: translate(-7px, 3px); } 30% { transform: translate(6px, -4px); } 45% { transform: translate(-5px, -3px); } 60% { transform: translate(5px, 4px); } 75% { transform: translate(-3px, 2px); } 90% { transform: translate(2px, -1px); } }
         .fx-shake { animation: fxShake 0.55s linear; }
         #magic-fx-necro { filter: drop-shadow(0 0 26px rgba(124, 58, 237, 0.45)); }
-        /* チェーン枠光＆ゴゴゴ演出 */
+        /* チェーン枠光＆威圧オーラ演出 */
         .chain-glow-cell { position: absolute; border: 3px solid #fbbf24; border-radius: 10px; box-shadow: 0 0 14px 3px rgba(251,191,36,0.85), inset 0 0 12px rgba(251,191,36,0.5); pointer-events: none; animation: chainGlowPulse 0.45s ease-in-out infinite alternate; z-index: 5; }
         .chain-glow-cell.chain { border-color: #38bdf8; box-shadow: 0 0 14px 3px rgba(56,189,248,0.85), inset 0 0 12px rgba(56,189,248,0.5); }
         @keyframes chainGlowPulse { from { transform: scale(0.96); opacity: 0.75; } to { transform: scale(1.04); opacity: 1; } }
-        .gogo-char { position: absolute; font-weight: 900; color: #fbbf24; text-shadow: 0 0 6px rgba(0,0,0,0.9), 0 0 14px rgba(251,191,36,0.8); pointer-events: none; animation: gogoRise 0.95s ease-out forwards; z-index: 6; }
-        @keyframes gogoRise { 0% { transform: translateY(6px) scale(0.6) rotate(-6deg); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(-26px) scale(1.15) rotate(5deg); opacity: 0; } }
-        .gogo-banner { position: absolute; left: 0; right: 0; top: 34%; text-align: center; font-weight: 900; letter-spacing: 0.12em; color: #fde68a; -webkit-text-stroke: 2px rgba(120,53,15,0.85); text-shadow: 0 0 18px rgba(251,191,36,0.9), 0 4px 10px rgba(0,0,0,0.8); pointer-events: none; animation: gogoBannerZoom 0.9s ease-out forwards; z-index: 46; }
-        @keyframes gogoBannerZoom { 0% { transform: scale(0.5); opacity: 0; } 30% { transform: scale(1.12); opacity: 1; } 55% { transform: scale(1); } 100% { transform: scale(1.02); opacity: 0; } }
+        .menace-aura { position: absolute; pointer-events: none; z-index: 6; border-radius: 10px; background: radial-gradient(ellipse 90% 65% at 50% 88%, rgba(147, 51, 234, 0.55), rgba(88, 28, 135, 0.28) 55%, transparent 75%); filter: blur(2px); animation: menaceAura 0.5s ease-in-out infinite alternate; }
+        @keyframes menaceAura { from { transform: scaleY(0.92) scaleX(0.97); opacity: 0.7; } to { transform: scaleY(1.08) scaleX(1.03); opacity: 1; } }
+        .menace-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 40; background: radial-gradient(ellipse at center, transparent 42%, rgba(24, 4, 44, 0.38) 78%, rgba(10, 0, 24, 0.62) 100%); animation: menacePulse 0.55s ease-in-out infinite alternate; }
+        @keyframes menacePulse { from { opacity: 0.55; } to { opacity: 1; } }
+        .menace-tremble { animation: menaceTremble 0.09s linear infinite !important; }
+        @keyframes menaceTremble { 0% { transform: translate(0, 0); } 25% { transform: translate(1.5px, -1px); } 50% { transform: translate(-1.5px, 1px); } 75% { transform: translate(1px, 1.5px); } 100% { transform: translate(-1px, -1.5px); } }
 
         /* 被弾＆揺れ */
         @keyframes hitShake {
@@ -502,6 +504,7 @@
     <!-- 操作タイムバー＆地形凡例 -->
     <section class="my-0.5 fancy-border shrink-0 px-4 pt-2 pb-2">
         <div class="flex items-center gap-2">
+            <img id="drag-unit-icon" class="w-6 h-6 rounded object-cover border border-amber-300/70 shadow shrink-0 invisible" alt="">
             <div class="flex-1 h-2 bg-black/60 rounded-full overflow-hidden border border-[#6b5523]/60">
                 <div id="timer-bar" class="h-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-200 w-full transition-all duration-75"></div>
             </div>
@@ -546,6 +549,14 @@
         <canvas id="magic-fx-canvas" class="absolute inset-0 w-full h-full block"></canvas>
     </div>
 
+    <div id="battle-detail-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3" style="z-index: 95;" onclick="if (event.target === this) closeBattleDetail()">
+        <div class="bg-[#161923] border border-amber-500/50 rounded-2xl max-w-md w-full max-h-[88vh] overflow-y-auto thin-scroll shadow-2xl">
+            <div id="battle-detail-content" class="p-4 pb-0"></div>
+            <div class="p-4">
+                <button onclick="closeBattleDetail()" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-500 text-slate-200 font-black tracking-widest">閉じる</button>
+            </div>
+        </div>
+    </div>
     <div id="turn-banner" class="fixed inset-0 hidden items-center justify-center pointer-events-none" style="z-index: 145;">
         <div id="turn-banner-band" class="w-full py-4 sm:py-5 text-center border-y-2 bg-indigo-950/75 border-amber-300/80 shadow-2xl">
             <div id="turn-banner-text" class="font-black tracking-[0.35em] text-3xl sm:text-4xl text-amber-100">味方のターン</div>
@@ -793,7 +804,7 @@
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-amber-300 font-bold">竜騎士</span>（桂馬跳び範囲＋飛空移動：敵・岩・トゲを飛び越える。ただし敵や岩の上には着地できない）・<span class="text-amber-300 font-bold">召喚士</span>（精霊が3ターン自動攻撃）・<span class="text-amber-300 font-bold">ドワーフ工兵</span>（整地スキルで岩とトゲを除去）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-amber-300 font-bold">風水師</span>（泉生成）・<span class="text-amber-300 font-bold">からくり師</span>（地雷）・<span class="text-amber-300 font-bold">空間魔道士</span>（集合転送）・<span class="text-amber-300 font-bold">ネクロマンサー</span>（呪縛）・<span class="text-amber-300 font-bold">錬金術師</span>（時限ボム）も参戦</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>暗黒騎士は吸収、レンジャーは地形特効を習得する</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>チェーン時は仲間のマスが光り、連携が大きいと「ゴゴゴゴゴ！！」が炸裂する</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>チェーン時は仲間の枠が光り、連携が大きいと大気が震える威圧のオーラに包まれる</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>話術士：<span class="text-amber-300 font-bold">懐柔</span>スキルでボス以外の敵を味方にできる（精霊と同じ随行枠・そのステージ限り）。成功率は敵が強いほど下がる</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>七騎士（オマージュ）：<span class="text-amber-300 font-bold">ルディ</span>（鉄壁＋守護スキル）・<span class="text-amber-300 font-bold">クリス</span>（即死15%）・<span class="text-amber-300 font-bold">デロンズ</span>（大鎌＋吸収）・<span class="text-amber-300 font-bold">スパイク</span>（凍結＋戦斧）・<span class="text-amber-300 font-bold">ジェイブ</span>（子竜ペット）・<span class="text-amber-300 font-bold">レイチェル</span>（復活＋不死鳥）・<span class="text-amber-300 font-bold">アイリーン</span>（感電）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ネタ枠：<span class="text-amber-300 font-bold">ジョニー</span>（サラリーマン／HP10・移動0.5秒）。通常の召喚では絶対に出ず、<span class="text-violet-300 font-bold">エンドレスダンジョンの階層クリア時に1%の確率</span>でドロップする完全レア</span></div>
@@ -2428,7 +2439,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.107';
+        const GAME_VERSION = '1.108';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3092,6 +3103,7 @@
                 unitEl.classList.add('dragging');
                 phaseLabel.textContent = `${ally.name}【${jobInfo.name}】移動中！(${jobInfo.moveTime.toFixed(1)}秒)`;
                 phaseLabel.className = 'font-bold text-yellow-200 truncate animate-pulse';
+                showDragUnitIcon(ally);
 
                 playSE('move', 1.15);
                 startMoveTimer();
@@ -3228,6 +3240,7 @@
 
         async function finishPlayerMove() {
             clearInterval(state.timerInterval);
+            hideDragUnitIcon();
             if (state.draggingUnit) {
                 const el = document.getElementById(`unit-${state.draggingUnit.id}`);
                 if (el) el.classList.remove('dragging');
@@ -3686,26 +3699,23 @@
                 glow.style.height = `calc(${ch}% - 2px)`;
                 layer.appendChild(glow);
                 setTimeout(() => glow.remove(), 1250);
-                const n = isPincer ? 2 : 3;
-                for (let k = 0; k < n; k++) {
-                    const g = document.createElement('span');
-                    g.className = 'gogo-char';
-                    g.textContent = 'ゴ';
-                    g.style.left = `${ally.x * cw + cw * (0.12 + 0.3 * k) + (Math.random() * 4 - 2)}%`;
-                    g.style.top = `${ally.y * ch - 4 + (Math.random() * 6 - 3)}%`;
-                    g.style.fontSize = `${15 + Math.random() * 8}px`;
-                    g.style.animationDelay = `${idx * 0.07 + k * 0.09}s`;
-                    layer.appendChild(g);
-                    setTimeout(() => g.remove(), 1600);
-                }
+                const aura = document.createElement('div');
+                aura.className = 'menace-aura';
+                aura.style.left = `calc(${ally.x * cw}% + 1px)`;
+                aura.style.top = `calc(${ally.y * ch}% + 1px)`;
+                aura.style.width = `calc(${cw}% - 2px)`;
+                aura.style.height = `calc(${ch}% - 2px)`;
+                aura.style.animationDelay = `${idx * 0.07}s`;
+                layer.appendChild(aura);
+                setTimeout(() => aura.remove(), 1250);
             });
             if (chainCount >= 2) {
-                const banner = document.createElement('div');
-                banner.className = 'gogo-banner';
-                banner.style.fontSize = '34px';
-                banner.textContent = 'ゴゴゴゴゴ！！';
-                layer.appendChild(banner);
-                setTimeout(() => banner.remove(), 950);
+                const ov = document.createElement('div');
+                ov.className = 'menace-overlay';
+                layer.appendChild(ov);
+                setTimeout(() => ov.remove(), 1150);
+                boardEl.classList.add('menace-tremble');
+                setTimeout(() => boardEl.classList.remove('menace-tremble'), 1150);
                 playSE('cutin');
             }
         }
@@ -3863,7 +3873,9 @@
                 const chainCount = participants.length;
                 const chainMult = 1 + 0.10 * Math.max(0, chainCount - 2);
 
+                state.chainGlow = {};
                 participants.forEach(ally => {
+                    state.chainGlow[ally.id] = p.pincerAllyIds.has(ally.id) ? 'pincer' : 'chain';
                     const el = document.getElementById(`unit-${ally.id}`);
                     if (el) el.classList.add(p.pincerAllyIds.has(ally.id) ? 'pincer-active' : 'chain-active');
                 });
@@ -4343,6 +4355,7 @@
                 }
 
                 document.querySelectorAll('.unit').forEach(el => el.classList.remove('pincer-active', 'chain-active'));
+                state.chainGlow = {};
                 fxSvg.innerHTML = '';
                 calculateEnemyDangerZones();
                 renderDangerZones();
@@ -6144,6 +6157,7 @@
                 el.id = `unit-${ally.id}`;
                 el.dataset.id = ally.id;
                 el.className = `unit ally elem-${ally.element}`;
+                if (state.chainGlow && state.chainGlow[ally.id]) el.classList.add(state.chainGlow[ally.id] === 'pincer' ? 'pincer-active' : 'chain-active');
                 if (recentRevives.has(ally.id)) { el.classList.add('revive-descend'); recentRevives.delete(ally.id); }
                 el.style.width = `${100 / COLS}%`;
                 el.style.height = `${100 / ROWS}%`;
@@ -6256,12 +6270,12 @@
                         : `<span>${ally.iconEmoji}</span>`;
 
                 const card = document.createElement('div');
-                card.className = `p-1.5 rounded-lg border transition ${isDead ? 'bg-slate-950/60 border-slate-800 opacity-40' : 'bg-slate-900/90 border-[#8a6d2f]/70'}`;
+                card.className = `p-1.5 rounded-lg border transition cursor-pointer active:scale-[0.98] ${isDead ? 'bg-slate-950/60 border-slate-800 opacity-40' : 'bg-slate-900/90 border-[#8a6d2f]/70'}`;
                 card.innerHTML = `
                     <div class="flex items-center justify-between text-[10px] mb-0.5 gap-1">
                         <div class="flex items-center gap-1 truncate">
                             ${thumb}
-                            <span class="font-bold truncate text-slate-100">${ally.name}</span>${ally.level > 1 ? `<span class="text-[9px] text-amber-300 font-black shrink-0">Lv${ally.level}</span>` : ''}
+                            <span class="font-bold truncate text-slate-100">${ally.name}</span>${ally.level > 1 ? `<span class="text-[9px] text-amber-300 font-black shrink-0">Lv${ally.level}</span>` : ''}<span class="text-[8px] text-sky-300 border border-sky-800 rounded px-0.5 shrink-0">詳細</span>
                         </div>
                         <span class="text-[9px] text-amber-300 shrink-0">${job.moveTime}s</span>
                     </div>
@@ -6273,8 +6287,87 @@
                         <span>${ally.hp}/${ally.maxHp}</span>
                     </div>
                 `;
+                card.onclick = () => openBattleDetail(ally.id);
                 partyBar.appendChild(card);
             });
+        }
+
+        function showDragUnitIcon(ally) {
+            const img = document.getElementById('drag-unit-icon');
+            if (!img || !ally) return;
+            const src = ally.customIconData || (PRESET_ART[ally.presetArt] && PRESET_ART[ally.presetArt].icon) || '';
+            if (src) { img.src = src; img.classList.remove('invisible'); }
+        }
+        function hideDragUnitIcon() {
+            const img = document.getElementById('drag-unit-icon');
+            if (img) img.classList.add('invisible');
+        }
+        function openBattleDetail(allyId) {
+            const ally = state.allies.find(a => a.id === allyId);
+            if (!ally) return;
+            const job = JOB_CLASSES[ally.job] || JOB_CLASSES.warrior;
+            const pat = SKILL_PATTERNS[ally.skillPattern] || SKILL_PATTERNS.cross_slash;
+            const elem = ELEMENTS[ally.element] || ELEMENTS.fire;
+            const t = JOB_TRAITS[ally.job] || {};
+            const traits = [];
+            if (t.crit) traits.push(`クリティカル率${t.crit}%（ダメージ1.6倍）`);
+            if (t.slip) traits.push(`攻撃命中でスリップ付与（最大HPの${Math.round(t.slip * 100)}%／ターン・2ターン）`);
+            if (t.debuff) traits.push('攻撃命中で攻防ダウン付与（2ターン）');
+            if (t.pierce) traits.push('挟み撃ちが背後の敵まで貫通（80%）');
+            if (t.chainFull) traits.push('チェーン時も固有範囲・威力95%で発動');
+            if (t.delay) traits.push('命中した敵の攻撃カウントを+1遅延');
+            if (t.desperate) traits.push('背水：HP50%以下で与ダメージ1.3倍');
+            if (t.guard) traits.push('守護：隣接する味方の被ダメージ-25%');
+            if (t.drain) traits.push('吸収：与ダメージの20%を回復');
+            if (t.terrain) traits.push('地形特効：地形マス上の敵への攻撃+30%');
+            if (t.summon) traits.push('スキルで精霊を召喚（3ターン自動攻撃）');
+            if (t.terraform) traits.push('スキルで岩・トゲのマスを整地できる');
+            if (t.flying) traits.push('飛空移動：敵・岩・トゲを飛び越えて移動できる（トゲ無効）');
+            if (t.create) traits.push('スキルで魔力泉を生成できる');
+            if (t.trap) traits.push('スキルで地雷を設置できる');
+            if (t.warp) traits.push('スキルで仲間全員を自分の周囲へ転送できる');
+            if (t.necro) traits.push('敵を倒すと呪縛ゾーン（継続ダメージ）を残す');
+            if (t.bombSet) traits.push('スキルで時限ボムを設置できる');
+            if (t.persuade) traits.push('スキルでボス以外の敵を懐柔できる（強い敵ほど成功率低下・そのステージ限り味方になる）');
+            if (t.deathblow) traits.push('即死：攻撃命中時に15%の確率で敵を即死させる（ボスには無効）');
+            if (t.freeze) traits.push('凍結：命中時に25%の確率で敵を凍結させ、次の攻撃を封じる（ボスには無効）');
+            if (t.shock) traits.push('感電：命中時に25%の確率で敵を感電させ、次の攻撃を封じる（ボスには無効）');
+            if (t.dragonpet) traits.push('竜ペット：子竜が毎ターン自動で敵を攻撃する');
+            if (t.phoenix) traits.push('不死鳥：戦闘中一度だけ、倒れてもHP50%で復活する。復活時に周囲3×3へ爆炎（攻撃力×1.0の火ダメージ）');
+            if (t.counter) traits.push(`カウンター：攻撃を受けると攻撃力${Math.round(t.counter * 100)}%で即反撃する`);
+            if (t.dragonbane) traits.push('竜殺し：竜系の敵への全ダメージ1.6倍');
+            if (t.guard2) traits.push('鉄壁：隣接する味方の被ダメージを40%軽減する');
+            if (t.shieldbash) traits.push(`シールドバッシュ：受けたダメージの${Math.round(t.shieldbash * 100)}%を攻撃してきた敵に跳ね返す`);
+            if (t.steal) traits.push('ぶんどる：攻撃命中時に敵の攻撃力を奪う');
+            if (t.bunshin) traits.push('分身：ウェーブ開始時に分身を展開し、敵の攻撃を2回まで完全回避する');
+            if (t.debug) traits.push('デバッグ：チェーンでスキルが発動すると、近くの敵を即死させる（距離で確率低下・ボス無効）');
+            const status = [];
+            if (ally.buffAtk > 1) status.push(`攻撃強化中（×${ally.buffAtk}・あと${ally.buffTurns}ターン）`);
+            if ((ally.bunshin || 0) > 0) status.push(`分身×${ally.bunshin}（攻撃を完全回避）`);
+            if (state.spirit && state.spirit.ownerId === ally.id) status.push(`精霊が随行中（あと${state.spirit.turnsLeft}ターン）`);
+            if (state.pet && state.pet.ownerId === ally.id) status.push('子竜が随行中');
+            if (ally.job === 'orator' && state.charmed) status.push(`懐柔中：${state.charmed.name}`);
+            document.getElementById('battle-detail-content').innerHTML = `
+                <div class="flex gap-3">
+                    <div class="w-24 shrink-0 flex flex-col items-center">${charArtHtml(ally, 'max-h-44 w-auto object-contain')}</div>
+                    <div class="flex-1 min-w-0 text-xs">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-base font-black text-white">${ally.name}</span>
+                            <span class="text-[10px] text-amber-300">${ally.title || ''}</span>
+                            ${ally.level > 1 ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-400 text-black font-black">Lv${ally.level}</span>` : ''}
+                        </div>
+                        <div class="text-slate-300 mt-1">${job.badge} / ${elem.icon}${elem.name}属性 / ${WEAPONS[getWeaponOf(ally)].icon}${WEAPONS[getWeaponOf(ally)].name}</div>
+                        <div class="text-slate-400 mt-0.5">HP ${ally.hp}/${ally.maxHp} ・ ATK ${ally.atk} ・ 操作 ${job.moveTime}s ・ スキル発動率 ${getSkillRate(ally)}%</div>
+                        <div class="mt-1"><span class="text-sky-300 font-bold">『${ally.skillName}』</span> <span class="text-slate-400">${pat.name}：${pat.desc}</span></div>
+                        ${traits.length ? `<div class="mt-1 text-purple-300">特性：${traits.join(' ／ ')}</div>` : ''}
+                        ${status.length ? `<div class="mt-1 text-emerald-300">${status.join(' ／ ')}</div>` : ''}
+                        <div class="text-slate-500 mt-1.5 leading-relaxed">${job.desc}</div>
+                    </div>
+                </div>`;
+            document.getElementById('battle-detail-modal').classList.remove('hidden');
+        }
+        function closeBattleDetail() {
+            document.getElementById('battle-detail-modal').classList.add('hidden');
         }
 
         async function showTurnBanner(text, isEnemy) {
