@@ -1,4 +1,4 @@
-const CACHE = 'terra-tactics-ex-v120';
+const CACHE = 'terra-tactics-ex-v121';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => {
     e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));

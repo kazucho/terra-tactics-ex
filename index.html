@@ -2564,7 +2564,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.120';
+        const GAME_VERSION = '1.121';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3765,6 +3765,7 @@
 
             await sleep(durSec * 1000);
             overlay.classList.remove('active');
+            await sleep(140); // カットインが完全に消えてから次（着弾）を始める＝カットイン終了がトリガー
         }
 
         // ==========================================
@@ -4074,7 +4075,7 @@
                     });
                 }
                 renderUnits();
-                await sleepFx(360);
+                await sleepFx(430);
 
                 // 2. 参加キャラ（挟撃＋チェーン）が順番に全身カットイン＆広範囲ユニークスキル発動！
                 for (const ally of participants) {
@@ -4240,7 +4241,7 @@
                         });
                         renderUnits();
                         renderPartyBar();
-                        await sleepFx(340);
+                        await sleepFx(480);
                     } else if (skillInfo.type === 'terrain') {
                         playSE('skill_blast', 0.9);
                         let cleared = 0;
@@ -4268,7 +4269,7 @@
                             if (enemy.hp > 0) applyOnHitTraits(ally, enemy);
                         });
                         renderUnits();
-                        await sleepFx(340);
+                        await sleepFx(480);
                     } else if (skillInfo.type === 'create') {
                         playSE('heal');
                         let made = 0;
@@ -4426,7 +4427,7 @@
                             drainHeal(ally, dmg);
                         });
                         renderUnits();
-                        await sleepFx(340);
+                        await sleepFx(480);
                     } else {
                         playSE('skill_blast', 0.95);
                         boardEl.classList.add('board-shake');
@@ -4464,7 +4465,7 @@
                         });
 
                         renderUnits();
-                        await sleepFx(340);
+                        await sleepFx(480);
                     }
                 }
 
@@ -6286,7 +6287,7 @@
         }
         function queueHitReaction(unit, kind, color) {
             if (!unit || !unit.id) return;
-            pendingHitFx.set(unit.id, { kind: kind || 'slash', color: color || '#ffffff', until: Date.now() + 720 });
+            pendingHitFx.set(unit.id, { kind: kind || 'slash', color: color || '#ffffff', until: Date.now() + 1000 });
         }
         function applyPendingHitFx(el, unit) {
             const hfx = pendingHitFx.get(unit.id);
