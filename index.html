@@ -2557,7 +2557,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.118';
+        const GAME_VERSION = '1.119';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -6279,14 +6279,15 @@
         }
         function queueHitReaction(unit, kind) {
             if (!unit || !unit.id) return;
-            pendingHitFx.set(unit.id, { kind: kind || 'slash', t: Date.now() });
+            pendingHitFx.set(unit.id, { kind: kind || 'slash', until: Date.now() + 720 });
         }
         function applyPendingHitFx(el, unit) {
             const hfx = pendingHitFx.get(unit.id);
             if (!hfx) return;
-            pendingHitFx.delete(unit.id);
-            if (Date.now() - hfx.t > 1500) return;
+            if (Date.now() > hfx.until) { pendingHitFx.delete(unit.id); return; }
             el.classList.add('hit-' + hfx.kind);
+            if (el.dataset.hfxApplied) return;
+            el.dataset.hfxApplied = '1';
             if (hfx.kind === 'slash') {
                 const m1 = document.createElement('div'); m1.className = 'hit-mark slash s1'; el.appendChild(m1);
                 const m2 = document.createElement('div'); m2.className = 'hit-mark slash s2'; el.appendChild(m2);
@@ -6295,7 +6296,6 @@
                 const m = document.createElement('div'); m.className = 'hit-mark burst'; el.appendChild(m);
                 setTimeout(() => m.remove(), 420);
             }
-            setTimeout(() => el.classList.remove('hit-' + hfx.kind), 620);
         }
 
         function renderUnits() {
