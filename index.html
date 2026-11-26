@@ -2580,7 +2580,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.132';
+        const GAME_VERSION = '1.133';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3300,14 +3300,20 @@ const SE_AUDIO = {
             const cellH = rect.height / ROWS;
             let cx = clientX - rect.left;
             let cy = clientY - rect.top;
-            // 岩（瓦礫）の中心から51%の範囲は通過不可エリア：ドラッグ中の絵も岩を迂回して滑る（飛行の竜騎士リュカは除く）
+            // 通過不可マス（岩・瓦礫／敵）の中心から51%の範囲は進入禁止：ドラッグ中の絵も迂回して滑る（飛行の竜騎士リュカは除く）
             const du = state.draggingUnit;
             if (!(JOB_TRAITS[du.job] || {}).flying) {
+                const blocks = [];
+                (state.terrain || []).forEach(t => { if (t.type === 'rock') blocks.push({ x: t.x, y: t.y }); });
+                state.enemies.forEach(e => {
+                    if (e.hp <= 0) return;
+                    const sz = e.size || 1;
+                    for (let ex = 0; ex < sz; ex++) for (let ey = 0; ey < sz; ey++) blocks.push({ x: e.x + ex, y: e.y + ey });
+                });
+                const rx = cellW * 0.51, ry = cellH * 0.51;
                 for (let pass = 0; pass < 2; pass++) {
-                    (state.terrain || []).forEach(t => {
-                        if (t.type !== 'rock') return;
-                        const rx = cellW * 0.51, ry = cellH * 0.51;
-                        const ox = (t.x + 0.5) * cellW, oy = (t.y + 0.5) * cellH;
+                    blocks.forEach(b => {
+                        const ox = (b.x + 0.5) * cellW, oy = (b.y + 0.5) * cellH;
                         const dxn = (cx - ox) / rx, dyn = (cy - oy) / ry;
                         const d2 = dxn * dxn + dyn * dyn;
                         if (d2 < 1) {
