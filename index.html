@@ -572,7 +572,7 @@
             <div id="cutin-char-sub" class="inline-block bg-black/80 text-amber-300 border border-amber-400/60 px-3 py-0.5 rounded text-xs sm:text-sm font-bold tracking-wider mb-1 shadow-lg">
                 炎の魔導士 イグニス
             </div>
-            <div id="cutin-skill-title" class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-wide" style="-webkit-text-stroke: 1px rgba(0,0,0,0.85); text-shadow: 0 2px 0 rgba(0,0,0,0.6), 0 4px 14px rgba(0,0,0,0.95), 0 0 26px rgba(0,0,0,0.55);">
+            <div id="cutin-skill-title" class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-wide" style="text-shadow: 0 2px 0 rgba(0,0,0,0.65), 0 4px 14px rgba(0,0,0,0.95), 0 0 26px rgba(0,0,0,0.6);">
                 『インフェルノ・ピラー！』
             </div>
         </div>
@@ -2540,7 +2540,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.113';
+        const GAME_VERSION = '1.114';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3724,6 +3724,7 @@
             const kindLabel = ally._skillKind === 'C' ? 'CHAIN SKILL' : (ally._skillKind === 'P' ? 'PINCER SKILL' : '');
             subEl.innerHTML = `${ally._subLabel || jobInfo.name} ・ ${ally.name} ${wInfo.icon}${kindLabel ? ' ・ ' + kindLabel : ''}`;
             titleEl.textContent = `『${ally.skillName}！』`;
+            titleEl.style.color = (ELEMENTS[ally.element] || {}).color || '#ffffff';
 
             if (ally.customFullArtData) {
                 artBox.innerHTML = `<img src="${ally.customFullArtData}" alt="${ally.name}">`;
