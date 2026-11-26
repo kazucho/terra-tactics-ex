@@ -2590,7 +2590,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.148';
+        const GAME_VERSION = '1.149';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -5608,7 +5608,7 @@ const SE_AUDIO = {
                     awTween(700, p => { flash.style.opacity = String(1 - p); });
                     awTween(2600, p => { if (sImg) sImg.style.transform = 'scale(' + (1 + p * 0.06).toFixed(3) + ')'; });
                 }, 140);
-            }, 1400);
+            }, 2300);
             setTimeout(() => {
                 awTween(130, p => { flash.style.opacity = String(p); });
                 setTimeout(() => {
@@ -5635,6 +5635,7 @@ const SE_AUDIO = {
                 const awBeforeSrc = char.customFullArtData || aFx.full || '';
                 const awAfterSrc = char.customAwFullArtData || aFx.awFull || '';
                 const awakenCross = !!(result && result.type !== 'new' && fxFrom !== null && fxTo !== null && fxFrom < AWAKEN_LEVEL && fxTo >= AWAKEN_LEVEL && awBeforeSrc && awAfterSrc && awBeforeSrc !== awAfterSrc);
+                ov.classList.toggle('aw-mode', awakenCross);
                 if (awakenCross) {
                     runAwakeningFx(awBeforeSrc, awAfterSrc, (ELEMENTS[char.element] || {}).color || '#e8402f');
                 } else {
@@ -5687,6 +5688,7 @@ const SE_AUDIO = {
             const ov = document.getElementById('summon-overlay');
             if (!ov) return;
             const staleScene2 = document.getElementById('aw3-scene'); if (staleScene2) staleScene2.remove();
+            ov.classList.add('aw-mode');
             const book = document.getElementById('summon-book');
             if (book) book.style.display = 'none';
             runAwakeningFx(before, after, (ELEMENTS[char.element] || {}).color || '#e8402f');
@@ -7037,6 +7039,7 @@ const SE_AUDIO = {
         #summon-overlay.summon-play .summon-burst { animation: summonBurstAnim 1.1s ease-out 1.25s both; }
         #summon-overlay.summon-play .summon-rays { animation: summonSpinAnim 18s linear infinite, summonRaysAnim 0.9s ease-out 1.45s both; }
         #summon-overlay.summon-play .summon-art-wrap { animation: summonRevealAnim 0.85s cubic-bezier(0.2, 1.4, 0.4, 1) 1.5s both; }
+        #summon-overlay.aw-mode .summon-art-wrap { animation: none !important; opacity: 1 !important; transform: none !important; }
         #summon-overlay.summon-play .summon-banner { animation: summonBannerAnim 0.6s ease-out 2.05s both; }
         .summon-art-wrap, .summon-banner, .summon-burst, .summon-rays { opacity: 0; }
     </style>
