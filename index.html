@@ -2557,7 +2557,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.115';
+        const GAME_VERSION = '1.116';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -6110,7 +6110,7 @@
                 grantHiddenChar('k11');
                 return;
             }
-            if (field === 'name' && ch && ch.id === 's1' && String(value).trim() === 'とくせれんたぼーび') {
+            if (field === 'name' && ch && ch.id === 's1' && ['とくれせんたぼーび', 'とくせれんたぼーび'].includes(String(value).trim())) {
                 renderPartyEditor();
                 closePartyEditor();
                 openPuzzle();
