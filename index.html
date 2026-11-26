@@ -267,6 +267,23 @@
             80% { transform: translate(4px, 2px); }
         }
         .hit-shake { animation: hitShake 0.35s ease-in-out; }
+        @keyframes hitSlashK { 0% { transform: translate(0,0); } 18% { transform: translate(-7px, 2px); } 38% { transform: translate(5px, -1px); } 58% { transform: translate(-3px, 1px); } 100% { transform: translate(0,0); } }
+        @keyframes hitBluntK { 0% { transform: translateY(0) scale(1,1); } 16% { transform: translateY(5px) scale(1.07,0.88); } 34% { transform: translateY(-2px) scale(0.98,1.03); } 52% { transform: translateY(4px) scale(1.05,0.91); } 72% { transform: translateY(-1px) scale(1,1); } 100% { transform: translateY(0) scale(1,1); } }
+        @keyframes hitMagicK { 0% { transform: rotate(0deg) skewX(0deg); } 20% { transform: rotate(-2.4deg) skewX(3.2deg); } 45% { transform: rotate(1.9deg) skewX(-3.2deg); } 70% { transform: rotate(-1.2deg) skewX(1.6deg); } 100% { transform: rotate(0deg) skewX(0deg); } }
+        @keyframes hitFlashK { 0% { filter: brightness(2.8) saturate(0.3); } 28% { filter: brightness(1.8) saturate(0.6); } 55% { filter: brightness(2.2) saturate(0.4); } 100% { filter: brightness(1) saturate(1); } }
+        @keyframes hitHueK { 0% { filter: brightness(1.9) hue-rotate(0deg); } 35% { filter: brightness(1.5) hue-rotate(42deg); } 65% { filter: brightness(1.8) hue-rotate(-30deg); } 100% { filter: brightness(1) hue-rotate(0deg); } }
+        .hit-slash { animation: hitSlashK 0.34s ease-out; }
+        .hit-blunt { animation: hitBluntK 0.46s ease-out; }
+        .hit-magic { animation: hitMagicK 0.54s ease-in-out; }
+        .hit-slash .unit-inner img, .hit-blunt .unit-inner img { animation: hitFlashK 0.34s steps(1, end); }
+        .hit-magic .unit-inner img { animation: hitHueK 0.54s ease-in-out; }
+        .hit-mark { position: absolute; pointer-events: none; z-index: 30; }
+        .hit-mark.slash { left: 6%; width: 88%; height: 9%; border-radius: 9999px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.98) 42%, rgba(190,235,255,0.98) 55%, transparent); opacity: 0; }
+        .hit-mark.slash.s1 { top: 24%; animation: slashSweepK 0.26s ease-out forwards; }
+        .hit-mark.slash.s2 { top: 55%; animation: slashSweepK 0.26s ease-out 0.07s forwards; }
+        @keyframes slashSweepK { 0% { opacity: 0; transform: rotate(-30deg) translateX(-30%); } 25% { opacity: 1; } 100% { opacity: 0; transform: rotate(-30deg) translateX(24%); } }
+        .hit-mark.burst { left: 50%; top: 44%; width: 58%; aspect-ratio: 1; border-radius: 9999px; border: 3px solid rgba(255,240,200,0.95); box-shadow: 0 0 14px rgba(255,210,120,0.8) inset; opacity: 0; animation: burstK 0.36s ease-out forwards; }
+        @keyframes burstK { 0% { opacity: 0.95; transform: translate(-50%,-50%) scale(0.3); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(1.2); } }
 
         @keyframes boardShake {
             0%, 100% { transform: translate(0, 0); }
@@ -2540,7 +2557,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.114';
+        const GAME_VERSION = '1.115';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3835,6 +3852,7 @@
             const dmg = Math.round(sp.power * ((target.defDownT || 0) > 0 ? 1.25 : 1));
             const wasAlive = target.hp > 0;
             target.hp = Math.max(0, target.hp - dmg);
+            queueHitReaction(target, 'magic');
             if (wasAlive && target.hp <= 0) addCombo(1);
             showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `精霊 -${dmg}`, '#fcd34d', '15px');
             sp.turnsLeft--;
@@ -3863,6 +3881,7 @@
             const dmg = Math.round(pet.power * ((target.defDownT || 0) > 0 ? 1.25 : 1));
             const wasAlive = target.hp > 0;
             target.hp = Math.max(0, target.hp - dmg);
+            queueHitReaction(target, 'magic');
             if (wasAlive && target.hp <= 0) addCombo(1);
             showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `子竜 -${dmg}`, '#fdba74', '15px');
             renderUnits();
@@ -3883,6 +3902,7 @@
             const dmg = Math.round(ch.power * ((target.defDownT || 0) > 0 ? 1.25 : 1));
             const wasAlive = target.hp > 0;
             target.hp = Math.max(0, target.hp - dmg);
+            queueHitReaction(target, 'magic');
             if (wasAlive && target.hp <= 0) addCombo(1);
             showFloatingText(target.x + (target.size || 1) / 2, target.y + 0.1, `${ch.name} -${dmg}`, '#f9a8d4', '15px');
             renderUnits();
@@ -3900,6 +3920,7 @@
                     if (victim) {
                         exploded = true;
                         victim.hp = Math.max(0, victim.hp - b.power);
+                        queueHitReaction(victim, 'magic');
                         showFloatingText(b.x + 0.5, b.y, `爆発! -${b.power}`, '#fb923c', '17px');
                     }
                 }
@@ -4016,6 +4037,7 @@
                     const wasAliveD = enemy.hp > 0;
                     directTotal = Math.round(directTotal * chainMult * ((enemy.defDownT || 0) > 0 ? 1.25 : 1) * addCombo(1));
                     enemy.hp = Math.max(0, enemy.hp - directTotal);
+                    { const mainAtk = contributions.reduce((m, c) => (!m || c.contrib > m.contrib) ? c : m, null); if (mainAtk && directTotal > 0) queueHitReaction(enemy, hitKindOf(mainAtk.ally, false)); }
                     { const rawSum = contributions.reduce((s, c) => s + c.contrib, 0); if (rawSum > 0 && directTotal > 0) contributions.forEach(({ ally, contrib }) => drainHeal(ally, Math.round(directTotal * contrib / rawSum))); contributions.forEach(({ ally }) => placeCurse(ally, enemy)); }
                     if (wasAliveD && enemy.hp <= 0) addCombo(1);
                     playSE('skill_blast', 1.2);
@@ -4040,8 +4062,7 @@
                         behind.hp = Math.max(0, behind.hp - pd);
                         if (wasAliveP && behind.hp <= 0) addCombo(1);
                         showFloatingText(behind.x + (behind.size || 1) / 2, behind.y + 0.3, `貫通! -${pd}`, '#93c5fd', '14px');
-                        const bel = document.getElementById(`unit-${behind.id}`);
-                        if (bel) { bel.classList.add('hit-shake'); setTimeout(() => bel.classList.remove('hit-shake'), 360); }
+                        queueHitReaction(behind, 'slash');
                         renderUnits();
                     });
                 }
@@ -4398,11 +4419,7 @@
                             const wasAliveS = enemy.hp > 0;
                             enemy.hp = Math.max(0, enemy.hp - dmg);
                             if (wasAliveS && enemy.hp <= 0) { addCombo(1); placeCurse(ally, enemy); }
-                            const el2 = document.getElementById(`unit-${enemy.id}`);
-                            if (el2) {
-                                el2.classList.add('hit-shake');
-                                setTimeout(() => el2.classList.remove('hit-shake'), 360);
-                            }
+                            queueHitReaction(enemy, hitKindOf(ally, true));
                             const cx = enemy.x + (enemy.size || 1) / 2;
                             const cy = enemy.y + (enemy.size || 1) / 2;
                             showFloatingText(cx, cy - 0.2, `全属性開放! -${dmg}`, '#f0abfc', '21px');
@@ -4438,11 +4455,7 @@
                             const wasAliveS = enemy.hp > 0;
                             enemy.hp = Math.max(0, enemy.hp - dmg);
                             if (wasAliveS && enemy.hp <= 0) { addCombo(1); placeCurse(ally, enemy); }
-                            const el = document.getElementById(`unit-${enemy.id}`);
-                            if (el) {
-                                el.classList.add('hit-shake');
-                                setTimeout(() => el.classList.remove('hit-shake'), 360);
-                            }
+                            queueHitReaction(enemy, hitKindOf(ally, true));
                             const cx = enemy.x + (enemy.size || 1) / 2;
                             const cy = enemy.y + (enemy.size || 1) / 2;
                             const label = critS ? `CRITICAL! -${dmg}` : (elemMult > 1 ? `WEAK! -${dmg}` : `-${dmg}`);
@@ -4831,11 +4844,7 @@
                             }
                             if (!hitAllies.includes(ally)) hitAllies.push(ally);
 
-                            const allyEl = document.getElementById(`unit-${ally.id}`);
-                            if (allyEl) {
-                                allyEl.classList.add('hit-shake');
-                                setTimeout(() => allyEl.classList.remove('hit-shake'), 350);
-                            }
+                            queueHitReaction(ally, hitKindOf(enemy, true));
                         }
                     });
 
@@ -6266,6 +6275,37 @@
                 : `<img src="${p.icon}" class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover" style="box-shadow: 0 0 18px rgba(255,255,255,0.65);"${tint}>`;
         }
 
+        const pendingHitFx = new Map();
+        function hitKindOf(attacker, isSkill) {
+            if (!attacker) return 'slash';
+            const w = getWeaponOf(attacker);
+            const casters = ['mage_fire', 'mage_ice', 'mage_thunder', 'mage_wind', 'blackmage', 'whitemage', 'timemage', 'summoner', 'necromancer', 'warper', 'gravitymage', 'archmage', 'geomancer', 'healer', 'bard', 'pharmacist', 'alchemist'];
+            if (isSkill && (w === 'staff' || w === 'fan' || casters.includes(attacker.job))) return 'magic';
+            if (w === 'hammer' || w === 'fist') return 'blunt';
+            if (w === 'staff' || w === 'fan') return 'blunt';
+            return 'slash';
+        }
+        function queueHitReaction(unit, kind) {
+            if (!unit || !unit.id) return;
+            pendingHitFx.set(unit.id, { kind: kind || 'slash', t: Date.now() });
+        }
+        function applyPendingHitFx(el, unit) {
+            const hfx = pendingHitFx.get(unit.id);
+            if (!hfx) return;
+            pendingHitFx.delete(unit.id);
+            if (Date.now() - hfx.t > 1500) return;
+            el.classList.add('hit-' + hfx.kind);
+            if (hfx.kind === 'slash') {
+                const m1 = document.createElement('div'); m1.className = 'hit-mark slash s1'; el.appendChild(m1);
+                const m2 = document.createElement('div'); m2.className = 'hit-mark slash s2'; el.appendChild(m2);
+                setTimeout(() => { m1.remove(); m2.remove(); }, 480);
+            } else if (hfx.kind === 'blunt') {
+                const m = document.createElement('div'); m.className = 'hit-mark burst'; el.appendChild(m);
+                setTimeout(() => m.remove(), 420);
+            }
+            setTimeout(() => el.classList.remove('hit-' + hfx.kind), 620);
+        }
+
         function renderUnits() {
             const ghosts = [];
             for (const [u, info] of prevAliveMap) {
@@ -6309,6 +6349,7 @@
                         </div>
                     </div>
                 `;
+                applyPendingHitFx(el, ally);
                 unitLayer.appendChild(el);
             });
 
@@ -6352,6 +6393,7 @@
                         </div>
                     </div>
                 `;
+                applyPendingHitFx(el, enemy);
                 unitLayer.appendChild(el);
             });
 
