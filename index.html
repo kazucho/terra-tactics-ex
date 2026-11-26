@@ -2580,7 +2580,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.144';
+        const GAME_VERSION = '1.145';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -5551,7 +5551,7 @@ const SE_AUDIO = {
             savePartyToStorage();
             await playSummonSequence(picked, result);
         }
-        // 覚醒演出（シネマティック版）：CSSアニメに頼らずJSで段階を踏む
+        // 覚醒演出（最小構成）：通常絵をそのまま見せ、閃光を挟んで覚醒絵へ切り替える
         function awTween(dur, fn) {
             const t0 = performance.now();
             const step = () => {
@@ -5561,55 +5561,31 @@ const SE_AUDIO = {
             };
             requestAnimationFrame(step);
         }
-        function runAwakeningFx(before, after, color) {
+        function runAwakeningFx(before, after) {
             const artEl = document.getElementById('summon-art');
-            if (!artEl) return;
-            const fadeEls = ['summon-tag', 'summon-name', 'summon-job', 'summon-sub'].map(id => document.getElementById(id)).filter(Boolean);
-            fadeEls.forEach(el => { el.style.opacity = '0'; });
-            const sparks = [[12, 70], [24, 82], [38, 64], [50, 86], [63, 68], [74, 84], [86, 72], [18, 88], [44, 78], [68, 90], [82, 62], [30, 92]];
-            const sparksHtml = sparks.map(s => '<span class="aw2-spark" style="left:' + s[0] + '%; top:' + s[1] + '%;"></span>').join('');
-            artEl.innerHTML = `<div id="aw2-wrap" style="position:relative; display:inline-block;">
-                <div id="aw2-aura" style="position:absolute; inset:-16% -24%; border-radius:50%; opacity:0; background:conic-gradient(from 0deg, transparent 0deg, ${color}66 45deg, transparent 95deg, ${color}66 155deg, transparent 205deg, ${color}66 265deg, transparent 315deg); filter:blur(7px); pointer-events:none;"></div>
-                <img id="aw2-before" src="${before}" class="max-h-[52vh] w-auto object-contain" style="position:relative; opacity:0; filter:brightness(.5) saturate(.55);">
+            const ov = document.getElementById('summon-overlay');
+            if (!artEl || !ov) return;
+            artEl.innerHTML = `<div style="position:relative; display:inline-block;">
+                <img id="aw2-before" src="${before}" class="max-h-[52vh] w-auto object-contain" style="position:relative;">
                 <img id="aw2-after" src="${after}" class="max-h-[52vh] w-auto object-contain" style="position:absolute; inset:0; margin:auto; opacity:0;">
-                <svg id="aw2-cracks" viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute; inset:-8% -12%; width:124%; height:116%; opacity:0; pointer-events:none; filter:drop-shadow(0 0 3px rgba(245,158,11,.9));"><g fill="none" stroke="#fcd34d" stroke-width="0.7"><path d="M50 48 L57 37 L54 29 L63 18"/><path d="M50 48 L41 39 L43 29 L35 20"/><path d="M50 48 L61 54 L71 51 L79 59"/><path d="M50 48 L39 57 L29 57 L21 65"/><path d="M50 48 L52 63 L48 73 L54 83"/><path d="M50 48 L46 62 L50 72 L44 82"/></g></svg>
-                <div id="aw2-sparks" style="position:absolute; inset:0; opacity:0; pointer-events:none;">${sparksHtml}</div>
-                <div id="aw2-slam" style="position:absolute; left:50%; bottom:-6px; transform:translateX(-50%) scale(2.3); opacity:0; font-weight:900; letter-spacing:.4em; font-size:32px; color:#fde68a; text-shadow:0 0 16px rgba(251,191,36,.95), 0 0 42px rgba(251,191,36,.55), 0 2px 0 rgba(120,53,15,.85); white-space:nowrap; z-index:3;">覚　醒</div>
-            </div>
-            <div id="aw2-flash" style="position:fixed; inset:0; background:radial-gradient(circle, #fffbe8 0%, #fde68a 52%, rgba(253,230,138,0) 78%); opacity:0; pointer-events:none; z-index:39;"></div>
-            <div id="aw2-bar-t" style="position:fixed; left:0; right:0; top:0; height:0; background:#000; z-index:40; pointer-events:none;"></div>
-            <div id="aw2-bar-b" style="position:fixed; left:0; right:0; bottom:0; height:0; background:#000; z-index:40; pointer-events:none;"></div>`;
-            const G = id => document.getElementById(id);
-            const wrap = G('aw2-wrap'), bImg = G('aw2-before'), aImg = G('aw2-after'), aura = G('aw2-aura'), cracks = G('aw2-cracks'), sparksEl = G('aw2-sparks'), slam = G('aw2-slam'), flash = G('aw2-flash'), barT = G('aw2-bar-t'), barB = G('aw2-bar-b');
-            awTween(320, p => { const h = (p * 7).toFixed(2) + 'vh'; if (barT) barT.style.height = h; if (barB) barB.style.height = h; });
-            awTween(380, p => { if (bImg) bImg.style.opacity = String(p); });
-            setTimeout(() => awTween(1150, p => { if (bImg) { bImg.style.transform = 'scale(' + (1 + p * 0.07).toFixed(3) + ')'; bImg.style.filter = 'brightness(' + (0.5 - p * 0.1).toFixed(2) + ') saturate(.55)'; } }), 350);
-            setTimeout(() => {
-                awTween(200, p => { if (cracks) cracks.style.opacity = String(p * 0.95); });
-                let n = 0;
-                const jit = setInterval(() => {
-                    n++;
-                    if (wrap) wrap.style.transform = 'translate(' + (Math.random() * 4 - 2).toFixed(1) + 'px, ' + (Math.random() * 3 - 1.5).toFixed(1) + 'px)';
-                    if (n > 6) { clearInterval(jit); if (wrap) wrap.style.transform = ''; }
-                }, 40);
-            }, 1500);
+                <div id="aw2-label" style="position:absolute; left:50%; bottom:5%; transform:translateX(-50%); padding:2px 18px; border-radius:9999px; background:linear-gradient(90deg, #a21caf, #d946ef, #a21caf); color:#fff; font-weight:900; letter-spacing:.5em; font-size:15px; white-space:nowrap; opacity:0; box-shadow:0 0 22px rgba(217,70,239,.8);">覚　醒</div>
+            </div>`;
+            let flash = document.getElementById('aw2-flash');
+            if (!flash) { flash = document.createElement('div'); flash.id = 'aw2-flash'; ov.appendChild(flash); }
+            flash.style.cssText = 'position:absolute; inset:0; background:radial-gradient(circle, #fffbe8 0%, #fde68a 52%, rgba(253,230,138,0) 78%); opacity:0; pointer-events:none; z-index:30;';
+            const bImg = document.getElementById('aw2-before'), aImg = document.getElementById('aw2-after'), label = document.getElementById('aw2-label');
+            awTween(1600, p => { if (bImg) bImg.style.transform = 'scale(' + (1 + p * 0.03).toFixed(3) + ')'; });
             setTimeout(() => {
                 playFanfare();
-                awTween(110, p => { if (flash) flash.style.opacity = String(p); });
+                awTween(130, p => { flash.style.opacity = String(p); });
                 setTimeout(() => {
                     if (bImg) bImg.style.opacity = '0';
-                    if (aImg) { aImg.style.opacity = '1'; aImg.style.transform = 'scale(1.14)'; }
-                    awTween(750, p => { if (aImg) aImg.style.transform = 'scale(' + (1.14 - p * 0.09).toFixed(3) + ')'; });
-                    awTween(650, p => { if (flash) flash.style.opacity = String(1 - p); });
-                    awTween(900, p => { if (cracks) cracks.style.opacity = String(0.95 * (1 - p)); });
-                    awTween(2400, p => { if (aura) { aura.style.opacity = String(Math.min(0.9, p * 1.4)); aura.style.transform = 'rotate(' + (p * 55).toFixed(1) + 'deg)'; } });
-                    awTween(1500, p => { if (sparksEl) { sparksEl.style.opacity = String(Math.sin(Math.min(1, p) * Math.PI) * 0.95); sparksEl.style.transform = 'translateY(' + (-p * 26).toFixed(1) + 'px)'; } });
-                }, 120);
-            }, 1800);
-            setTimeout(() => {
-                awTween(180, p => { if (slam) { const e = 1 - Math.pow(1 - p, 3); slam.style.opacity = String(e); slam.style.transform = 'translateX(-50%) scale(' + (2.3 - e * 1.3).toFixed(2) + ')'; } });
-            }, 2450);
-            setTimeout(() => awTween(420, p => fadeEls.forEach(el => { el.style.opacity = String(p); })), 2700);
+                    if (aImg) { aImg.style.opacity = '1'; aImg.style.transform = 'scale(1.07)'; }
+                    if (label) awTween(300, p => { label.style.opacity = String(p); });
+                    awTween(650, p => { flash.style.opacity = String(1 - p); });
+                    awTween(650, p => { if (aImg) aImg.style.transform = 'scale(' + (1.07 - p * 0.07).toFixed(3) + ')'; });
+                }, 140);
+            }, 1500);
         }
 
         function playSummonSequence(char, result) {
@@ -5626,7 +5602,7 @@ const SE_AUDIO = {
                 const awAfterSrc = char.customAwFullArtData || aFx.awFull || '';
                 const awakenCross = !!(result && result.type !== 'new' && fxFrom !== null && fxTo !== null && fxFrom < AWAKEN_LEVEL && fxTo >= AWAKEN_LEVEL && awBeforeSrc && awAfterSrc && awBeforeSrc !== awAfterSrc);
                 if (awakenCross) {
-                    runAwakeningFx(awBeforeSrc, awAfterSrc, (ELEMENTS[char.element] || {}).color || '#fbbf24');
+                    runAwakeningFx(awBeforeSrc, awAfterSrc);
                 } else {
                     document.getElementById('summon-art').innerHTML = charArtHtml(char, 'max-h-[44vh] w-auto object-contain');
                 }
@@ -5661,8 +5637,8 @@ const SE_AUDIO = {
                     ['summon-tag', 'summon-name', 'summon-job', 'summon-sub'].forEach(id => { const el = document.getElementById(id); if (el) el.style.opacity = ''; });
                     resolve();
                 };
-                ov.onclick = () => { if (Date.now() - startedAt > (awakenCross ? 3100 : 1400)) finish(); };
-                setTimeout(finish, awakenCross ? 8500 : 6500);
+                ov.onclick = () => { if (Date.now() - startedAt > (awakenCross ? 2300 : 1400)) finish(); };
+                setTimeout(finish, awakenCross ? 7000 : 6500);
             });
         }
 
@@ -5678,7 +5654,7 @@ const SE_AUDIO = {
             if (!ov) return;
             const book = document.getElementById('summon-book');
             if (book) book.style.display = 'none';
-            runAwakeningFx(before, after, (ELEMENTS[char.element] || {}).color || '#fbbf24');
+            runAwakeningFx(before, after);
             document.getElementById('summon-name').textContent = char.name;
             const job = JOB_CLASSES[char.job] || JOB_CLASSES.warrior;
             document.getElementById('summon-job').textContent = `${char.title || ''} ／ ${job.name}`;
@@ -5691,8 +5667,8 @@ const SE_AUDIO = {
             const startedAt = Date.now();
             let done = false;
             const finish = () => { if (done) return; done = true; ov.classList.add('hidden'); ov.classList.remove('flex'); ov.onclick = null; ['summon-tag', 'summon-name', 'summon-job', 'summon-sub'].forEach(id => { const el = document.getElementById(id); if (el) el.style.opacity = ''; }); };
-            ov.onclick = () => { if (Date.now() - startedAt > 3100) finish(); };
-            setTimeout(finish, 8500);
+            ov.onclick = () => { if (Date.now() - startedAt > 2300) finish(); };
+            setTimeout(finish, 7000);
         }
 
         let collectionFocusId = null;
