@@ -438,9 +438,9 @@
         /* 覚醒キャラ専用カットイン：通常カットインとは別演出（挿し絵を画面いっぱいに使う） */
         #cutin-overlay.aw-cutin .cutin-backdrop { background: #000; }
         #cutin-overlay.aw-cutin .cutin-band { display: none; }
-        #cutin-overlay.aw-cutin .cutin-art-wrapper { left: 0; right: 0; top: 0; bottom: 0; width: 100%; height: 100%; max-width: none; filter: none; }
-        #cutin-overlay.active.aw-cutin .cutin-art-wrapper { animation: awArtZoom var(--cutin-dur, 0.9s) cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes awArtZoom { 0% { transform: scale(1.13); opacity: 0; } 14% { opacity: 1; } 82% { transform: scale(1.0); opacity: 1; } 100% { transform: scale(0.99); opacity: 0; } }
+        #cutin-overlay.aw-cutin .cutin-art-wrapper { left: 0; right: 0; top: 0; bottom: 0; width: 100%; height: 100%; max-width: none; filter: none; align-items: center; }
+        #cutin-overlay.active.aw-cutin .cutin-art-wrapper { animation: awArtFade var(--cutin-dur, 0.9s) cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes awArtFade { 0% { opacity: 0; } 14% { opacity: 1; } 82% { opacity: 1; } 100% { opacity: 0; } }
         #cutin-overlay.aw-cutin .cutin-text-box { left: 0; right: 0; bottom: 8%; max-width: none; text-align: center; background: linear-gradient(transparent, rgba(0,0,0,0.55) 32%, rgba(0,0,0,0.55) 68%, transparent); padding: 20px 10px; }
         #cutin-overlay.aw-cutin #cutin-skill-title { font-size: clamp(34px, 9.5vw, 58px); }
 
@@ -2590,7 +2590,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.147';
+        const GAME_VERSION = '1.148';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3831,7 +3831,7 @@ const SE_AUDIO = {
             overlay.classList.toggle('aw-cutin', isAwCutin);
             if (isAwCutin) {
                 const awSrc = ally.customAwFullArtData || AWAKEN_FX_ART;
-                artBox.innerHTML = `<img src="${awSrc}" alt="${ally.name}" style="width:100%; height:100%; object-fit:cover; object-position:60% 42%;">`;
+                artBox.innerHTML = `<img src="${awSrc}" alt="${ally.name}" style="width:100%; height:auto; max-height:62vh; object-fit:contain;">`;
             } else {
                 const cutinSrc = fullSrcOf(ally);
                 if (cutinSrc) {
@@ -5597,13 +5597,13 @@ const SE_AUDIO = {
             scene.innerHTML = `<div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">覚</div><img id="aw3-img" src="${AWAKEN_FX_ART}" style="width:100%; max-height:54vh; object-fit:cover; display:block;"><div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">醒</div>`;
             ov.appendChild(scene);
             const bImg = document.getElementById('aw2-before'), aImg = document.getElementById('aw2-after'), label = document.getElementById('aw2-label'), sImg = document.getElementById('aw3-img');
-            awTween(450, p => { if (bImg) bImg.style.opacity = String(p); });
-            awTween(1500, p => { if (bImg) bImg.style.transform = 'scale(' + (1 + p * 0.03).toFixed(3) + ')'; });
+            setTimeout(() => awTween(600, p => { if (bImg) bImg.style.opacity = String(p); }), 100);
+            awTween(2100, p => { if (bImg) bImg.style.transform = 'scale(' + (1 + p * 0.03).toFixed(3) + ')'; });
+            setTimeout(() => awTween(550, p => { if (bImg) bImg.style.opacity = String(1 - p); }), 1700);
             setTimeout(() => {
                 playFanfare();
                 awTween(130, p => { flash.style.opacity = String(p); });
                 setTimeout(() => {
-                    awTween(350, p => { if (bImg) bImg.style.opacity = String(1 - p); });
                     scene.style.opacity = '1';
                     awTween(700, p => { flash.style.opacity = String(1 - p); });
                     awTween(2600, p => { if (sImg) sImg.style.transform = 'scale(' + (1 + p * 0.06).toFixed(3) + ')'; });
@@ -5618,7 +5618,7 @@ const SE_AUDIO = {
                     awTween(650, p => { flash.style.opacity = String(1 - p); });
                     awTween(650, p => { if (aImg) aImg.style.transform = 'scale(' + (1.07 - p * 0.07).toFixed(3) + ')'; });
                 }, 140);
-            }, 3900);
+            }, 4800);
         }
 
         function playSummonSequence(char, result) {
@@ -5671,8 +5671,8 @@ const SE_AUDIO = {
                     ['summon-tag', 'summon-name', 'summon-job', 'summon-sub'].forEach(id => { const el = document.getElementById(id); if (el) el.style.opacity = ''; });
                     resolve();
                 };
-                ov.onclick = () => { if (Date.now() - startedAt > (awakenCross ? 6100 : 1400)) finish(); };
-                setTimeout(finish, awakenCross ? 12500 : 6500);
+                ov.onclick = () => { if (Date.now() - startedAt > (awakenCross ? 7000 : 1400)) finish(); };
+                setTimeout(finish, awakenCross ? 13500 : 6500);
             });
         }
 
@@ -5702,8 +5702,8 @@ const SE_AUDIO = {
             const startedAt = Date.now();
             let done = false;
             const finish = () => { if (done) return; done = true; ov.classList.add('hidden'); ov.classList.remove('flex'); ov.onclick = null; ['summon-tag', 'summon-name', 'summon-job', 'summon-sub'].forEach(id => { const el = document.getElementById(id); if (el) el.style.opacity = ''; }); };
-            ov.onclick = () => { if (Date.now() - startedAt > 6100) finish(); };
-            setTimeout(finish, 12500);
+            ov.onclick = () => { if (Date.now() - startedAt > 7000) finish(); };
+            setTimeout(finish, 13500);
         }
 
         let collectionFocusId = null;
