@@ -435,6 +435,15 @@
             object-fit: contain;
         }
 
+        /* 覚醒キャラ専用カットイン：通常カットインとは別演出（挿し絵を画面いっぱいに使う） */
+        #cutin-overlay.aw-cutin .cutin-backdrop { background: #000; }
+        #cutin-overlay.aw-cutin .cutin-band { display: none; }
+        #cutin-overlay.aw-cutin .cutin-art-wrapper { left: 0; right: 0; top: 0; bottom: 0; width: 100%; height: 100%; max-width: none; filter: none; }
+        #cutin-overlay.active.aw-cutin .cutin-art-wrapper { animation: awArtZoom var(--cutin-dur, 0.9s) cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes awArtZoom { 0% { transform: scale(1.13); opacity: 0; } 14% { opacity: 1; } 82% { transform: scale(1.0); opacity: 1; } 100% { transform: scale(0.99); opacity: 0; } }
+        #cutin-overlay.aw-cutin .cutin-text-box { left: 0; right: 0; bottom: 8%; max-width: none; text-align: center; background: linear-gradient(transparent, rgba(0,0,0,0.55) 32%, rgba(0,0,0,0.55) 68%, transparent); padding: 20px 10px; }
+        #cutin-overlay.aw-cutin #cutin-skill-title { font-size: clamp(34px, 9.5vw, 58px); }
+
         /* スキル名テロップ */
         .cutin-text-box {
             position: absolute;
@@ -2581,7 +2590,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.146';
+        const GAME_VERSION = '1.147';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3818,11 +3827,18 @@ const SE_AUDIO = {
             titleEl.textContent = `『${ally.skillName}！』`;
             titleEl.style.color = (ELEMENTS[ally.element] || {}).color || '#ffffff';
 
-            const cutinSrc = fullSrcOf(ally);
-            if (cutinSrc) {
-                artBox.innerHTML = `<img src="${cutinSrc}" alt="${ally.name}">`;
+            const isAwCutin = isAwakened(ally);
+            overlay.classList.toggle('aw-cutin', isAwCutin);
+            if (isAwCutin) {
+                const awSrc = ally.customAwFullArtData || AWAKEN_FX_ART;
+                artBox.innerHTML = `<img src="${awSrc}" alt="${ally.name}" style="width:100%; height:100%; object-fit:cover; object-position:60% 42%;">`;
             } else {
-                artBox.innerHTML = getBuiltInFullBodySVG(ally.presetArt || 'knight');
+                const cutinSrc = fullSrcOf(ally);
+                if (cutinSrc) {
+                    artBox.innerHTML = `<img src="${cutinSrc}" alt="${ally.name}">`;
+                } else {
+                    artBox.innerHTML = getBuiltInFullBodySVG(ally.presetArt || 'knight');
+                }
             }
 
             overlay.classList.remove('active');
@@ -5562,13 +5578,13 @@ const SE_AUDIO = {
             };
             requestAnimationFrame(step);
         }
-        function runAwakeningFx(before, after) {
+        function runAwakeningFx(before, after, color) {
             const artEl = document.getElementById('summon-art');
             const ov = document.getElementById('summon-overlay');
             if (!artEl || !ov) return;
             const oldScene = document.getElementById('aw3-scene'); if (oldScene) oldScene.remove();
             artEl.innerHTML = `<div style="position:relative; display:inline-block;">
-                <img id="aw2-before" src="${before}" class="max-h-[52vh] w-auto object-contain" style="position:relative;">
+                <img id="aw2-before" src="${before}" class="max-h-[52vh] w-auto object-contain" style="position:relative; opacity:0;">
                 <img id="aw2-after" src="${after}" class="max-h-[52vh] w-auto object-contain" style="position:absolute; inset:0; margin:auto; opacity:0;">
                 <div id="aw2-label" style="position:absolute; left:50%; bottom:5%; transform:translateX(-50%); padding:2px 18px; border-radius:9999px; background:linear-gradient(90deg, #a21caf, #d946ef, #a21caf); color:#fff; font-weight:900; letter-spacing:.5em; font-size:15px; white-space:nowrap; opacity:0; box-shadow:0 0 22px rgba(217,70,239,.8);">覚　醒</div>
             </div>`;
@@ -5578,15 +5594,16 @@ const SE_AUDIO = {
             const scene = document.createElement('div');
             scene.id = 'aw3-scene';
             scene.style.cssText = 'position:absolute; inset:0; background:#000; z-index:25; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; pointer-events:none; overflow:hidden;';
-            scene.innerHTML = `<div class="aw3-kanji">覚</div><img id="aw3-img" src="${AWAKEN_FX_ART}" style="width:100%; max-height:54vh; object-fit:cover; display:block;"><div class="aw3-kanji">醒</div>`;
+            scene.innerHTML = `<div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">覚</div><img id="aw3-img" src="${AWAKEN_FX_ART}" style="width:100%; max-height:54vh; object-fit:cover; display:block;"><div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">醒</div>`;
             ov.appendChild(scene);
             const bImg = document.getElementById('aw2-before'), aImg = document.getElementById('aw2-after'), label = document.getElementById('aw2-label'), sImg = document.getElementById('aw3-img');
+            awTween(450, p => { if (bImg) bImg.style.opacity = String(p); });
             awTween(1500, p => { if (bImg) bImg.style.transform = 'scale(' + (1 + p * 0.03).toFixed(3) + ')'; });
             setTimeout(() => {
                 playFanfare();
                 awTween(130, p => { flash.style.opacity = String(p); });
                 setTimeout(() => {
-                    if (bImg) bImg.style.opacity = '0';
+                    awTween(350, p => { if (bImg) bImg.style.opacity = String(1 - p); });
                     scene.style.opacity = '1';
                     awTween(700, p => { flash.style.opacity = String(1 - p); });
                     awTween(2600, p => { if (sImg) sImg.style.transform = 'scale(' + (1 + p * 0.06).toFixed(3) + ')'; });
@@ -5619,7 +5636,7 @@ const SE_AUDIO = {
                 const awAfterSrc = char.customAwFullArtData || aFx.awFull || '';
                 const awakenCross = !!(result && result.type !== 'new' && fxFrom !== null && fxTo !== null && fxFrom < AWAKEN_LEVEL && fxTo >= AWAKEN_LEVEL && awBeforeSrc && awAfterSrc && awBeforeSrc !== awAfterSrc);
                 if (awakenCross) {
-                    runAwakeningFx(awBeforeSrc, awAfterSrc);
+                    runAwakeningFx(awBeforeSrc, awAfterSrc, (ELEMENTS[char.element] || {}).color || '#e8402f');
                 } else {
                     document.getElementById('summon-art').innerHTML = charArtHtml(char, 'max-h-[44vh] w-auto object-contain');
                 }
@@ -5654,8 +5671,8 @@ const SE_AUDIO = {
                     ['summon-tag', 'summon-name', 'summon-job', 'summon-sub'].forEach(id => { const el = document.getElementById(id); if (el) el.style.opacity = ''; });
                     resolve();
                 };
-                ov.onclick = () => { if (Date.now() - startedAt > (awakenCross ? 4400 : 1400)) finish(); };
-                setTimeout(finish, awakenCross ? 9500 : 6500);
+                ov.onclick = () => { if (Date.now() - startedAt > (awakenCross ? 6100 : 1400)) finish(); };
+                setTimeout(finish, awakenCross ? 12500 : 6500);
             });
         }
 
@@ -5672,7 +5689,7 @@ const SE_AUDIO = {
             const staleScene2 = document.getElementById('aw3-scene'); if (staleScene2) staleScene2.remove();
             const book = document.getElementById('summon-book');
             if (book) book.style.display = 'none';
-            runAwakeningFx(before, after);
+            runAwakeningFx(before, after, (ELEMENTS[char.element] || {}).color || '#e8402f');
             document.getElementById('summon-name').textContent = char.name;
             const job = JOB_CLASSES[char.job] || JOB_CLASSES.warrior;
             document.getElementById('summon-job').textContent = `${char.title || ''} ／ ${job.name}`;
@@ -5685,8 +5702,8 @@ const SE_AUDIO = {
             const startedAt = Date.now();
             let done = false;
             const finish = () => { if (done) return; done = true; ov.classList.add('hidden'); ov.classList.remove('flex'); ov.onclick = null; ['summon-tag', 'summon-name', 'summon-job', 'summon-sub'].forEach(id => { const el = document.getElementById(id); if (el) el.style.opacity = ''; }); };
-            ov.onclick = () => { if (Date.now() - startedAt > 4400) finish(); };
-            setTimeout(finish, 9500);
+            ov.onclick = () => { if (Date.now() - startedAt > 6100) finish(); };
+            setTimeout(finish, 12500);
         }
 
         let collectionFocusId = null;
@@ -7044,7 +7061,7 @@ const SE_AUDIO = {
         .awfx-aw { position: absolute; inset: 0; margin: auto; opacity: 0; animation: awfxIn 0.9s ease 1.05s forwards; }
         .awfx-flash { position: absolute; inset: -12%; pointer-events: none; opacity: 0; background: radial-gradient(circle, rgba(255,255,255,0.98) 0%, rgba(253,224,71,0.75) 38%, rgba(217,70,239,0.35) 62%, transparent 75%); animation: awfxFlash 0.85s ease 0.95s forwards; }
         .awfx-label { position: absolute; left: 50%; bottom: 5%; transform: translateX(-50%); padding: 2px 18px; border-radius: 9999px; background: linear-gradient(90deg, #a21caf, #d946ef, #a21caf); color: #fff; font-weight: 900; letter-spacing: 0.5em; font-size: 15px; white-space: nowrap; opacity: 0; box-shadow: 0 0 22px rgba(217,70,239,0.8); animation: awfxLabel 0.5s ease 1.55s forwards; }
-        .aw3-kanji { font-family: 'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Yu Mincho', 'YuMincho', serif; font-weight: 900; font-size: 46px; line-height: 1.3; color: #e8402f; text-shadow: 0 0 14px rgba(255,64,32,.55), 0 0 34px rgba(255,64,32,.25), 0 2px 0 rgba(0,0,0,.65); }
+        .aw3-kanji { font-family: 'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Yu Mincho', 'YuMincho', serif; font-weight: 900; font-size: 68px; line-height: 1.3; color: #e8402f; text-shadow: 0 0 14px rgba(255,64,32,.55), 0 0 34px rgba(255,64,32,.25), 0 2px 0 rgba(0,0,0,.65); }
         .aw2-spark { position: absolute; width: 5px; height: 5px; border-radius: 9999px; background: #fde68a; box-shadow: 0 0 8px 2px rgba(253,224,71,.75); }
         @keyframes awfxIn { from { opacity: 0; transform: scale(1.05); filter: brightness(2.4); } to { opacity: 1; transform: scale(1); filter: brightness(1); } }
         @keyframes awfxFlash { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
