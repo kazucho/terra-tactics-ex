@@ -289,17 +289,18 @@
         .hit-slash .unit-inner img, .hit-blunt .unit-inner img { animation: hitFlashK 0.34s steps(1, end); }
         .hit-magic .unit-inner img { animation: hitHueK 0.54s ease-in-out; }
         .hit-mark { position: absolute; pointer-events: none; z-index: 30; }
-        .hit-mark.fx { inset: 0; width: 100%; height: 100%; }
+        .hit-mark.fx { inset: 0; width: 100%; height: 100%; animation: hitMarkFadeK 0.85s ease-out forwards; }
+        @keyframes hitMarkFadeK { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
         .hit-mark.fx svg { width: 100%; height: 100%; display: block; overflow: visible; }
-        .fx-slash-path { fill: none; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: slashDrawK 0.32s ease-out forwards; }
+        .fx-slash-path { fill: none; stroke-linecap: round; transform-box: fill-box; transform-origin: center; animation: slashInK 0.3s ease-out; }
         .fx-slash-path.p2 { animation-delay: 0.06s; }
-        @keyframes slashDrawK { 0% { stroke-dashoffset: 100; opacity: 1; } 55% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
-        .fx-star { transform-box: fill-box; transform-origin: center; opacity: 0; animation: starPopK 0.38s ease-out forwards; }
-        @keyframes starPopK { 0% { opacity: 0; transform: scale(0.3) rotate(-14deg); } 30% { opacity: 1; } 100% { opacity: 0; transform: scale(1.25) rotate(6deg); } }
-        .fx-orb { transform-box: fill-box; transform-origin: center; opacity: 0; animation: orbPopK 0.5s ease-out forwards; }
-        @keyframes orbPopK { 0% { opacity: 0; transform: scale(0.25); } 35% { opacity: 0.95; } 100% { opacity: 0; transform: scale(1.5); } }
-        .fx-ring { transform-box: fill-box; transform-origin: center; opacity: 0; animation: ringPopK 0.45s ease-out forwards; }
-        @keyframes ringPopK { 0% { opacity: 0.9; transform: scale(0.3); } 100% { opacity: 0; transform: scale(1.35); } }
+        @keyframes slashInK { 0% { opacity: 0; transform: scale(0.65) rotate(-7deg); } 35% { opacity: 1; } 100% { opacity: 1; transform: scale(1.07) rotate(0deg); } }
+        .fx-star { transform-box: fill-box; transform-origin: center; animation: starPopK 0.38s ease-out; }
+        @keyframes starPopK { 0% { transform: scale(0.3) rotate(-14deg); } 35% { transform: scale(1.12) rotate(2deg); } 100% { transform: scale(1.22) rotate(6deg); } }
+        .fx-orb { transform-box: fill-box; transform-origin: center; animation: orbPopK 0.5s ease-out; }
+        @keyframes orbPopK { 0% { transform: scale(0.25); } 40% { transform: scale(1.15); } 100% { transform: scale(1.45); } }
+        .fx-ringx { transform-box: fill-box; transform-origin: center; animation: ringPopK 0.45s ease-out; }
+        @keyframes ringPopK { 0% { transform: scale(0.3); } 100% { transform: scale(1.35); } }
         @keyframes slashSweepK { 0% { opacity: 0; transform: rotate(-30deg) translateX(-30%); } 25% { opacity: 1; } 100% { opacity: 0; transform: rotate(-30deg) translateX(24%); } }
         @keyframes burstK { 0% { opacity: 0.95; transform: translate(-50%,-50%) scale(0.3); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(1.2); } }
 
@@ -474,11 +475,11 @@
         .fx-box { position: absolute; pointer-events: none; animation: fxBoxLife 0.72s ease-out forwards; }
         .fx-p { position: absolute; border-radius: 9999px; pointer-events: none; animation: fxParticle 0.68s ease-out forwards; box-shadow: 0 0 6px currentColor; }
         .fx-slash-line { stroke-dasharray: 140; stroke-dashoffset: 140; animation: fxSlashAnim 0.5s ease-out forwards; }
-        .fx-impact-star { transform-box: fill-box; transform-origin: center; opacity: 0; animation: fxImpactStar 0.45s ease-out forwards; }
-        @keyframes fxImpactStar { 0% { opacity: 0; transform: scale(0.3) rotate(-12deg); } 28% { opacity: 1; } 100% { opacity: 0; transform: scale(1.2) rotate(5deg); } }
+        .fx-impact-star { transform-box: fill-box; transform-origin: center; animation: fxImpactStar 0.45s ease-out; }
+        @keyframes fxImpactStar { 0% { transform: scale(0.3) rotate(-12deg); } 35% { transform: scale(1.1) rotate(2deg); } 100% { transform: scale(1.18) rotate(5deg); } }
         .fx-impact-ring { transform-box: fill-box; transform-origin: center; opacity: 0; animation: fxImpactRing 0.5s ease-out forwards; }
-        .fx-arrow-line { stroke-dasharray: 100; stroke-dashoffset: 100; animation: arrowDrawK 0.22s ease-out forwards; }
-        @keyframes arrowDrawK { 0% { stroke-dashoffset: 100; opacity: 1; } 60% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+        .fx-arrow-line { animation: arrowInK 0.22s ease-out; }
+        @keyframes arrowInK { 0% { opacity: 0; } 100% { opacity: 1; } }
         .hit-shot .unit-inner { animation: hitShotK 0.3s ease-out; }
         @keyframes hitShotK { 0% { transform: translateX(0); } 30% { transform: translateX(6px); } 60% { transform: translateX(-2px); } 100% { transform: translateX(0); } }
         .hit-shot .unit-inner img { animation: hitFlashK 0.3s steps(1, end); }
@@ -2584,7 +2585,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.127';
+        const GAME_VERSION = '1.128';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4072,6 +4073,7 @@
                 // チェーン倍率：繋がった人数が多いほど火力UP（3人×1.10、4人×1.20、5人×1.30、6人×1.40）
                 const chainCount = participants.length;
                 const chainMult = 1 + 0.10 * Math.max(0, chainCount - 2);
+                const deferredDirect = [];
 
                 state.chainGlow = {};
                 participants.forEach(ally => {
@@ -4239,7 +4241,7 @@
                         default:
                             skillUseful = true;
                     }
-                    if (!skillUseful) { await applyDirectHit(ally); continue; }
+                    if (!skillUseful) { deferredDirect.push(ally); continue; }
 
                     // スキル発動率判定（本家仕様：不発でもスキルブーストSBが溜まっていく）
                     const rate = getSkillRate(ally);
@@ -4247,7 +4249,7 @@
                         ally.sb = Math.min(40, (ally.sb || 0) + 4);
                         showFloatingText(ally.x + 0.5, ally.y, 'スキル不発… SB+4%', '#94a3b8', '12px');
                         renderPartyBar();
-                        if (!await applyDirectHit(ally)) await sleepFx(260);
+                        deferredDirect.push(ally); await sleepFx(260);
                         continue;
                     }
                     ally.sb = Math.min(40, (ally.sb || 0) + 1);
@@ -4600,6 +4602,7 @@
                     }
                 }
 
+                for (const a of deferredDirect) { await applyDirectHit(a); }
                 document.querySelectorAll('.unit').forEach(el => el.classList.remove('pincer-active', 'chain-active'));
                 state.chainGlow = {};
                 clearChainFxLayers();
@@ -6463,13 +6466,13 @@
                 const starS = (R, r, cx, cy) => { const p = []; for (let i = 0; i < 24; i++) { const rad = i % 2 === 0 ? R : r; const a = Math.PI * i / 12 - Math.PI / 2; p.push(`${(cx + rad * Math.cos(a)).toFixed(1)},${(cy + rad * Math.sin(a)).toFixed(1)}`); } return p.join(' '); };
                 svg = `<svg viewBox="0 0 100 100"><line x1="0" y1="46" x2="88" y2="46" stroke="${col}" stroke-width="5" pathLength="100" class="fx-arrow-line"/><line x1="0" y1="46" x2="88" y2="46" stroke="#ffffff" stroke-width="2" pathLength="100" class="fx-arrow-line"/><polygon points="${starS(15, 6, 70, 46)}" fill="${col}" class="fx-impact-star"/><polygon points="${starS(8, 3, 70, 46)}" fill="#ffffff" class="fx-impact-star"/></svg>`;
             } else {
-                svg = `<svg viewBox="0 0 100 100"><circle class="fx-ring" cx="50" cy="48" r="30" fill="none" stroke="${col}" stroke-width="4"/><circle class="fx-orb" cx="34" cy="36" r="13" fill="${col}"/><circle class="fx-orb" cx="63" cy="55" r="17" fill="${col}" style="animation-delay:.06s"/><circle class="fx-orb" cx="44" cy="70" r="10" fill="#ffffff" style="animation-delay:.12s"/></svg>`;
+                svg = `<svg viewBox="0 0 100 100"><circle class="fx-ringx" cx="50" cy="48" r="30" fill="none" stroke="${col}" stroke-width="4"/><circle class="fx-orb" cx="34" cy="36" r="13" fill="${col}"/><circle class="fx-orb" cx="63" cy="55" r="17" fill="${col}" style="animation-delay:.06s"/><circle class="fx-orb" cx="44" cy="70" r="10" fill="#ffffff" style="animation-delay:.12s"/></svg>`;
             }
             const m = document.createElement('div');
             m.className = 'hit-mark fx';
             m.innerHTML = svg;
             el.appendChild(m);
-            setTimeout(() => m.remove(), 580);
+            setTimeout(() => m.remove(), 900);
         }
 
         function renderUnits() {
