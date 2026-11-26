@@ -440,8 +440,8 @@
         #cutin-overlay.aw-cutin .cutin-band { display: none; }
         #cutin-overlay.aw-cutin .cutin-art-wrapper { left: 0; right: 0; top: 0; bottom: 0; width: 100%; height: 100%; max-width: none; filter: none; align-items: center; }
         #cutin-overlay.active.aw-cutin .cutin-art-wrapper { animation: awArtFade var(--cutin-dur, 0.9s) cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes awArtFade { 0% { opacity: 0; } 14% { opacity: 1; } 82% { opacity: 1; } 100% { opacity: 0; } }
-        #cutin-overlay.aw-cutin .cutin-text-box { left: 0; right: 0; bottom: 8%; max-width: none; text-align: center; background: linear-gradient(transparent, rgba(0,0,0,0.55) 32%, rgba(0,0,0,0.55) 68%, transparent); padding: 20px 10px; }
+        @keyframes awArtFade { 0% { opacity: 0; transform: scale(1); } 14% { opacity: 1; } 82% { opacity: 1; transform: scale(1.055); } 100% { opacity: 0; transform: scale(1.06); } }
+        #cutin-overlay.aw-cutin .cutin-text-box { left: 0; right: 0; bottom: 21%; max-width: none; text-align: center; background: linear-gradient(transparent, rgba(0,0,0,0.55) 32%, rgba(0,0,0,0.55) 68%, transparent); padding: 20px 10px; }
         #cutin-overlay.aw-cutin #cutin-skill-title { font-size: clamp(34px, 9.5vw, 58px); }
 
         /* スキル名テロップ */
@@ -2590,7 +2590,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.149';
+        const GAME_VERSION = '1.150';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -7040,6 +7040,8 @@ const SE_AUDIO = {
         #summon-overlay.summon-play .summon-rays { animation: summonSpinAnim 18s linear infinite, summonRaysAnim 0.9s ease-out 1.45s both; }
         #summon-overlay.summon-play .summon-art-wrap { animation: summonRevealAnim 0.85s cubic-bezier(0.2, 1.4, 0.4, 1) 1.5s both; }
         #summon-overlay.aw-mode .summon-art-wrap { animation: none !important; opacity: 1 !important; transform: none !important; }
+        #summon-overlay.aw-mode { background: #05060a !important; }
+        #summon-overlay.aw-mode .summon-rays, #summon-overlay.aw-mode .summon-burst, #summon-overlay.aw-mode .summon-book { display: none !important; }
         #summon-overlay.summon-play .summon-banner { animation: summonBannerAnim 0.6s ease-out 2.05s both; }
         .summon-art-wrap, .summon-banner, .summon-burst, .summon-rays { opacity: 0; }
     </style>
