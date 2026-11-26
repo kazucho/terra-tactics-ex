@@ -2580,7 +2580,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.136';
+        const GAME_VERSION = '1.137';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3816,10 +3816,9 @@ const SE_AUDIO = {
             titleEl.textContent = `『${ally.skillName}！』`;
             titleEl.style.color = (ELEMENTS[ally.element] || {}).color || '#ffffff';
 
-            if (ally.customFullArtData) {
-                artBox.innerHTML = `<img src="${ally.customFullArtData}" alt="${ally.name}">`;
-            } else if (fullArtOf(ally)) {
-                artBox.innerHTML = `<img src="${fullArtOf(ally)}" alt="${ally.name}">`;
+            const cutinSrc = fullSrcOf(ally);
+            if (cutinSrc) {
+                artBox.innerHTML = `<img src="${cutinSrc}" alt="${ally.name}">`;
             } else {
                 artBox.innerHTML = getBuiltInFullBodySVG(ally.presetArt || 'knight');
             }
@@ -3855,7 +3854,7 @@ const SE_AUDIO = {
         }
         let attackFlashTimer = null;
         function showAttackFlash(unit) {
-            const url = unit.customFullArtData || fullArtOf(unit);
+            const url = fullSrcOf(unit);
             if (!url) return;
             const box = document.getElementById('attack-flash');
             const img = document.getElementById('attack-flash-img');
@@ -5562,9 +5561,11 @@ const SE_AUDIO = {
                 const aFx = PRESET_ART[char.presetArt] || {};
                 const fxFrom = result ? (result.before ?? result.from) : null;
                 const fxTo = result ? (result.after ?? result.to) : null;
-                const awakenCross = !!(result && result.type !== 'new' && fxFrom !== null && fxTo !== null && fxFrom < AWAKEN_LEVEL && fxTo >= AWAKEN_LEVEL && aFx.full && aFx.awFull && !char.customFullArtData);
+                const awBeforeSrc = char.customFullArtData || aFx.full || '';
+                const awAfterSrc = char.customAwFullArtData || aFx.awFull || '';
+                const awakenCross = !!(result && result.type !== 'new' && fxFrom !== null && fxTo !== null && fxFrom < AWAKEN_LEVEL && fxTo >= AWAKEN_LEVEL && awBeforeSrc && awAfterSrc && awBeforeSrc !== awAfterSrc);
                 if (awakenCross) {
-                    document.getElementById('summon-art').innerHTML = `<div class="awfx-wrap"><img src="${aFx.full}" class="max-h-[44vh] w-auto object-contain"><img src="${aFx.awFull}" class="awfx-aw max-h-[44vh] w-auto object-contain"><div class="awfx-flash"></div><div class="awfx-label">覚　醒</div></div>`;
+                    document.getElementById('summon-art').innerHTML = `<div class="awfx-wrap"><img src="${awBeforeSrc}" class="max-h-[44vh] w-auto object-contain"><img src="${awAfterSrc}" class="awfx-aw max-h-[44vh] w-auto object-contain"><div class="awfx-flash"></div><div class="awfx-label">覚　醒</div></div>`;
                 } else {
                     document.getElementById('summon-art').innerHTML = charArtHtml(char, 'max-h-[44vh] w-auto object-contain');
                 }
@@ -5654,9 +5655,11 @@ const SE_AUDIO = {
                 return;
             }
             const aArt = PRESET_ART[c.presetArt] || {};
-            const hasAwArt = !!(aArt.awFull && !c.customFullArtData && isAwakened(c));
-            const showAw = hasAwArt && (codexShowAw === null ? isAwakened(c) : codexShowAw);
-            const detailArtHtml = c.customFullArtData ? charArtHtml(c, 'max-h-52 w-auto object-contain') : (showAw ? `<img src="${aArt.awFull}" class="max-h-52 w-auto object-contain">` : (aArt.full ? `<img src="${aArt.full}" class="max-h-52 w-auto object-contain">` : charArtHtml(c, 'max-h-52 w-auto object-contain')));
+            const awBeforeSrc = c.customFullArtData || aArt.full || '';
+            const awAfterSrc = c.customAwFullArtData || aArt.awFull || '';
+            const hasAwArt = !!(isAwakened(c) && awBeforeSrc && awAfterSrc && awBeforeSrc !== awAfterSrc);
+            const showAw = hasAwArt && (codexShowAw === null ? true : codexShowAw);
+            const detailArtHtml = hasAwArt ? `<img src="${showAw ? awAfterSrc : awBeforeSrc}" class="max-h-52 w-auto object-contain">` : charArtHtml(c, 'max-h-52 w-auto object-contain');
             const awToggleHtml = hasAwArt ? `<div class="flex gap-1 mt-1.5"><button onclick="event.stopPropagation(); codexSetArt(false)" class="px-2 py-0.5 rounded text-[9px] font-bold border ${!showAw ? 'bg-fuchsia-500 text-white border-fuchsia-400' : 'bg-slate-800 text-slate-300 border-slate-600'}">覚醒前</button><button onclick="event.stopPropagation(); codexSetArt(true)" class="px-2 py-0.5 rounded text-[9px] font-bold border ${showAw ? 'bg-fuchsia-500 text-white border-fuchsia-400' : 'bg-slate-800 text-slate-300 border-slate-600'}">覚醒後</button></div>` : '';
             const job = JOB_CLASSES[c.job] || JOB_CLASSES.warrior;
             const pat = SKILL_PATTERNS[c.skillPattern] || SKILL_PATTERNS.cross_slash;
@@ -5915,7 +5918,7 @@ const SE_AUDIO = {
             const c = state.partyConfig.find(x => x.id === id);
             if (!c) return;
             const aFs = PRESET_ART[c.presetArt] || {};
-            const src = c.customFullArtData || (codexShowAw === false && aFs.full ? aFs.full : (codexShowAw === true && aFs.awFull && isAwakened(c) ? aFs.awFull : fullArtOf(c)));
+            const src = (codexShowAw === false ? (c.customFullArtData || aFs.full || '') : (codexShowAw === true ? (c.customAwFullArtData || aFs.awFull || '') : '')) || fullSrcOf(c);
             showArtLightbox(src, null);
         }
         function showEnemyArtFullscreen(key) {
@@ -5928,9 +5931,11 @@ const SE_AUDIO = {
         function isAwakened(c) { return !!(c && c.id && c.presetArt && PRESET_ART[c.presetArt] && PRESET_ART[c.presetArt].awFull && getLevel(c.id) >= AWAKEN_LEVEL); }
         function fullArtOf(c) { const a = (c && PRESET_ART[c.presetArt]) || {}; return (isAwakened(c) && a.awFull) || a.full || ''; }
         function iconArtOf(c) { const a = (c && PRESET_ART[c.presetArt]) || {}; return (isAwakened(c) && a.awIcon) || a.icon || ''; }
+        function iconSrcOf(c) { return (isAwakened(c) && c.customAwIconData) || c.customIconData || iconArtOf(c) || ''; }
+        function fullSrcOf(c) { return (isAwakened(c) && c.customAwFullArtData) || c.customFullArtData || fullArtOf(c) || ''; }
         function charArtHtml(c, imgClass) {
-            if (c.customFullArtData) return `<img src="${c.customFullArtData}" class="${imgClass}">`;
-            if (fullArtOf(c)) return `<img src="${fullArtOf(c)}" class="${imgClass}">`;
+            const fs = fullSrcOf(c);
+            if (fs) return `<img src="${fs}" class="${imgClass}">`;
             return `<div class="flex items-center justify-center text-4xl" style="min-height:64px;">${c.iconEmoji}</div>`;
         }
         function enterFormation() {
@@ -6187,6 +6192,19 @@ const SE_AUDIO = {
                     ? `<img src="${fullArtOf(c)}" class="h-28 w-auto object-contain mx-auto">`
                     : `<div class="h-28 flex justify-center">${getBuiltInFullBodySVG(c.presetArt || 'knight')}</div>`;
 
+            // 覚醒後プレビューHTML（カスタム優先、無ければ用意された覚醒絵）
+            const aArtEd = PRESET_ART[c.presetArt] || {};
+            const awIconPreviewHtml = c.customAwIconData
+                ? `<img src="${c.customAwIconData}" class="w-14 h-14 rounded-xl object-cover border-2 border-fuchsia-400">`
+                : aArtEd.awIcon
+                    ? `<img src="${aArtEd.awIcon}" class="w-14 h-14 rounded-xl object-cover border-2 border-slate-600">`
+                    : `<div class="w-14 h-14 rounded-xl bg-slate-800 border-2 border-slate-600 flex items-center justify-center text-3xl">${c.iconEmoji}</div>`;
+            const awFullPreviewHtml = c.customAwFullArtData
+                ? `<img src="${c.customAwFullArtData}" class="h-28 w-auto object-contain mx-auto">`
+                : aArtEd.awFull
+                    ? `<img src="${aArtEd.awFull}" class="h-28 w-auto object-contain mx-auto">`
+                    : `<div class="h-28 flex items-center justify-center text-slate-500 text-[10px]">覚醒絵なし</div>`;
+
             bodyEl.innerHTML = `
                 <!-- 基本情報 -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-900/70 p-3 rounded-xl border border-slate-800">
@@ -6238,6 +6256,39 @@ const SE_AUDIO = {
                                 </label>
                                 <p class="text-[10px] text-slate-400">透過PNG推奨。スキル発動時に画面全体へカットイン表示されます！</p>
                                 ${c.customFullArtData ? `<button onclick="clearCustomImage('full')" class="text-[10px] text-rose-400 underline">デフォルト立ち絵に戻す</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 覚醒後の画像（Lv6から自動で切り替わり） -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-slate-900/70 p-3 rounded-xl border border-fuchsia-900/60 space-y-2">
+                        <div class="font-bold text-fuchsia-300 text-xs">3. 覚醒後の盤面アイコン（Lv6〜）</div>
+                        <div class="flex items-center gap-3">
+                            ${awIconPreviewHtml}
+                            <div class="flex-1 space-y-1.5">
+                                <label class="block w-full text-center py-1.5 px-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg cursor-pointer text-xs font-bold text-sky-300">
+                                     画像をアップロード
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'awIcon')">
+                                </label>
+                                ${c.customAwIconData ? `<button onclick="clearCustomImage('awIcon')" class="w-full py-1 text-[10px] text-rose-400 underline">カスタム覚醒アイコンを解除</button>` : `<p class="text-[10px] text-slate-500">未設定なら用意された覚醒アイコンになります</p>`}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/70 p-3 rounded-xl border border-fuchsia-900/60 space-y-2">
+                        <div class="font-bold text-fuchsia-300 text-xs">4. 覚醒後の全身立ち絵（Lv6〜）</div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-20 bg-slate-950 rounded-lg border border-slate-700 p-1 overflow-hidden">
+                                ${awFullPreviewHtml}
+                            </div>
+                            <div class="flex-1 space-y-1.5">
+                                <label class="block w-full text-center py-1.5 px-2 bg-fuchsia-600/30 hover:bg-fuchsia-600/50 border border-fuchsia-500/60 rounded-lg cursor-pointer text-xs font-bold text-fuchsia-200">
+                                     覚醒イラストを選択
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'awFull')">
+                                </label>
+                                <p class="text-[10px] text-slate-400">Lv6（覚醒）から自動でこの姿に切り替わります。覚醒の瞬間の演出にも使われます</p>
+                                ${c.customAwFullArtData ? `<button onclick="clearCustomImage('awFull')" class="text-[10px] text-rose-400 underline">カスタム覚醒絵を解除</button>` : ''}
                             </div>
                         </div>
                     </div>
@@ -6324,8 +6375,11 @@ const SE_AUDIO = {
         }
 
         function clearCustomImage(kind) {
-            if (kind === 'icon') state.partyConfig[state.editingIndex].customIconData = '';
-            else state.partyConfig[state.editingIndex].customFullArtData = '';
+            const ed = state.partyConfig[state.editingIndex];
+            if (kind === 'icon') ed.customIconData = '';
+            else if (kind === 'awIcon') ed.customAwIconData = '';
+            else if (kind === 'awFull') ed.customAwFullArtData = '';
+            else ed.customFullArtData = '';
             renderPartyEditor();
         }
 
@@ -6339,7 +6393,7 @@ const SE_AUDIO = {
                 const img = new Image();
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const maxDim = kind === 'icon' ? 140 : 520; // アイコンは140px、全身立ち絵は520pxに最適化
+                    const maxDim = (kind === 'icon' || kind === 'awIcon') ? 140 : 520; // アイコンは140px、全身立ち絵は520pxに最適化
                     let w = img.width, h = img.height;
                     if (w > maxDim || h > maxDim) {
                         if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
@@ -6354,6 +6408,10 @@ const SE_AUDIO = {
                     const dataUrl = canvas.toDataURL('image/webp', 0.82);
                     if (kind === 'icon') {
                         state.partyConfig[state.editingIndex].customIconData = dataUrl;
+                    } else if (kind === 'awIcon') {
+                        state.partyConfig[state.editingIndex].customAwIconData = dataUrl;
+                    } else if (kind === 'awFull') {
+                        state.partyConfig[state.editingIndex].customAwFullArtData = dataUrl;
                     } else {
                         state.partyConfig[state.editingIndex].customFullArtData = dataUrl;
                     }
@@ -6467,7 +6525,7 @@ const SE_AUDIO = {
         let recentRevives = new Set();
         function ghostAvatarHtml(u, isAlly) {
             if (isAlly) {
-                const s = u.customIconData || iconArtOf(u) || '';
+                const s = iconSrcOf(u);
                 return s ? `<img src="${s}" class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover" style="box-shadow: 0 0 18px rgba(255,255,255,0.65);">` : `<div class="text-3xl">${u.iconEmoji || ''}</div>`;
             }
             const p = PRESET_ART[u.presetArt];
@@ -6548,12 +6606,10 @@ const SE_AUDIO = {
                 el.style.left = `${(ally.x / COLS) * 100}%`;
                 el.style.top = `${(ally.y / ROWS) * 100}%`;
 
-                const presetIcon = !ally.customIconData ? iconArtOf(ally) : '';
-                const avatarHtml = ally.customIconData
-                    ? `<img src="${ally.customIconData}" class="absolute inset-0 w-full h-full object-cover">`
-                    : presetIcon
-                        ? `<img src="${presetIcon}" class="absolute inset-0 w-full h-full object-cover">`
-                        : `<div class="absolute inset-0 flex items-center justify-center text-4xl leading-none drop-shadow">${ally.iconEmoji}</div>`;
+                const unitIconSrc = iconSrcOf(ally);
+                const avatarHtml = unitIconSrc
+                    ? `<img src="${unitIconSrc}" class="absolute inset-0 w-full h-full object-cover">`
+                    : `<div class="absolute inset-0 flex items-center justify-center text-4xl leading-none drop-shadow">${ally.iconEmoji}</div>`;
 
                 el.innerHTML = `
                     <div class="unit-inner">
@@ -6649,11 +6705,10 @@ const SE_AUDIO = {
                 const isDead = ally.hp <= 0;
                 const hpPct = Math.max(0, (ally.hp / ally.maxHp) * 100);
 
-                const thumb = ally.customIconData
-                    ? `<img src="${ally.customIconData}" class="w-5 h-5 rounded object-cover">`
-                    : iconArtOf(ally)
-                        ? `<img src="${iconArtOf(ally)}" class="w-5 h-5 rounded object-cover">`
-                        : `<span>${ally.iconEmoji}</span>`;
+                const thumbSrc = iconSrcOf(ally);
+                const thumb = thumbSrc
+                    ? `<img src="${thumbSrc}" class="w-5 h-5 rounded object-cover">`
+                    : `<span>${ally.iconEmoji}</span>`;
 
                 const card = document.createElement('div');
                 card.className = `p-1.5 rounded-lg border transition cursor-pointer active:scale-[0.98] ${isDead ? 'bg-slate-950/60 border-slate-800 opacity-40' : 'bg-slate-900/90 border-[#8a6d2f]/70'}`;
@@ -6681,7 +6736,7 @@ const SE_AUDIO = {
         function showDragUnitIcon(ally) {
             const img = document.getElementById('drag-unit-icon');
             if (!img || !ally) return;
-            const src = ally.customIconData || iconArtOf(ally) || '';
+            const src = iconSrcOf(ally);
             if (src) { img.src = src; img.classList.remove('invisible'); }
         }
         function hideDragUnitIcon() {
