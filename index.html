@@ -1582,7 +1582,7 @@
                 name: '全マス・デバッグモード',
                 type: 'debug_death',
                 mult: 1.0,
-                desc: 'チェーン発動時のみ：近くの敵ほど高確率で即死（距離1マスごとに確率−25%、5マス先は無効・ボス無効）（デバッグ）',
+                desc: 'チェーン発動時のみ：ボス以外の敵が全員即死（デバッグ）',
                 getCells: (ux, uy) => { const arr = []; for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) arr.push({x, y}); return arr; }
             },
             iron_wall: {
@@ -2557,7 +2557,7 @@
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.116';
+        const GAME_VERSION = '1.117';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4337,15 +4337,7 @@
                             let kills = 0;
                             state.enemies.forEach(e => {
                                 if (e.hp <= 0 || isBossEnemy(e)) return;
-                                let d = 99;
-                                const es = e.size || 1;
-                                for (let cx = 0; cx < es; cx++) for (let cy = 0; cy < es; cy++) {
-                                    const dd = Math.max(Math.abs(e.x + cx - ally.x), Math.abs(e.y + cy - ally.y));
-                                    if (dd < d) d = dd;
-                                }
-                                const chance = 1.25 - 0.25 * d;
-                                if (chance > 0 && Math.random() < chance) { e.hp = 0; kills++; }
-                                else if (chance > 0) showFloatingText(e.x + es / 2, e.y, '抵抗!', '#fca5a5', '12px');
+                                e.hp = 0; kills++;
                             });
                             if (kills > 0) addCombo(kills);
                             playSkillEffect(targetCells, 'dark', '#e879f9');
@@ -5487,7 +5479,7 @@
             if (t.counter) traits.push(`カウンター：攻撃を受けると攻撃力${Math.round(t.counter * 100)}%で即反撃する`);
             if (t.dragonbane) traits.push('竜殺し：竜系の敵への全ダメージ1.6倍');
             if (t.guard2) traits.push('鉄壁：隣接する味方の被ダメージを40%軽減する');
-            if (t.debug) traits.push('デバッグ：チェーンでスキルが発動すると、近くの敵を即死させる（距離で確率低下・ボス無効）');
+            if (t.debug) traits.push('デバッグ：チェーンでスキルが発動すると、ボス以外の敵が全員即死');
             detail.innerHTML = `
                 <div class="flex gap-3">
                     <div class="w-24 sm:w-32 shrink-0 flex flex-col items-center cursor-pointer" onclick="showCharArtFullscreen('${c.id}')"><div class="bg-white rounded-md p-1.5 w-full flex items-center justify-center">${detailArtHtml}</div><div class="text-[9px] text-slate-500 mt-1">タップで拡大</div>${awToggleHtml}</div>
@@ -6509,7 +6501,7 @@
             if (t.shieldbash) traits.push(`シールドバッシュ：受けたダメージの${Math.round(t.shieldbash * 100)}%を攻撃してきた敵に跳ね返す`);
             if (t.steal) traits.push('ぶんどる：攻撃命中時に敵の攻撃力を奪う');
             if (t.bunshin) traits.push('分身：ウェーブ開始時に分身を展開し、敵の攻撃を2回まで完全回避する');
-            if (t.debug) traits.push('デバッグ：チェーンでスキルが発動すると、近くの敵を即死させる（距離で確率低下・ボス無効）');
+            if (t.debug) traits.push('デバッグ：チェーンでスキルが発動すると、ボス以外の敵が全員即死');
             const status = [];
             if (ally.buffAtk > 1) status.push(`攻撃強化中（×${ally.buffAtk}・あと${ally.buffTurns}ターン）`);
             if ((ally.bunshin || 0) > 0) status.push(`分身×${ally.bunshin}（攻撃を完全回避）`);
