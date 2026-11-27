@@ -25,6 +25,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -2741,7 +2744,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.168';
+        const GAME_VERSION = '1.169';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3238,6 +3241,7 @@ const SE_AUDIO = {
             const startSpots = (COLS === 6 && ROWS === 8) ? [{x:1, y:6}, {x:2, y:7}, {x:3, y:7}, {x:4, y:6}, {x:0, y:7}, {x:5, y:6}] : [Math.floor(COLS/2)-1, Math.floor(COLS/2), Math.floor(COLS/2)-2, Math.floor(COLS/2)+1, Math.floor(COLS/2)-3, Math.floor(COLS/2)+2].map((x, i) => ({ x, y: i % 2 ? ROWS - 1 : ROWS - 2 }));
             for (let i = startSpots.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = startSpots[i]; startSpots[i] = startSpots[j]; startSpots[j] = t; }
             let sIdx = 0;
+            const placedCells = new Set();
             state.allies.forEach(ally => {
                 ally.powerBoost = 0;
                 ally.buffAtk = 1;
@@ -3246,12 +3250,13 @@ const SE_AUDIO = {
                 ally.bunshin = (JOB_TRAITS[ally.job] || {}).bunshin || 0;
                 if (ally.hp > 0) {
                     let spot = startSpots[sIdx++] || {x: 0, y: ROWS - 1};
-                    while (isCellBlockedForAlly(spot.x, spot.y)) {
+                    while (placedCells.has(spot.x + ',' + spot.y) || (getTerrainAt(spot.x, spot.y) || {}).type === 'rock' || state.enemies.some(e => e.hp > 0 && spot.x >= e.x && spot.x < e.x + (e.size || 1) && spot.y >= e.y && spot.y < e.y + (e.size || 1))) {
                         spot.x = (spot.x + 1) % COLS;
                         if (spot.x === 0) spot.y = (spot.y + 1) % ROWS;
                     }
                     ally.x = spot.x;
                     ally.y = spot.y;
+                    placedCells.add(spot.x + ',' + spot.y);
                 }
             });
 
@@ -4228,19 +4233,38 @@ const SE_AUDIO = {
             await sleep(120);
         }
 
-        async function freeMoveToward(unit, target, steps) {
-            let n = steps;
-            while (n-- > 0 && target && followerDist(unit, target) > 1) {
-                const cur = followerDist(unit, target);
-                let bx = -1, by = -1, bd = cur;
+        function bfsFirstStep(unit, target, goalDist) {
+            const prev = new Map();
+            const seen = new Set([unit.x + ',' + unit.y]);
+            const queue = [{ x: unit.x, y: unit.y }];
+            let goalKey = null;
+            while (queue.length) {
+                const c = queue.shift();
+                if ((c.x !== unit.x || c.y !== unit.y) && followerDist(c, target) <= goalDist) { goalKey = c.x + ',' + c.y; break; }
                 for (const [dx, dy] of [[0, -1], [1, 0], [-1, 0], [0, 1]]) {
-                    const nx = unit.x + dx, ny = unit.y + dy;
-                    if (followerBlocked(nx, ny, unit)) continue;
-                    const d = followerDist({ x: nx, y: ny }, target);
-                    if (d < bd) { bd = d; bx = nx; by = ny; }
+                    const nx = c.x + dx, ny = c.y + dy, k = nx + ',' + ny;
+                    if (seen.has(k) || followerBlocked(nx, ny, unit)) continue;
+                    seen.add(k); prev.set(k, c.x + ',' + c.y); queue.push({ x: nx, y: ny });
                 }
-                if (bx < 0) break;
-                unit.x = bx; unit.y = by;
+            }
+            if (!goalKey) return null;
+            let k = goalKey;
+            while (prev.has(k)) {
+                const p = prev.get(k);
+                const pp = p.split(',').map(Number);
+                if (pp[0] === unit.x && pp[1] === unit.y) { const g = k.split(',').map(Number); return { x: g[0], y: g[1] }; }
+                k = p;
+            }
+            return null;
+        }
+
+        async function freeMoveToward(unit, target, steps, goalDist = 1) {
+            if (!target) return;
+            let n = steps;
+            while (n-- > 0 && followerDist(unit, target) > goalDist) {
+                const step = bfsFirstStep(unit, target, goalDist);
+                if (!step) break;
+                unit.x = step.x; unit.y = step.y;
                 renderUnits();
                 await sleep(130);
             }
@@ -4364,7 +4388,7 @@ const SE_AUDIO = {
                     if (!charmed && adj.length) await freeHit(a, adj[0], 0.4, '扇の一撃');
                     if (charmed) { renderUnits(); await sleep(250); }
                 } else if (a.id === 'f6') {
-                    const pool = state.allies.filter(o => o.hp > 0 && o.id !== a.id && !o.free && !['healer', 'whitemage', 'orator', 'bard', 'pharmacist', 'summoner'].includes(o.job));
+                    const pool = state.allies.filter(o => o.hp > 0 && o.id !== a.id && !o.free && !['healer', 'rookie_healer', 'whitemage', 'orator', 'bard', 'pharmacist', 'summoner'].includes(o.job));
                     if (pool.length && nearest) {
                         const src = pool[Math.floor(Math.random() * pool.length)];
                         await freeMoveToward(a, nearest, 3);
@@ -4391,7 +4415,7 @@ const SE_AUDIO = {
                     const bosses = living.filter(e => isBossEnemy(e));
                     const cand = bosses.length ? bosses : living;
                     const target = cand.reduce((m, e) => e.hp > m.hp ? e : m, cand[0]);
-                    await freeMoveToward(a, target, 3);
+                    await freeMoveToward(a, target, 3, 2);
                     if (target.hp > 0 && followerDist(a, target) <= 2) {
                         await freeCutinGate(a, a.skillName, 0.25);
                         await freeHit(a, target, 1.3 * (isBossEnemy(target) ? 1.5 : 1), '必中の矢');
@@ -4409,16 +4433,9 @@ const SE_AUDIO = {
             if (f.x === undefined) { const o = state.allies.find(a => a.id === f.ownerId); const c = o ? freeCellNear(o.x, o.y, f) : { x: 0, y: ROWS - 1 }; f.x = c.x; f.y = c.y; }
             let steps = opts.steps;
             while (steps-- > 0 && followerDist(f, target) > opts.range) {
-                const cur = followerDist(f, target);
-                let bx = -1, by = -1, bd = cur;
-                for (const [dx, dy] of [[0, -1], [1, 0], [-1, 0], [0, 1]]) {
-                    const nx = f.x + dx, ny = f.y + dy;
-                    if (followerBlocked(nx, ny, f)) continue;
-                    const d = followerDist({ x: nx, y: ny }, target);
-                    if (d < bd) { bd = d; bx = nx; by = ny; }
-                }
-                if (bx < 0) break;
-                f.x = bx; f.y = by;
+                const step = bfsFirstStep(f, target, opts.range);
+                if (!step) break;
+                f.x = step.x; f.y = step.y;
                 renderUnits();
                 await sleep(140);
             }
