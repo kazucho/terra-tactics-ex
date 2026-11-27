@@ -46,6 +46,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -2779,7 +2782,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.175';
+        const GAME_VERSION = '1.176';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -6592,7 +6595,7 @@ const SE_AUDIO = {
             list.forEach(e => {
                 const div = document.createElement('div');
                 div.className = `relative rounded-xl p-1.5 text-center cursor-pointer border transition bg-slate-900 border-slate-700 hover:border-rose-400 ${enemyCollectionFocus === e.key ? 'ring-2 ring-rose-400' : ''}`;
-                div.innerHTML = seenSet.has(e.key) ? `<div class="h-14 flex items-center justify-center overflow-hidden">${e.tint ? `<span style="filter:${e.tint}; display:inline-block;">${enemyArtHtml(e.artKey || e.key, 'h-14 w-auto object-contain', false)}</span>` : enemyArtHtml(e.artKey || e.key, 'h-14 w-auto object-contain', false)}</div><div class="text-[10px] font-bold text-slate-100 truncate">${e.name}</div><div class="text-[9px] text-rose-300 truncate">${e.endless ? 'エンドレス' : 'STAGE ' + e.waves.join('・')}</div>` : `<div class=\"h-14 flex items-center justify-center overflow-hidden\"><span class=\"text-3xl font-black text-slate-600\">？</span></div><div class=\"text-[10px] font-bold text-slate-500 truncate\">？？？</div><div class=\"text-[9px] text-slate-600 truncate\">未遭遇</div>`;
+                div.innerHTML = seenSet.has(e.key) ? `<div class="h-14 flex items-center justify-center overflow-hidden">${e.tint ? `<span style="filter:${e.tint}; display:inline-block;">${enemyArtHtml(e.artKey || e.key, 'h-14 w-auto object-contain', false)}</span>` : enemyArtHtml(e.artKey || e.key, 'h-14 w-auto object-contain', false)}</div><div class="text-[10px] font-bold text-slate-100 truncate">${e.name}</div><div class="text-[9px] text-rose-300 truncate">${e.boss ? 'ボス・' : ''}${e.endless ? 'エンドレス' : 'STAGE ' + e.waves.join('・')}</div>` : `<div class=\"h-14 flex items-center justify-center overflow-hidden\"><span class=\"text-3xl font-black text-slate-600\">？</span></div><div class=\"text-[10px] font-bold text-slate-500 truncate\">？？？</div><div class=\"text-[9px] text-slate-600 truncate\">未遭遇</div>`;
                 div.onclick = () => { enemyCollectionFocus = e.key; renderEnemyCollection(); };
                 grid.appendChild(div);
             });
@@ -6605,7 +6608,7 @@ const SE_AUDIO = {
             }
             const elem = ELEMENTS[e.element] || ELEMENTS.fire;
             const weap = WEAPONS[e.weapon] || { icon: '', name: e.weapon };
-            const isBoss = e.key === 'en_bahamut';
+            const isBoss = !!e.boss;
             detail.innerHTML = `
                 <div class="flex gap-3">
                     <div class="w-24 sm:w-32 shrink-0 flex flex-col items-center cursor-pointer" onclick="showEnemyArtFullscreen('${e.key}')"><div class="bg-white rounded-md p-1.5 w-full flex items-center justify-center">${e.tint ? `<span style="filter:${e.tint}; display:inline-block;">${enemyArtHtml(e.artKey || e.key, 'max-h-52 w-auto object-contain', true)}</span>` : enemyArtHtml(e.artKey || e.key, 'max-h-52 w-auto object-contain', true)}</div><div class="text-[9px] text-slate-500 mt-1">タップで拡大</div></div>
