@@ -1077,21 +1077,28 @@
             if (!enemy || enemy.hp <= 0) return;
             const t = JOB_TRAITS[ally.job] || {};
             const cx = enemy.x + (enemy.size || 1) / 2;
-            if (t.slip) {
+            if (t.slip && tryApplyStatus(enemy, 'ailment', cx)) {
                 enemy.slipT = 2; enemy.slipPct = t.slip;
+                addResBonus(enemy, 'ailment');
                 showFloatingText(cx, enemy.y + 0.55, 'スリップ付与!', '#c084fc', '12px');
             }
-            if (t.debuff) {
+            if (t.debuff && tryApplyStatus(enemy, 'ailment', cx)) {
                 enemy.defDownT = 2; enemy.atkDownT = 2;
+                addResBonus(enemy, 'ailment');
                 showFloatingText(cx, enemy.y + 0.85, '攻防ダウン!', '#93c5fd', '12px');
             }
-            if (t.delay) {
+            if (t.delay && tryApplyStatus(enemy, 'delay', cx)) {
                 enemy.cd = Math.min((enemy.cdMax || 3) + 1, (enemy.cd || 0) + 1);
+                addResBonus(enemy, 'delay');
                 showFloatingText(cx, enemy.y + 1.15, '遅延! CD+1', '#a5b4fc', '12px');
             }
             if ((t.freeze || t.shock) && !isBossEnemy(enemy) && Math.random() < (t.freeze || t.shock)) {
-                enemy.stunT = 1; enemy.stunKind = t.freeze ? 'freeze' : 'shock';
-                showFloatingText(cx, enemy.y + 1.45, t.freeze ? '凍結!' : '感電!', '#93c5fd', '12px');
+                const stunKind = t.freeze ? 'freeze' : 'shock';
+                if (tryApplyStatus(enemy, stunKind, cx)) {
+                    enemy.stunT = 1; enemy.stunKind = stunKind;
+                    addResBonus(enemy, stunKind);
+                    showFloatingText(cx, enemy.y + 1.45, t.freeze ? '凍結!' : '感電!', '#93c5fd', '12px');
+                }
             }
             if (t.deathblow && !isBossEnemy(enemy) && Math.random() < t.deathblow) {
                 enemy.hp = 0;
@@ -2652,7 +2659,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.157';
+        const GAME_VERSION = '1.158';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3100,6 +3107,12 @@ const SE_AUDIO = {
             if (petOwner) state.pet = { ownerId: petOwner.id, power: Math.round(petOwner.atk * 0.9) };
             state.mines = []; state.curses = []; state.bombs = [];
             state.enemies = JSON.parse(JSON.stringify(waveData.enemies));
+            state.enemies.forEach(e => {
+                if (e.statusResist === undefined) {
+                    e.statusResist = Math.floor(Math.random() * 4) * 0.1;
+                    if (e.tint) e.statusResist = Math.min(0.9, e.statusResist + 0.2);
+                }
+            });
             state.terrain = JSON.parse(JSON.stringify(waveData.terrain || []));
             randomizeWaveLayout();
             state.mimicPresent = state.enemies.some(e => e.presetArt === 'en_mimic');
@@ -4271,6 +4284,7 @@ const SE_AUDIO = {
                         const cy = enemy.y + (enemy.size || 1) / 2;
                         showFloatingText(cx, cy, `挟撃 -${dmg}`, '#fde047', '18px');
                         if (c.crit) showFloatingText(cx, cy - 0.55, 'CRITICAL!', '#fbbf24', '15px');
+                        showAffinityTag(cx, cy - 1.05, ally.element, enemy.element);
                         if (enemy.hp > 0) applyOnHitTraits(ally, enemy);
                         if ((JOB_TRAITS[ally.job] || {}).pierce) {
                             const dx = Math.sign(enemy.x - ally.x), dy = Math.sign(enemy.y - ally.y);
@@ -4499,6 +4513,7 @@ const SE_AUDIO = {
                             enemy.hp = Math.max(0, enemy.hp - dmg);
                             if (wasAliveS && enemy.hp <= 0) { addCombo(1); placeCurse(ally, enemy); }
                             showFloatingText(enemy.x + (enemy.size || 1) / 2, enemy.y + 0.3, critS ? `CRITICAL! -${dmg}` : `-${dmg}`, critS ? '#fbbf24' : '#38bdf8', '19px');
+                            showAffinityTag(enemy.x + (enemy.size || 1) / 2, enemy.y - 0.25, ally.element, enemy.element);
                             if (enemy.hp > 0) applyOnHitTraits(ally, enemy);
                             drainHeal(ally, dmg);
                         });
@@ -4529,6 +4544,7 @@ const SE_AUDIO = {
                             enemy.hp = Math.max(0, enemy.hp - dmg);
                             if (wasAliveS && enemy.hp <= 0) { addCombo(1); placeCurse(ally, enemy); }
                             showFloatingText(enemy.x + (enemy.size || 1) / 2, enemy.y + 0.3, critS ? `CRITICAL! -${dmg}` : `-${dmg}`, critS ? '#fbbf24' : '#38bdf8', '19px');
+                            showAffinityTag(enemy.x + (enemy.size || 1) / 2, enemy.y - 0.25, ally.element, enemy.element);
                             if (enemy.hp > 0) applyOnHitTraits(ally, enemy);
                         });
                         renderUnits();
@@ -4919,11 +4935,39 @@ const SE_AUDIO = {
         }
 
         function getElementMultiplier(atkElem, defElem) {
-            const info = ELEMENTS[atkElem];
-            if (!info) return 1.0;
-            if (info.strong === defElem) return 1.45;
-            if (info.weak === defElem) return 0.75;
+            if (!atkElem || !defElem || atkElem === defElem) return 1.0;
+            const a = ELEMENTS[atkElem], d = ELEMENTS[defElem];
+            if (!a || !d) return 1.0;
+            const adv = a.strong === defElem || d.weak === atkElem;
+            const dis = a.weak === defElem || d.strong === atkElem;
+            if (adv) return 1.45;
+            if (dis) return 0.75;
             return 1.0;
+        }
+        function showAffinityTag(cx, cy, atkElem, defElem) {
+            const m = getElementMultiplier(atkElem, defElem);
+            if (m >= 1.45) showFloatingText(cx, cy, '弱点!', '#fb923c', '14px');
+            else if (m <= 0.75) showFloatingText(cx, cy, '耐性', '#94a3b8', '12px');
+        }
+        function statusResistOf(enemy, kind) {
+            if (kind === 'freeze' && enemy.element === 'ice') return 1;
+            if (kind === 'shock' && enemy.element === 'thunder') return 1;
+            let r = enemy.statusResist || 0;
+            if (isBossEnemy(enemy)) r = Math.max(r, kind === 'delay' ? 0.75 : 0.5);
+            r += ((enemy._resBonus || {})[kind] || 0);
+            return Math.min(1, r);
+        }
+        function tryApplyStatus(enemy, kind, cx) {
+            const r = statusResistOf(enemy, kind);
+            if (r >= 1 || Math.random() < r) {
+                showFloatingText(cx !== undefined ? cx : enemy.x + (enemy.size || 1) / 2, enemy.y + 0.3, 'レジスト!', '#fca5a5', '12px');
+                return false;
+            }
+            return true;
+        }
+        function addResBonus(enemy, kind) {
+            enemy._resBonus = enemy._resBonus || {};
+            enemy._resBonus[kind] = Math.min(1, (enemy._resBonus[kind] || 0) + 0.25);
         }
 
         // ==========================================
