@@ -73,6 +73,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -948,7 +951,7 @@
                 <div class="space-y-1">
                     <div class="font-bold text-amber-300">10. 放浪者（フリー枠）</div>
                         <div class="mt-1 space-y-1.5">
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-fuchsia-300 font-bold">放浪者</span>はパーティー枠を使うが、ドラッグ操作はできず、<span class="text-amber-300 font-bold">挟撃・チェーンには一切参加しない</span>（盤上ではマスを占有する）。味方フェイズに各自が勝手に動き、敵からも狙われる</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-fuchsia-300 font-bold">放浪者</span>はパーティー枠を使うが、ドラッグ操作はできず、<span class="text-amber-300 font-bold">挟撃・チェーンには一切参加しない</span>（盤上ではマスを占有する）。味方フェイズに各自が勝手に動き、敵からも狙われる。放浪者だけで編成すると操作できる仲間がいなくなるため、操作フェイズは自動で進む</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>放浪者の与えるダメージは、挟撃に参加できない代わりに<span class="text-amber-300 font-bold">2倍</span>（リエルの幻獣も含む）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>リエル：WAVEに一度、幻獣（炎獣／氷姫／雷翁／風精、覚醒後は光竜）を召喚。幻獣はそのWAVEの間、自由に戦う。本人は非力で敵から逃げ回る</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>フェンリル：最寄りの敵へ一直線に駆け寄り聖牙で噛み付く。ガルフ：最寄りの敵とその隣の敵をまとめて薙ぐ</span></div>
@@ -2806,7 +2809,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.184';
+        const GAME_VERSION = '1.185';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3439,6 +3442,11 @@ const SE_AUDIO = {
             phaseLabel.textContent = '味方をドラッグして敵を挟み撃て！';
             phaseLabel.className = 'font-bold text-amber-300 truncate';
             if (!isSetup) showTurnBanner('味方のターン', false);
+            // 放浪者のみで操作できる味方がいない場合は、自動でバトルフェイズへ進める
+            if (state.allies.some(a => a.hp > 0) && !state.allies.some(a => a.hp > 0 && !a.free)) {
+                phaseLabel.textContent = '操作できる仲間がいない！放浪者たちに任せます';
+                setTimeout(() => { if (state.phase === 'PLAYER_IDLE') finishPlayerMove(); }, 1000);
+            }
         }
 
         // ==========================================
