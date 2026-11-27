@@ -19,6 +19,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -2735,7 +2738,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.166';
+        const GAME_VERSION = '1.167';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3522,7 +3525,9 @@ const SE_AUDIO = {
                 const nextX = activeUnit.x + dx;
                 const nextY = activeUnit.y + dy;
 
-                if (isCellBlockedForAlly(nextX, nextY, activeUnit)) {
+                // 斜め移動で両脇の角マス（縦・横）が両方とも塞がれている場合、挟まれた角はすり抜けられない
+                const cornerPinched = dx !== 0 && dy !== 0 && isCellBlockedForAlly(activeUnit.x + dx, activeUnit.y, activeUnit) && isCellBlockedForAlly(activeUnit.x, activeUnit.y + dy, activeUnit);
+                if (isCellBlockedForAlly(nextX, nextY, activeUnit) || cornerPinched) {
                     // 斜め移動なら縦か横に逸らせないか試す
                     if (dx !== 0 && dy !== 0) {
                         if (!isCellBlockedForAlly(activeUnit.x + dx, activeUnit.y, activeUnit)) {
