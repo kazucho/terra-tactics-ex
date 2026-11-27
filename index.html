@@ -67,6 +67,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -2800,7 +2803,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.182';
+        const GAME_VERSION = '1.183';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4076,7 +4079,7 @@ const SE_AUDIO = {
             const isAwCutin = isAwakened(ally);
             overlay.classList.toggle('aw-cutin', isAwCutin);
             if (isAwCutin) {
-                const awSrc = ally.customAwFullArtData || (typeof CUTIN_ART !== 'undefined' && CUTIN_ART[ally.presetArt]) || AWAKEN_FX_ART;
+                const awSrc = awCutinSrcOf(ally);
                 artBox.innerHTML = `<img src="${awSrc}" alt="${ally.name}" style="width:100%; height:auto; max-height:62vh; object-fit:contain;">`;
             } else {
                 const cutinSrc = fullSrcOf(ally);
@@ -4265,7 +4268,7 @@ const SE_AUDIO = {
 
         async function playFreeCutin(ally, title) {
             if (state.cutinSpeedMode === 2) return;
-            const art = (typeof CUTIN_ART !== 'undefined' && CUTIN_ART[ally.presetArt]) || '';
+            const art = ally.customCutinData || (usesCustomArt(ally) ? '' : ((typeof CUTIN_ART !== 'undefined' && CUTIN_ART[ally.presetArt]) || ''));
             if (!art) return;
             const overlay = document.getElementById('cutin-overlay');
             const band = document.getElementById('cutin-band');
@@ -6238,7 +6241,7 @@ const SE_AUDIO = {
             };
             requestAnimationFrame(step);
         }
-        function runAwakeningFx(before, after, color, artKey) {
+        function runAwakeningFx(before, after, color, artKey, cutinSrc) {
             const artEl = document.getElementById('summon-art');
             const ov = document.getElementById('summon-overlay');
             if (!artEl || !ov) return;
@@ -6254,7 +6257,7 @@ const SE_AUDIO = {
             const scene = document.createElement('div');
             scene.id = 'aw3-scene';
             scene.style.cssText = 'position:absolute; inset:0; background:#000; z-index:25; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; pointer-events:none; overflow:hidden;';
-            scene.innerHTML = `<div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">覚</div><img id="aw3-img" src="${(artKey && typeof CUTIN_ART !== 'undefined' && CUTIN_ART[artKey]) || AWAKEN_FX_ART}" style="width:100%; max-height:54vh; object-fit:cover; display:block;"><div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">醒</div>`;
+            scene.innerHTML = `<div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">覚</div><img id="aw3-img" src="${cutinSrc || (artKey && typeof CUTIN_ART !== 'undefined' && CUTIN_ART[artKey]) || AWAKEN_FX_ART}" style="width:100%; max-height:54vh; object-fit:cover; display:block;"><div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">醒</div>`;
             ov.appendChild(scene);
             const bImg = document.getElementById('aw2-before'), aImg = document.getElementById('aw2-after'), label = document.getElementById('aw2-label'), sImg = document.getElementById('aw3-img');
             setTimeout(() => awTween(600, p => { if (bImg) bImg.style.opacity = String(p); }), 100);
@@ -6297,7 +6300,7 @@ const SE_AUDIO = {
                 const awakenCross = !!(result && result.type !== 'new' && fxFrom !== null && fxTo !== null && fxFrom < AWAKEN_LEVEL && fxTo >= AWAKEN_LEVEL && awBeforeSrc && awAfterSrc && awBeforeSrc !== awAfterSrc);
                 ov.classList.toggle('aw-mode', awakenCross);
                 if (awakenCross) {
-                    runAwakeningFx(awBeforeSrc, awAfterSrc, (ELEMENTS[char.element] || {}).color || '#e8402f', char.presetArt);
+                    runAwakeningFx(awBeforeSrc, awAfterSrc, (ELEMENTS[char.element] || {}).color || '#e8402f', char.presetArt, awCutinSrcOf(char));
                 } else {
                     document.getElementById('summon-art').innerHTML = charArtHtml(char, 'max-h-[44vh] w-auto object-contain');
                 }
@@ -6351,7 +6354,7 @@ const SE_AUDIO = {
             ov.classList.add('aw-mode');
             const book = document.getElementById('summon-book');
             if (book) book.style.display = 'none';
-            runAwakeningFx(before, after, (ELEMENTS[char.element] || {}).color || '#e8402f', char.presetArt);
+            runAwakeningFx(before, after, (ELEMENTS[char.element] || {}).color || '#e8402f', char.presetArt, awCutinSrcOf(char));
             document.getElementById('summon-name').textContent = char.name;
             const job = JOB_CLASSES[char.job] || JOB_CLASSES.warrior;
             document.getElementById('summon-job').textContent = `${char.title || ''} ／ ${job.name}`;
@@ -6711,6 +6714,8 @@ const SE_AUDIO = {
         function iconArtOf(c) { const a = (c && PRESET_ART[c.presetArt]) || {}; return (isAwakened(c) && a.awIcon) || a.icon || ''; }
         function iconSrcOf(c) { return (isAwakened(c) && c.customAwIconData) || c.customIconData || iconArtOf(c) || ''; }
         function fullSrcOf(c) { return (isAwakened(c) && c.customAwFullArtData) || c.customFullArtData || fullArtOf(c) || ''; }
+        function usesCustomArt(c) { return !!(c && (c.customCutinData || c.customAwFullArtData || c.customFullArtData)); }
+        function awCutinSrcOf(c) { if (c && c.customCutinData) return c.customCutinData; if (usesCustomArt(c)) return AWAKEN_FX_ART; return (typeof CUTIN_ART !== 'undefined' && CUTIN_ART[c.presetArt]) || AWAKEN_FX_ART; }
         function charArtHtml(c, imgClass) {
             const fs = fullSrcOf(c);
             if (fs) return `<img src="${fs}" class="${imgClass}">`;
@@ -6988,6 +6993,9 @@ const SE_AUDIO = {
                 : aArtEd.awFull
                     ? `<img src="${aArtEd.awFull}" class="h-28 w-auto object-contain mx-auto">`
                     : `<div class="h-28 flex items-center justify-center text-slate-500 text-[10px]">覚醒絵なし</div>`;
+            const cutinPreviewHtml = c.customCutinData
+                ? `<img src="${c.customCutinData}" class="w-full h-auto object-contain">`
+                : `<div class="h-16 flex items-center justify-center text-slate-500 text-[10px]">未設定（カスタム使用時は共通の割れガラス絵になります）</div>`;
             const awUnlocked = isAwakened(c);
             const awSectionHtml = awUnlocked ? `
                 <!-- 覚醒後の画像（Lv6から自動で切り替わり） -->
@@ -7019,6 +7027,21 @@ const SE_AUDIO = {
                                 <p class="text-[10px] text-slate-400">Lv6（覚醒）から自動でこの姿に切り替わります。覚醒の瞬間の演出にも使われます</p>
                                 ${c.customAwFullArtData ? `<button onclick="clearCustomImage('awFull')" class="text-[10px] text-rose-400 underline">カスタム覚醒絵を解除</button>` : ''}
                             </div>
+                        </div>
+                    </div>
+                
+                    <div class="bg-slate-900/70 p-3 rounded-xl border border-fuchsia-900/60 space-y-2 sm:col-span-2">
+                        <div class="font-bold text-fuchsia-300 text-xs">5. 覚醒カットイン絵（専用）</div>
+                        <div class="w-full bg-slate-950 rounded-lg border border-slate-700 p-1 overflow-hidden">
+                            ${cutinPreviewHtml}
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="block w-full text-center py-1.5 px-2 bg-fuchsia-600/30 hover:bg-fuchsia-600/50 border border-fuchsia-500/60 rounded-lg cursor-pointer text-xs font-bold text-fuchsia-200">
+                                 カットインイラストを選択（横長推奨）
+                                <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event, 'cutin')">
+                            </label>
+                            <p class="text-[10px] text-slate-400">覚醒後のスキルカットインと覚醒演出で使われます。カスタム絵を使っているキャラは、未設定だと共通の割れガラス絵になります（用意されたカットイン絵は出ません）</p>
+                            ${c.customCutinData ? `<button onclick="clearCustomImage('cutin')" class="text-[10px] text-rose-400 underline">カスタムカットインを解除</button>` : ''}
                         </div>
                     </div>
                 </div>
@@ -7186,6 +7209,7 @@ const SE_AUDIO = {
             if (kind === 'icon') ed.customIconData = '';
             else if (kind === 'awIcon') ed.customAwIconData = '';
             else if (kind === 'awFull') ed.customAwFullArtData = '';
+            else if (kind === 'cutin') ed.customCutinData = '';
             else ed.customFullArtData = '';
             renderPartyEditor();
         }
@@ -7200,7 +7224,7 @@ const SE_AUDIO = {
                 const img = new Image();
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const maxDim = (kind === 'icon' || kind === 'awIcon') ? 140 : 520; // アイコンは140px、全身立ち絵は520pxに最適化
+                    const maxDim = kind === 'cutin' ? 960 : ((kind === 'icon' || kind === 'awIcon') ? 140 : 520); // アイコンは140px、全身立ち絵は520pxに最適化
                     let w = img.width, h = img.height;
                     if (w > maxDim || h > maxDim) {
                         if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
@@ -7219,6 +7243,8 @@ const SE_AUDIO = {
                         state.partyConfig[state.editingIndex].customAwIconData = dataUrl;
                     } else if (kind === 'awFull') {
                         state.partyConfig[state.editingIndex].customAwFullArtData = dataUrl;
+                    } else if (kind === 'cutin') {
+                        state.partyConfig[state.editingIndex].customCutinData = dataUrl;
                     } else {
                         state.partyConfig[state.editingIndex].customFullArtData = dataUrl;
                     }
