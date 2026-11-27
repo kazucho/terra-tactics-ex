@@ -2658,7 +2658,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.159';
+        const GAME_VERSION = '1.160';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -5690,7 +5690,7 @@ const SE_AUDIO = {
             };
             requestAnimationFrame(step);
         }
-        function runAwakeningFx(before, after, color) {
+        function runAwakeningFx(before, after, color, artKey) {
             const artEl = document.getElementById('summon-art');
             const ov = document.getElementById('summon-overlay');
             if (!artEl || !ov) return;
@@ -5706,7 +5706,7 @@ const SE_AUDIO = {
             const scene = document.createElement('div');
             scene.id = 'aw3-scene';
             scene.style.cssText = 'position:absolute; inset:0; background:#000; z-index:25; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; pointer-events:none; overflow:hidden;';
-            scene.innerHTML = `<div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">覚</div><img id="aw3-img" src="${AWAKEN_FX_ART}" style="width:100%; max-height:54vh; object-fit:cover; display:block;"><div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">醒</div>`;
+            scene.innerHTML = `<div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">覚</div><img id="aw3-img" src="${(artKey && typeof CUTIN_ART !== 'undefined' && CUTIN_ART[artKey]) || AWAKEN_FX_ART}" style="width:100%; max-height:54vh; object-fit:cover; display:block;"><div class="aw3-kanji" style="color:${color}; text-shadow:0 0 18px ${color}, 0 0 44px ${color}59, 0 2px 0 rgba(0,0,0,.7);">醒</div>`;
             ov.appendChild(scene);
             const bImg = document.getElementById('aw2-before'), aImg = document.getElementById('aw2-after'), label = document.getElementById('aw2-label'), sImg = document.getElementById('aw3-img');
             setTimeout(() => awTween(600, p => { if (bImg) bImg.style.opacity = String(p); }), 100);
@@ -5749,7 +5749,7 @@ const SE_AUDIO = {
                 const awakenCross = !!(result && result.type !== 'new' && fxFrom !== null && fxTo !== null && fxFrom < AWAKEN_LEVEL && fxTo >= AWAKEN_LEVEL && awBeforeSrc && awAfterSrc && awBeforeSrc !== awAfterSrc);
                 ov.classList.toggle('aw-mode', awakenCross);
                 if (awakenCross) {
-                    runAwakeningFx(awBeforeSrc, awAfterSrc, (ELEMENTS[char.element] || {}).color || '#e8402f');
+                    runAwakeningFx(awBeforeSrc, awAfterSrc, (ELEMENTS[char.element] || {}).color || '#e8402f', char.presetArt);
                 } else {
                     document.getElementById('summon-art').innerHTML = charArtHtml(char, 'max-h-[44vh] w-auto object-contain');
                 }
@@ -5803,7 +5803,7 @@ const SE_AUDIO = {
             ov.classList.add('aw-mode');
             const book = document.getElementById('summon-book');
             if (book) book.style.display = 'none';
-            runAwakeningFx(before, after, (ELEMENTS[char.element] || {}).color || '#e8402f');
+            runAwakeningFx(before, after, (ELEMENTS[char.element] || {}).color || '#e8402f', char.presetArt);
             document.getElementById('summon-name').textContent = char.name;
             const job = JOB_CLASSES[char.job] || JOB_CLASSES.warrior;
             document.getElementById('summon-job').textContent = `${char.title || ''} ／ ${job.name}`;
