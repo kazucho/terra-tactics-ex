@@ -906,8 +906,16 @@
          * カスタム画像アップロード（自動リサイズ圧縮）・全身立ち絵カットイン・ジョブ別操作時間・広範囲スキル・地形ギミック搭載
          */
 
-        const COLS = 6;
-        const ROWS = 8;
+        let COLS = 6;
+        let ROWS = 8;
+        function setBoardSize(c, r) {
+            COLS = c; ROWS = r;
+            const be = document.getElementById('board-container');
+            if (be) {
+                be.style.aspectRatio = c + ' / ' + r;
+                be.style.width = 'min(430px, 100%, calc((100dvh - 23rem) * ' + (c / r) + '))';
+            }
+        }
         const STORAGE_KEY = 'terra_tactics_ex_party_v1';
 
         // ジョブ（クラス）定義
@@ -2644,7 +2652,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.156';
+        const GAME_VERSION = '1.157';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2931,8 +2939,9 @@ const SE_AUDIO = {
                     for (let dx = 0; dx < (b.size || 1); dx++) for (let dy = 0; dy < (b.size || 1); dy++) occupied.add(key(b.x + dx, b.y + dy));
                 });
             }
-            const count = isBossFloor ? 2 : Math.min(7, 3 + Math.floor((floor - 1) / 2));
-            const spots = shuffleArr([0, 1, 2, 3, 4, 5].flatMap(x => [0, 1, 2, 3].map(y => ({ x, y })))).filter(s => !occupied.has(key(s.x, s.y)));
+            let count = isBossFloor ? 2 : Math.min(7, 3 + Math.floor((floor - 1) / 2));
+            if (state.vastFloor && !isBossFloor) count = Math.min(11, Math.ceil(count * 1.5));
+            const spots = shuffleArr(Array.from({ length: COLS }, (_, x) => x).flatMap(x => Array.from({ length: Math.floor(ROWS / 2) }, (_, y) => ({ x, y })))).filter(s => !occupied.has(key(s.x, s.y)));
             for (let i = 0; i < count && i < spots.length; i++) {
                 const def = pool[Math.floor(Math.random() * pool.length)];
                 const e = JSON.parse(JSON.stringify(def));
@@ -2957,9 +2966,10 @@ const SE_AUDIO = {
                 }
             }
             const terrain = [];
-            const tSpots = shuffleArr([0, 1, 2, 3, 4, 5].flatMap(x => [2, 3, 4, 5].map(y => ({ x, y })))).filter(s => !enemies.some(e => s.x >= e.x && s.x < e.x + (e.size || 1) && s.y >= e.y && s.y < e.y + (e.size || 1)));
+            const tSpots = shuffleArr(Array.from({ length: COLS }, (_, x) => x).flatMap(x => Array.from({ length: ROWS - 4 }, (_, i) => i + 2).map(y => ({ x, y })))).filter(s => !enemies.some(e => s.x >= e.x && s.x < e.x + (e.size || 1) && s.y >= e.y && s.y < e.y + (e.size || 1)));
             let ti = 0;
-            const nRock = Math.floor(Math.random() * 4), nSpike = Math.floor(Math.random() * 5), nSpring = Math.random() < 0.6 ? 1 + Math.floor(Math.random() * 2) : 0;
+            const tMul = state.vastFloor ? 1.7 : 1;
+            const nRock = Math.floor(Math.random() * 4 * tMul), nSpike = Math.floor(Math.random() * 5 * tMul), nSpring = Math.random() < 0.6 ? 1 + Math.floor(Math.random() * 2 * tMul) : 0;
             for (let i = 0; i < nRock && ti < tSpots.length; i++, ti++) terrain.push({ x: tSpots[ti].x, y: tSpots[ti].y, type: 'rock' });
             for (let i = 0; i < nSpike && ti < tSpots.length; i++, ti++) terrain.push({ x: tSpots[ti].x, y: tSpots[ti].y, type: 'spike' });
             for (let i = 0; i < nSpring && ti < tSpots.length; i++, ti++) terrain.push({ x: tSpots[ti].x, y: tSpots[ti].y, type: 'spring' });
@@ -2968,7 +2978,11 @@ const SE_AUDIO = {
         }
         function loadEndlessFloor(floor) {
             state.endlessFloor = floor;
+            const vast = (floor % 5 !== 0) && Math.random() < 0.10;
+            state.vastFloor = vast;
+            setBoardSize(vast ? 8 : 6, vast ? 10 : 8);
             state.dynamicWave = generateEndlessWave(floor);
+            if (vast && state.dynamicWave && state.dynamicWave.title) state.dynamicWave.title = '広大なる' + state.dynamicWave.title;
             loadWave(0);
         }
         function enterEndlessFormation() {
@@ -3073,6 +3087,7 @@ const SE_AUDIO = {
         }
 
         function loadWave(idx) {
+            if (state.endlessFloor === 0) setBoardSize(6, 8);
             state.waveIndex = idx;
             state.turn = 1;
             state.reinforced = false;
@@ -3113,7 +3128,7 @@ const SE_AUDIO = {
             markEnemiesSeen();
 
             // 味方初期配置（岩壁と敵を避ける）
-            const startSpots = [{x:1, y:6}, {x:2, y:7}, {x:3, y:7}, {x:4, y:6}, {x:0, y:7}, {x:5, y:6}];
+            const startSpots = (COLS === 6 && ROWS === 8) ? [{x:1, y:6}, {x:2, y:7}, {x:3, y:7}, {x:4, y:6}, {x:0, y:7}, {x:5, y:6}] : [Math.floor(COLS/2)-1, Math.floor(COLS/2), Math.floor(COLS/2)-2, Math.floor(COLS/2)+1, Math.floor(COLS/2)-3, Math.floor(COLS/2)+2].map((x, i) => ({ x, y: i % 2 ? ROWS - 1 : ROWS - 2 }));
             for (let i = startSpots.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = startSpots[i]; startSpots[i] = startSpots[j]; startSpots[j] = t; }
             let sIdx = 0;
             state.allies.forEach(ally => {
@@ -3123,7 +3138,7 @@ const SE_AUDIO = {
                 ally.regenT = 0;
                 ally.bunshin = (JOB_TRAITS[ally.job] || {}).bunshin || 0;
                 if (ally.hp > 0) {
-                    let spot = startSpots[sIdx++] || {x: 0, y: 7};
+                    let spot = startSpots[sIdx++] || {x: 0, y: ROWS - 1};
                     while (isCellBlockedForAlly(spot.x, spot.y)) {
                         spot.x = (spot.x + 1) % COLS;
                         if (spot.x === 0) spot.y = (spot.y + 1) % ROWS;
