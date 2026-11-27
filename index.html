@@ -28,6 +28,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -903,6 +906,7 @@
                     <div class="font-bold text-amber-300">10. 放浪者（フリー枠）</div>
                         <div class="mt-1 space-y-1.5">
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-fuchsia-300 font-bold">放浪者</span>はパーティー枠を使うが、ドラッグ操作はできず、<span class="text-amber-300 font-bold">挟撃・チェーンには一切参加しない</span>（盤上ではマスを占有する）。味方フェイズに各自が勝手に動き、敵からも狙われる</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>放浪者の与えるダメージは、挟撃に参加できない代わりに<span class="text-amber-300 font-bold">2倍</span>（リエルの幻獣も含む）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>リエル：WAVEに一度、幻獣（炎獣／氷姫／雷翁／風精、覚醒後は光竜）を召喚。幻獣はそのWAVEの間、自由に戦う。本人は非力で敵から逃げ回る</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>フェンリル：最寄りの敵へ一直線に駆け寄り聖牙で噛み付く。ガルフ：最寄りの敵とその隣の敵をまとめて薙ぐ</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>タナカ：敵に近づくとフラッシュで<span class="text-amber-300 font-bold">目潰し</span>（2ターンの間、敵の攻撃が50%で外れる）。エンドレスの完全レア（1%）</span></div>
@@ -2744,7 +2748,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.169';
+        const GAME_VERSION = '1.170';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4292,7 +4296,8 @@ const SE_AUDIO = {
             playSkillEffect(cells, ek, color);
             playSE('skill_blast', 1.0);
             const crit = Math.random() * 100 < ((JOB_TRAITS[ally.job] || {}).crit || 5);
-            let dmg = Math.round(ally.atk * mult * getElementMultiplier(el, enemy.element) * (crit ? 1.5 : 1) * ((enemy.defDownT || 0) > 0 ? 1.25 : 1));
+            // 放浪者は挟撃・チェーンに参加できない代わりに、与ダメージ2倍
+            let dmg = Math.round(ally.atk * mult * 2 * getElementMultiplier(el, enemy.element) * (crit ? 1.5 : 1) * ((enemy.defDownT || 0) > 0 ? 1.25 : 1));
             dmg = Math.max(1, dmg);
             const wasAlive = enemy.hp > 0;
             enemy.hp = Math.max(0, enemy.hp - dmg);
@@ -4326,7 +4331,7 @@ const SE_AUDIO = {
                         const kind = isAwakened(a) ? 'light' : ['fire', 'ice', 'thunder', 'wind'][Math.floor(Math.random() * 4)];
                         const info = ESPER_INFO[kind];
                         const spot = freeCellNear(a.x, a.y, null);
-                        state.esper = { ownerId: 'f1', esperKind: kind, power: Math.round(a.atk * (kind === 'light' ? 4.8 : 3.6)), x: spot.x, y: spot.y };
+                        state.esper = { ownerId: 'f1', esperKind: kind, power: Math.round(a.atk * (kind === 'light' ? 4.8 : 3.6) * 2), x: spot.x, y: spot.y };
                         await playFreeCutin(a, '幻獣召喚');
                         playSkillEffect([{ x: spot.x, y: spot.y }], 'holy', info.color);
                         playSE('skill_blast', 1.0);
