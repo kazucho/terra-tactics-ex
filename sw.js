@@ -1,4 +1,4 @@
-const CACHE = 'terra-tactics-ex-v174';
+const CACHE = 'terra-tactics-ex-v175';
 const ASSETS = ['./manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => {
     // index.html（約28MB）は先読みしない。更新チェックを軽く・速く終えるため（初回表示時にfetch側でキャッシュされる）
