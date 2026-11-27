@@ -37,6 +37,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -917,10 +920,11 @@
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>フェンリル：最寄りの敵へ一直線に駆け寄り聖牙で噛み付く。ガルフ：最寄りの敵とその隣の敵をまとめて薙ぐ</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>タナカ：敵に近づくとフラッシュで<span class="text-amber-300 font-bold">目潰し</span>（2ターンの間、敵の攻撃が50%で外れる）。エンドレスの完全レア（1%）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ユウギリ：気ままに歩き、隣の敵を<span class="text-amber-300 font-bold">魅了</span>して1ターン行動を止める。目潰し・魅了は状態異常レジストの対象（ボスには効きにくい）</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ミミル：毎ターン、仲間の攻撃スキルをランダムで真似て放つ。クロ：時々昼寝し、時々3連続引っ掻き。敵の攻撃を40%でかわす</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ミミル：毎ターン、仲間の攻撃スキルをランダムで真似て放つ</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>クロ：時々昼寝し、時々3連続引っ掻き。敵の攻撃を40%でかわす</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ホーク：最もHPの高い敵（ボス優先）を射程2から狙撃。ボスにはダメージ1.5倍</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>水着バルガス：目隠しで気ままに歩き回り、隣の敵を木剣で叩く（目隠しゆえ3割ほど空振り）。どこかで出会える特別な放浪者</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>花火プリム：ふらふら気ままに歩き回り、届く範囲の敵に花火を打ち込む（爆風は周りの敵にも広がる）。どこかで出会える特別な放浪者</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>水着バルガス：目隠しで気ままに歩き回り、隣の敵を木剣で叩く（目隠しゆえ3割ほど空振り）。古の遊具の有名コマンドで出現する特別な放浪者</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>花火プリム：ふらふら気ままに歩き回り、届く範囲の敵に花火を打ち込む（爆風は周りの敵にも広がる）。古の遊具の有名コマンド（III）で出現する特別な放浪者</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>最後の1人が放浪者だけになっても敗北にはならず、放浪者は戦い続ける</span></div>
                         </div>
                     </div>
@@ -2768,7 +2772,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.172';
+        const GAME_VERSION = '1.173';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
