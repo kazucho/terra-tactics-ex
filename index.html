@@ -2669,7 +2669,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.161';
+        const GAME_VERSION = '1.163';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4290,7 +4290,7 @@ const SE_AUDIO = {
                 const applyDirectHit = async (ally) => {
                     let hitAny = false;
                     for (const enemy of livingEnemies) {
-                        if (enemy.hp <= 0) continue;
+                        // livingEnemiesはグループ開始時点の生存敵。先行した味方が倒し切っても自分の挟撃は着弾させる
                         const plan = directPlans.get(enemy.id);
                         if (!plan || plan.done.has(ally.id)) continue;
                         const c = plan.contributions.find(x => x.ally.id === ally.id);
@@ -4377,14 +4377,16 @@ const SE_AUDIO = {
                     const enemyInCells = targetCells.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'enemy' && occ.unit.hp > 0; });
                     const allyInCells = targetCells.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'ally' && occ.unit.hp > 0; });
                     const hurtAllyInCells = targetCells.some(cell => { const occ = getUnitAt(cell.x, cell.y); return occ && occ.side === 'ally' && occ.unit.hp > 0 && occ.unit.hp < occ.unit.maxHp; });
+                    const snapshotEnemyInCells = targetCells.some(cell => livingEnemies.some(e => cell.x >= e.x && cell.x < e.x + (e.size || 1) && cell.y >= e.y && cell.y < e.y + (e.size || 1)));
+                    const enemyTargetable = enemyInCells || snapshotEnemyInCells;
                     let skillUseful = true;
                     switch (skillInfo.type) {
                         case 'damage': case 'omni': case 'pull': case 'debug_death': case 'bomb': case 'persuade':
-                            skillUseful = enemyInCells; break;
+                            skillUseful = enemyTargetable; break;
                         case 'terrain':
-                            skillUseful = enemyInCells || targetCells.some(cell => { const t = getTerrainAt(cell.x, cell.y); return t && (t.type === 'rock' || t.type === 'spike'); }); break;
+                            skillUseful = enemyTargetable || targetCells.some(cell => { const t = getTerrainAt(cell.x, cell.y); return t && (t.type === 'rock' || t.type === 'spike'); }); break;
                         case 'hybrid':
-                            skillUseful = enemyInCells || hurtAllyInCells; break;
+                            skillUseful = enemyTargetable || hurtAllyInCells; break;
                         case 'heal':
                             skillUseful = hurtAllyInCells; break;
                         case 'regen': case 'buff': case 'guard_buff':
