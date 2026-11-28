@@ -127,6 +127,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -1010,7 +1013,7 @@
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>リエル：WAVEに一度、幻獣（炎獣／氷姫／雷翁／風精、覚醒後は光竜）を召喚。幻獣はそのWAVEの間、自由に戦う。本人は非力で敵から逃げ回る</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>フェンリル：最寄りの敵へ一直線に駆け寄り聖牙で噛み付く。ガルフ：最寄りの敵とその隣の敵をまとめて薙ぐ</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>タナカ：敵に近づくとフラッシュで<span class="text-amber-300 font-bold">目潰し</span>（2ターンの間、敵の攻撃が50%で外れる）。フラッシュ後は敵から逃げ回り、効果が切れるとまた近づく。エンドレスの完全レア（1%）</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ユウギリ：気ままに歩き、隣の敵を<span class="text-amber-300 font-bold">魅了</span>して1ターン行動を止める。目潰し・魅了は状態異常レジストの対象（ボスには効きにくい）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ユウギリ：魅了が成功するまでは敵に近づき、成功後は気ままに歩く。隣の敵を<span class="text-amber-300 font-bold">魅了</span>して1ターン行動を止める。目潰し・魅了は状態異常レジストの対象（ボスには効きにくい）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ミミル：毎ターン、仲間の攻撃スキルをランダムで真似て放つ</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>クロ：半分の確率で昼寝し、それ以外は3連続引っ掻き。敵の攻撃を40%でかわす</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ホーク：最もHPの高い敵（ボス優先）を射程2から狙撃。ボスにはダメージ1.5倍</span></div>
@@ -1070,7 +1073,7 @@
             holybeast: { name: '聖獣', moveTime: 6.0, directMult: 1.2, skillPowerMult: 1.2, badge: '放浪者', desc: '古の盟約により人に力を貸す白き聖獣フェンリル。味方フェイズに最寄りの敵へ一直線に駆け寄り、聖なる牙で噛み付く。挟撃・チェーンには参加しない放浪者。' },
             berserker: { name: '狂戦士', moveTime: 5.0, directMult: 1.25, skillPowerMult: 1.2, badge: '放浪者', desc: '耳に白い花を挿した愛嬌のある大男ガルフ。味方フェイズに最寄りの敵を大斧で薙ぎ払い、隣の敵も巻き込む。協調性は皆無。挟撃・チェーンには参加しない放浪者。' },
             tourist: { name: '観光客', moveTime: 5.0, directMult: 0.1, skillPowerMult: 1.0, badge: '放浪者', desc: '転生して異世界に迷い込んだ日本人観光客タナカ。戦う気はなく、敵に近づいてはカメラのフラッシュで目を眩ませ（命中低下2ターン）、焚いた後は一目散に逃げる。効果が切れるとまた近づく。エンドレスダンジョンで稀に出会える完全レア。挟撃・チェーンには参加しない放浪者。' },
-            oiran: { name: '花魁', moveTime: 5.0, directMult: 0.4, skillPowerMult: 1.0, badge: '放浪者', desc: '歩く先々に魅力を振り撒く花魁ユウギリ。味方フェイズに気ままに歩き、隣り合った敵を魅了して1ターン動きを止める。挟撃・チェーンには参加しない放浪者。' },
+            oiran: { name: '花魁', moveTime: 5.0, directMult: 0.4, skillPowerMult: 1.0, badge: '放浪者', desc: '歩く先々に魅力を振り撒く花魁ユウギリ。味方フェイズ、魅了が成功するまでは敵に近づき、成功すると気ままに歩き出す。隣り合った敵を魅了して1ターン動きを止める。挟撃・チェーンには参加しない放浪者。' },
             copycat: { name: 'ものまね師', moveTime: 5.0, directMult: 0.9, skillPowerMult: 1.0, badge: '放浪者', desc: '素顔を見た者はいない、千の仮面のものまね師ミミル。味方フェイズに仲間の誰かの攻撃スキルをランダムで真似て放つ。何を真似るかは本人にも分からない。挟撃・チェーンには参加しない放浪者。' },
             blackcat: { name: '黒猫', moveTime: 6.0, directMult: 0.9, skillPowerMult: 1.0, badge: '放浪者', desc: '金の目を持つ黒猫クロ。気まぐれに歩き回り、時々昼寝し、時々引っ掻き回す。小さくて敵の攻撃をかわしやすい。挟撃・チェーンには参加しない放浪者。' },
             bountyhunter: { name: '賞金稼ぎ', moveTime: 5.5, directMult: 1.1, skillPowerMult: 1.15, badge: '放浪者', desc: '賞金首だけを狙う一匹狼ホーク。味方フェイズに最も手強い敵（ボス優先）へ狙いを定め、クロスボウで撃つ。ボスには追加ダメージ。挟撃・チェーンには参加しない放浪者。' },
@@ -2894,7 +2897,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.202';
+        const GAME_VERSION = '1.203';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3353,6 +3356,7 @@ const SE_AUDIO = {
             state.charmed = null;
             state.pet = null;
             state.esper = null;
+            state.allies.forEach(a => { if (a.id === 'f5') a._yuugiriCharmed = false; });
             const petOwner = state.allies.find(a => a.hp > 0 && (JOB_TRAITS[a.job] || {}).dragonpet);
             if (petOwner) state.pet = { ownerId: petOwner.id, power: Math.round(petOwner.atk * 0.9) };
             state.mines = []; state.curses = []; state.bombs = [];
@@ -4672,13 +4676,14 @@ const SE_AUDIO = {
                         await freeMoveToward(a, nearest, 2);
                     }
                 } else if (a.id === 'f5') {
-                    await freeWander(a, 2);
+                    if (!a._yuugiriCharmed && nearest) await freeMoveToward(a, nearest, 3);
+                    else await freeWander(a, 2);
                     const adj = state.enemies.filter(e => e.hp > 0 && followerDist(a, e) <= 1);
                     let charmed = 0;
                     for (const e of adj) {
                         if (Math.random() < 0.55 && tryApplyStatus(e, 'charm')) { e.charmedStopT = Math.max(e.charmedStopT || 0, 1); addResBonus(e, 'charm'); charmed++; showFloatingText(e.x + (e.size || 1) / 2, e.y + 0.1, '魅了♥', '#f9a8d4', '14px'); }
                     }
-                    if (charmed >= 1) await playFreeCutin(a, a.skillName);
+                    if (charmed >= 1) { a._yuugiriCharmed = true; await playFreeCutin(a, a.skillName); }
                     if (!charmed && adj.length) await freeHit(a, adj[0], 0.4, '扇の一撃');
                     if (charmed) { renderUnits(); await sleep(250); }
                 } else if (a.id === 'f6') {
