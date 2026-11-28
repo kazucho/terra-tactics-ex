@@ -133,6 +133,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -1618,28 +1621,28 @@
                 awIcon: 'assets/ae0824150b8b61ac.webp'
             },
             rookie_warrior: {
-                full: 'assets/e9e3344e4639dbad.webp',
-                icon: 'assets/e037303085a4f275.webp',
-                awFull: 'assets/e0f360a59b9fac7f.webp',
-                awIcon: 'assets/d061a3f245498506.webp',
+                full: 'assets/4a3bac6b9352c603.webp',
+                icon: 'assets/201dd685a4a39343.webp',
+                awFull: 'assets/eb81fd93a6fb89c1.webp',
+                awIcon: 'assets/f00fa384d115bea7.webp',
             },
             rookie_scout: {
-                full: 'assets/9ce9b0f853f91e44.webp',
-                icon: 'assets/65d364768457d969.webp',
-                awFull: 'assets/5aa4c850425c7edb.webp',
-                awIcon: 'assets/4142d3383c4e2f33.webp',
+                full: 'assets/ca5d8d3f6801ccba.webp',
+                icon: 'assets/16972b70612aba90.webp',
+                awFull: 'assets/e5d18083e12bb23e.webp',
+                awIcon: 'assets/43391427db1f187c.webp',
             },
             rookie_healer: {
-                full: 'assets/1f9ea83f56846f1a.webp',
-                icon: 'assets/c7350f5ebd71aae7.webp',
-                awFull: 'assets/3d4573e79e5af146.webp',
-                awIcon: 'assets/1354ebaaa87850fc.webp',
+                full: 'assets/27e8e5c7eeadef07.webp',
+                icon: 'assets/5b88e14c7ca99b71.webp',
+                awFull: 'assets/a910768a62fcba54.webp',
+                awIcon: 'assets/7c59eef5a303f618.webp',
             },
             rookie_archer: {
-                full: 'assets/96c79080aea8b098.webp',
-                icon: 'assets/a506d44dc62d5308.webp',
-                awFull: 'assets/008927cfc5160ab7.webp',
-                awIcon: 'assets/beca4b146fab7c44.webp',
+                full: 'assets/a354e03705e89515.webp',
+                icon: 'assets/e5b9c7a710c4b8cc.webp',
+                awFull: 'assets/a8e97d8c472871be.webp',
+                awIcon: 'assets/f75d0f573a3f37ee.webp',
             },
             en_goblin: {
                 full: 'assets/387975a37c13d75d.webp',
@@ -2595,10 +2598,10 @@ const SE_AUDIO = {
             pharmacist: 'assets/b017c69f359a757e.webp',
             rachel: 'assets/fb0db692d5dcfdf5.webp',
             ranger: 'assets/efa3967ad71dba61.webp',
-            rookie_archer: 'assets/896b992ca584d174.webp',
-            rookie_healer: 'assets/c60a9d63e00e14e8.webp',
-            rookie_scout: 'assets/48fd405fdaa59fb3.webp',
-            rookie_warrior: 'assets/4716a89d1b491858.webp',
+            rookie_archer: 'assets/89f09ebb28505a6a.webp',
+            rookie_healer: 'assets/60b963464c108795.webp',
+            rookie_scout: 'assets/f933986ad97e6ceb.webp',
+            rookie_warrior: 'assets/ae5f81316a9bd990.webp',
             rudy: 'assets/10f096b26d4c33b6.webp',
             salaryman: 'assets/df1d6ff913f853bc.webp',
             samurai: 'assets/d1f39c1b8d28b496.webp',
@@ -2900,7 +2903,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.204';
+        const GAME_VERSION = '1.205';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -6718,7 +6721,7 @@ const SE_AUDIO = {
             if (t.debug) traits.push('デバッグ：チェーンでスキルが発動すると、ボス以外の敵が全員即死');
             detail.innerHTML = `
                 <div class="flex gap-3">
-                    <div class="w-24 sm:w-32 shrink-0 flex flex-col items-center cursor-pointer" onclick="showCharArtFullscreen('${c.id}')"><div class="bg-white rounded-md p-1.5 w-full flex items-center justify-center">${detailArtHtml}</div><div class="text-[9px] text-slate-500 mt-1">タップで拡大</div>${awToggleHtml}</div>
+                    <div class="w-24 sm:w-32 shrink-0 flex flex-col items-center cursor-pointer" onclick="showCharArtFullscreen('${c.id}')"><div class="bg-black rounded-md p-1.5 w-full flex items-center justify-center">${detailArtHtml}</div><div class="text-[9px] text-slate-500 mt-1">タップで拡大</div>${awToggleHtml}</div>
                     <div class="flex-1 min-w-0 text-xs">
                         <div class="flex items-center gap-2 flex-wrap">
                             <span class="text-base font-black text-white">${c.name}</span>
@@ -6880,7 +6883,7 @@ const SE_AUDIO = {
             const isBoss = !!e.boss;
             detail.innerHTML = `
                 <div class="flex gap-3">
-                    <div class="w-24 sm:w-32 shrink-0 flex flex-col items-center cursor-pointer" onclick="showEnemyArtFullscreen('${e.key}')"><div class="bg-white rounded-md p-1.5 w-full flex items-center justify-center">${e.tint ? `<span style="filter:${e.tint}; display:inline-block;">${enemyArtHtml(e.artKey || e.key, 'max-h-52 w-auto object-contain', true)}</span>` : enemyArtHtml(e.artKey || e.key, 'max-h-52 w-auto object-contain', true)}</div><div class="text-[9px] text-slate-500 mt-1">タップで拡大</div></div>
+                    <div class="w-24 sm:w-32 shrink-0 flex flex-col items-center cursor-pointer" onclick="showEnemyArtFullscreen('${e.key}')"><div class="bg-black rounded-md p-1.5 w-full flex items-center justify-center">${e.tint ? `<span style="filter:${e.tint}; display:inline-block;">${enemyArtHtml(e.artKey || e.key, 'max-h-52 w-auto object-contain', true)}</span>` : enemyArtHtml(e.artKey || e.key, 'max-h-52 w-auto object-contain', true)}</div><div class="text-[9px] text-slate-500 mt-1">タップで拡大</div></div>
                     <div class="flex-1 min-w-0 text-xs">
                         <div class="flex items-center gap-2 flex-wrap">
                             <span class="text-base font-black text-white">${e.name}</span>
