@@ -97,6 +97,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -2851,7 +2854,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.192';
+        const GAME_VERSION = '1.193';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4333,7 +4336,7 @@ const SE_AUDIO = {
             const titleEl = document.getElementById('cutin-skill-title');
             if (!overlay || !band || !artBox) return;
             const theme = CUTIN_THEMES[ally.cutinTheme] || CUTIN_THEMES.crimson;
-            const durSec = state.cutinSpeedMode === 0 ? 1.15 : 0.45;
+            const durSec = state.cutinSpeedMode === 0 ? 1.92 : 0.52;
             const awakened = isAwakened(ally);
             let artHtml = '';
             if (awakened) {
