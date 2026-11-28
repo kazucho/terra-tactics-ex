@@ -118,6 +118,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -896,7 +899,7 @@
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">2. 挟み撃ち（ピンサー）＆チェーン魔法</div>
                         <div class="mt-1 space-y-1.5">
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>移動は上下左右のみ（斜め移動はなし）。敵・岩・魅了した敵はすり抜け不可。味方・放浪者・精霊・ペット・召喚獣のマスに入ると位置交換する。飛行ジョブは障害物を越えられるが、位置交換はせず、埋まったマスには着地できない</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>移動は上下左右のみ（斜め移動はなし）。敵・岩・放浪者・魅了した敵はすり抜け不可の障害物。操作キャラ・精霊・ペット・召喚獣のマスに入ると位置交換する。飛行ジョブは障害物を越えられるが、位置交換はせず、埋まったマスには着地できない</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>敵を縦または横で挟むと攻撃開始！</span></div><div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>四方を塞がれて<span class="text-amber-300 font-bold">移動できない敵</span>には、隣接した操作キャラの追込攻撃が挟撃と同じ扱いで成立する</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>挟んだ2人と同じ行・列の直線上にいる味方は、<span class="text-sky-300 font-bold">離れていてもチェーン発動</span>し、全身カットインと共に固有範囲スキルを放つ</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>間に敵が居る味方は繋がらない</span></div>
@@ -995,7 +998,7 @@
                 <div class="space-y-1">
                     <div class="font-bold text-amber-300">10. 放浪者（フリー枠）</div>
                         <div class="mt-1 space-y-1.5">
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-fuchsia-300 font-bold">放浪者</span>はパーティー枠を使うが、ドラッグ操作はできず、<span class="text-amber-300 font-bold">挟撃・チェーンには一切参加しない</span>（盤上ではマスを占有し、操作キャラが上下左右から入ると位置を交換する）。味方フェイズに各自が勝手に動き、敵からも狙われる。放浪者だけで編成すると操作できる仲間がいなくなるため、操作フェイズは自動で進む</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-fuchsia-300 font-bold">放浪者</span>はパーティー枠を使うが、ドラッグ操作はできず、<span class="text-amber-300 font-bold">挟撃・チェーンには一切参加しない</span>（盤上ではマスを占有する障害物。操作キャラはそのマスに入れない）。味方フェイズに各自が勝手に動き、敵からも狙われる。放浪者だけで編成すると操作できる仲間がいなくなるため、操作フェイズは自動で進む</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>放浪者の与えるダメージは、挟撃に参加できない代わりに<span class="text-amber-300 font-bold">2倍</span>（リエルの幻獣も含む）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>リエル：WAVEに一度、幻獣（炎獣／氷姫／雷翁／風精、覚醒後は光竜）を召喚。幻獣はそのWAVEの間、自由に戦う。本人は非力で敵から逃げ回る</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>フェンリル：最寄りの敵へ一直線に駆け寄り聖牙で噛み付く。ガルフ：最寄りの敵とその隣の敵をまとめて薙ぐ</span></div>
@@ -1045,6 +1048,7 @@
         let ROWS = 8;
         function setBoardSize(c, r) {
             COLS = c; ROWS = r;
+            if (typeof createGridCells === 'function') { try { createGridCells(); } catch (e) {} }
             const be = document.getElementById('board-container');
             if (be) {
                 be.style.aspectRatio = c + ' / ' + r;
@@ -2883,7 +2887,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.199';
+        const GAME_VERSION = '1.200';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3002,6 +3006,8 @@ const SE_AUDIO = {
                     cell.className = `grid-cell ${(x + y) % 2 === 0 ? 'even' : 'odd'}`;
                     cell.style.backgroundImage = `url(${FLOOR_ART[state.floorTheme] || TERRAIN_ART.grass})`;
                     cell.style.backgroundSize = 'cover';
+                    cell.style.width = `${100 / COLS}%`;
+                    cell.style.height = `${100 / ROWS}%`;
                     cell.style.filter = (x + y) % 2 === 1 ? 'brightness(0.8)' : 'brightness(0.87)';
                     cell.style.left = `${(x / COLS) * 100}%`;
                     cell.style.top = `${(y / ROWS) * 100}%`;
@@ -3663,6 +3669,7 @@ const SE_AUDIO = {
                         for (let ex = 0; ex < sz; ex++) for (let ey = 0; ey < sz; ey++) built.push({ x: e.x + ex, y: e.y + ey });
                     });
                     [state.spirit, state.pet, state.charmed, state.esper].forEach(f => { if (f && f.x !== undefined) built.push({ x: f.x, y: f.y }); });
+                    state.allies.forEach(a => { if (a.free && a.hp > 0 && a !== du) built.push({ x: a.x, y: a.y }); });
                     state._dragBlocks = built;
                 }
                 const blocks = state._dragBlocks;
@@ -3716,6 +3723,7 @@ const SE_AUDIO = {
             if (terr && terr.type === 'rock') return false;
             const occ = getUnitAt(x, y);
             if (occ && occ.side === 'enemy') return false;
+            if (occ && occ.side === 'ally' && occ.unit.free) return false;
             if (state.charmed && state.charmed.x === x && state.charmed.y === y) return false;
             return true;
         }
@@ -3750,7 +3758,7 @@ const SE_AUDIO = {
             const seOk = !state._lastStepSeAt || seNow - state._lastStepSeAt > 90;
             const flying = !!(JOB_TRAITS[activeUnit.job] || {}).flying;
             let swappedUnit = null;
-            if (!flying && occupant && occupant.side === 'ally') {
+            if (!flying && occupant && occupant.side === 'ally' && !occupant.unit.free) {
                 const pushedAlly = occupant.unit;
                 pushedAlly.x = activeUnit.x;
                 pushedAlly.y = activeUnit.y;
@@ -3771,7 +3779,7 @@ const SE_AUDIO = {
             activeUnit.x = nextX;
             activeUnit.y = nextY;
             // 着地できるマス（岩・敵・他ユニットがいないマス）だけを帰還先として記録する
-            const landable = !(destTerr && destTerr.type === 'rock')
+            const landable = !flying || !(destTerr && destTerr.type === 'rock')
                 && !state.enemies.some(e => e.hp > 0 && nextX >= e.x && nextX < e.x + (e.size || 1) && nextY >= e.y && nextY < e.y + (e.size || 1))
                 && !state.allies.some(a => a.hp > 0 && a !== activeUnit && a.x === nextX && a.y === nextY)
                 && !followerAt(nextX, nextY);
@@ -4956,6 +4964,7 @@ const SE_AUDIO = {
 
             for (let i = 0; i < pincers.length; i++) {
                 const p = pincers[i];
+                try {
                 const livingEnemies = [...p.enemyIds]
                     .map(id => state.enemies.find(e => e.id === id))
                     .filter(e => e && e.hp > 0);
@@ -5165,7 +5174,7 @@ const SE_AUDIO = {
                     if (PHYS_ONCE_TYPES.includes(skillInfo.type) && !isMagicUser && state._physSkillUsed) state._physSkillUsed.add(ally.id);
 
                     // 全画面立ち絵カットイン再生！
-                    await playFullScreenCutin(ally);
+                    try { await playFullScreenCutin(ally); } catch (e) {}
                     await applyDirectHit(ally);
                     try { const _mel = magicElementFor(ally, skillInfo); if (_mel) playMagicFx(_mel); } catch (e) {}
 
@@ -5522,6 +5531,7 @@ const SE_AUDIO = {
                 fxSvg.innerHTML = '';
                 calculateEnemyDangerZones();
                 renderDangerZones();
+                } catch (e) {}
             }
 
             if (state.combo >= 5) {
