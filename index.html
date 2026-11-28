@@ -106,6 +106,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -2860,7 +2863,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.195';
+        const GAME_VERSION = '1.196';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -7261,6 +7264,18 @@ const SE_AUDIO = {
                 renderPartyEditor();
                 closePartyEditor();
                 grantHiddenChar('k10');
+                return;
+            }
+            if (field === 'name' && ch && ch.id === 's1' && String(value).trim().toLowerCase() === 'tanaka') {
+                renderPartyEditor();
+                closePartyEditor();
+                grantHiddenChar('f4');
+                return;
+            }
+            if (field === 'name' && ch && ch.id === 's1' && String(value).trim().toLowerCase() === 'johnny') {
+                renderPartyEditor();
+                closePartyEditor();
+                grantHiddenChar('k8');
                 return;
             }
             if (field === 'name' && ch && ch.id === 's1' && ['シャントット', 'オーッホッホッホ'].includes(String(value).trim())) {
