@@ -85,6 +85,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -970,7 +973,7 @@
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>クロ：時々昼寝し、時々3連続引っ掻き。敵の攻撃を40%でかわす</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ホーク：最もHPの高い敵（ボス優先）を射程2から狙撃。ボスにはダメージ1.5倍</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>水着バルガス：目隠しで気ままに歩き回り、隣の敵を木剣で叩く（目隠しゆえ3割ほど空振り）。声援の誘導で、ターンごとに敵へ寄っていく確率が上がる。古の遊具の有名コマンドで出現する特別な放浪者</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>花火プリム：1ターンおきに敵へ近づき、間のターンは花火に夢中でふらふら歩く。届く範囲の敵に花火を打ち込む（爆風は周りの敵にも広がる）。古の遊具の有名コマンド（III）で出現する特別な放浪者</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>花火プリム：25%の確率で敵へ近づき、それ以外は花火に夢中でふらふら歩く。届く範囲の敵に花火を打ち込む（爆風は周りの敵にも広がる）。古の遊具の有名コマンド（III）で出現する特別な放浪者</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>最後の1人が放浪者だけになっても敗北にはならず、放浪者は戦い続ける</span></div>
                         </div>
                     </div>
@@ -1029,7 +1032,7 @@
             blackcat: { name: '黒猫', moveTime: 6.0, directMult: 0.9, skillPowerMult: 1.0, badge: '放浪者', desc: '金の目を持つ黒猫クロ。気まぐれに歩き回り、時々昼寝し、時々引っ掻き回す。小さくて敵の攻撃をかわしやすい。挟撃・チェーンには参加しない放浪者。' },
             bountyhunter: { name: '賞金稼ぎ', moveTime: 5.5, directMult: 1.1, skillPowerMult: 1.15, badge: '放浪者', desc: '賞金首だけを狙う一匹狼ホーク。味方フェイズに最も手強い敵（ボス優先）へ狙いを定め、クロスボウで撃つ。ボスには追加ダメージ。挟撃・チェーンには参加しない放浪者。' },
             swimknight: { name: '水着騎士', moveTime: 5.5, directMult: 1.1, skillPowerMult: 1.2, badge: '放浪者', desc: '真夏の重騎士バルガス。目隠しのスイカ割りを楽しむあまり戦場に迷い込んだ。味方フェイズに気ままに歩き回るが、スイカ割りと同じく周りの声援でターンごとに敵へ寄っていく確率が上がっていく。隣り合った敵を木剣で叩く（目隠しゆえ時々空振り）。挟撃・チェーンには参加しない放浪者。' },
-            fireworker: { name: '花火師', moveTime: 5.0, directMult: 1.1, skillPowerMult: 1.2, badge: '放浪者', desc: 'バルガスと浜辺に遊びに来たプリム。テンションが上がりすぎて戦場でも花火を打ちまくる。味方フェイズ、1ターンおきに敵へ近づき、間のターンは花火に夢中でふらふら歩き回る。届く範囲の敵に花火を打ち込む（爆風は周りの敵にも広がる）。挟撃・チェーンには参加しない放浪者。' },
+            fireworker: { name: '花火師', moveTime: 5.0, directMult: 1.1, skillPowerMult: 1.2, badge: '放浪者', desc: 'バルガスと浜辺に遊びに来たプリム。テンションが上がりすぎて戦場でも花火を打ちまくる。味方フェイズ、25%の確率で敵へ近づき、それ以外は花火に夢中でふらふら歩き回る。届く範囲の敵に花火を打ち込む（爆風は周りの敵にも広がる）。挟撃・チェーンには参加しない放浪者。' },
             geomancer: { name: '風水師', moveTime: 5.5, directMult: 0.35, skillPowerMult: 1.0, badge: '風水師', desc: '地脈を読み、戦場に魔力泉を生み出す地形の魔術師。' },
             karakuri: { name: 'からくり師', moveTime: 5.0, directMult: 0.9, skillPowerMult: 1.0, badge: 'からくり師', desc: '地雷を仕掛ける罠の専門家。敵の足元に死を置く。' },
             warper: { name: '空間魔道士', moveTime: 6.0, directMult: 0.35, skillPowerMult: 1.0, badge: '空間魔道士', desc: '仲間全員を自分の周囲へ転送する、次元を操る魔道士。' },
@@ -2839,7 +2842,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.188';
+        const GAME_VERSION = '1.189';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4549,8 +4552,7 @@ const SE_AUDIO = {
                         }
                     }
                 } else if (a.id === 'f10') {
-                    a._primTurns = (a._primTurns || 0) + 1;
-                    if (a._primTurns % 2 === 1) {
+                    if (Math.random() < 0.25) {
                         await freeMoveToward(a, nearest, 3, 3);
                     } else {
                         showFloatingText(a.x + 0.5, a.y - 0.2, '花火に夢中♪', '#fdba74', '13px');
