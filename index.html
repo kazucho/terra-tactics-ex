@@ -79,6 +79,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -2819,7 +2822,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.186';
+        const GAME_VERSION = '1.187';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3453,9 +3456,13 @@ const SE_AUDIO = {
             phaseLabel.className = 'font-bold text-amber-300 truncate';
             if (!isSetup) showTurnBanner('味方のターン', false);
             // 放浪者のみで操作できる味方がいない場合は、自動でバトルフェイズへ進める
-            if (state.allies.some(a => a.hp > 0) && !state.allies.some(a => a.hp > 0 && !a.free)) {
+            // （セットアップ時はコイントス後に改めて呼ばれるので予約しない。タイトル表示中も進めない）
+            if (!isSetup && state.allies.some(a => a.hp > 0) && !state.allies.some(a => a.hp > 0 && !a.free)) {
                 phaseLabel.textContent = '操作できる仲間がいない！放浪者たちに任せます';
-                setTimeout(() => { if (state.phase === 'PLAYER_IDLE') finishPlayerMove(); }, 1000);
+                setTimeout(() => {
+                    const ts = document.getElementById('title-screen');
+                    if (state.phase === 'PLAYER_IDLE' && !(ts && !ts.classList.contains('hidden'))) finishPlayerMove();
+                }, 1000);
             }
         }
 
