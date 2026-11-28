@@ -121,6 +121,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -899,7 +902,7 @@
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">2. 挟み撃ち（ピンサー）＆チェーン魔法</div>
                         <div class="mt-1 space-y-1.5">
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>移動は上下左右のみ（斜め移動はなし）。敵・岩・放浪者・魅了した敵はすり抜け不可の障害物。操作キャラ・精霊・ペット・召喚獣のマスに入ると位置交換する。飛行ジョブは障害物を越えられるが、位置交換はせず、埋まったマスには着地できない</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>移動は上下左右のみ（斜め移動はなし）。敵・岩・放浪者・精霊・ペット・召喚獣・魅了した敵はすり抜け不可の障害物で、位置交換できるのは操作キャラ同士だけ。飛行ジョブは障害物を越えられるが、位置交換はせず、埋まったマスには着地できない</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>敵を縦または横で挟むと攻撃開始！</span></div><div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>四方を塞がれて<span class="text-amber-300 font-bold">移動できない敵</span>には、隣接した操作キャラの追込攻撃が挟撃と同じ扱いで成立する</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>挟んだ2人と同じ行・列の直線上にいる味方は、<span class="text-sky-300 font-bold">離れていてもチェーン発動</span>し、全身カットインと共に固有範囲スキルを放つ</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>間に敵が居る味方は繋がらない</span></div>
@@ -2887,7 +2890,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.200';
+        const GAME_VERSION = '1.201';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3724,7 +3727,7 @@ const SE_AUDIO = {
             const occ = getUnitAt(x, y);
             if (occ && occ.side === 'enemy') return false;
             if (occ && occ.side === 'ally' && occ.unit.free) return false;
-            if (state.charmed && state.charmed.x === x && state.charmed.y === y) return false;
+            if (followerAt(x, y)) return false;
             return true;
         }
 
@@ -3764,13 +3767,6 @@ const SE_AUDIO = {
                 pushedAlly.y = activeUnit.y;
                 updateUnitElementPosition(pushedAlly);
                 swappedUnit = pushedAlly;
-                if (seOk) { playSE('swap'); state._lastStepSeAt = seNow; }
-            } else if (!flying && swappableFollowerAt(nextX, nextY)) {
-                const f = swappableFollowerAt(nextX, nextY);
-                f.x = activeUnit.x;
-                f.y = activeUnit.y;
-                const fel = document.getElementById('follower-' + (f === state.spirit ? 'spirit' : f === state.pet ? 'pet' : 'esper'));
-                if (fel) { fel.style.left = `${(f.x / COLS) * 100}%`; fel.style.top = `${(f.y / ROWS) * 100}%`; }
                 if (seOk) { playSE('swap'); state._lastStepSeAt = seNow; }
             } else if (seOk) {
                 playSE('move');
