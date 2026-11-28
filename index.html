@@ -103,6 +103,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -2857,7 +2860,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.194';
+        const GAME_VERSION = '1.195';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4492,13 +4495,13 @@ const SE_AUDIO = {
                     await freeMoveToward(a, nearest, 3);
                     if (nearest.hp > 0 && followerDist(a, nearest) <= 1) {
                         const victims = living.filter(e => e.hp > 0 && (e === nearest || followerDist(nearest, e) <= 1));
-                        if (victims.length >= 2) await playFreeCutin(a, a.skillName);
+                        await playFreeCutin(a, a.skillName);
                         for (const v of victims) { if (v.hp > 0) await freeHit(a, v, 1.2, '大地砕き'); }
                     }
                 } else if (a.id === 'f4') {
                     const adj = living.filter(e => followerDist(a, e) <= 1);
                     if (adj.length) {
-                        if (adj.length >= 2) await playFreeCutin(a, a.skillName);
+                        await playFreeCutin(a, a.skillName);
                         playSE('skill_blast', 0.8);
                         adj.forEach(e => {
                             const cells = [];
@@ -4518,7 +4521,7 @@ const SE_AUDIO = {
                     for (const e of adj) {
                         if (Math.random() < 0.55 && tryApplyStatus(e, 'charm')) { e.charmedStopT = Math.max(e.charmedStopT || 0, 1); addResBonus(e, 'charm'); charmed++; showFloatingText(e.x + (e.size || 1) / 2, e.y + 0.1, '魅了♥', '#f9a8d4', '14px'); }
                     }
-                    if (charmed >= 2) await playFreeCutin(a, a.skillName);
+                    if (charmed >= 1) await playFreeCutin(a, a.skillName);
                     if (!charmed && adj.length) await freeHit(a, adj[0], 0.4, '扇の一撃');
                     if (charmed) { renderUnits(); await sleep(250); }
                 } else if (a.id === 'f6') {
