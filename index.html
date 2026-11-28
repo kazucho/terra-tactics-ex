@@ -124,6 +124,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -367,6 +370,8 @@
         @keyframes chainGlowPulse { from { transform: scale(0.96); opacity: 0.75; } to { transform: scale(1.04); opacity: 1; } }
         .chain-beam-layer { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
         .chain-beam-layer svg { width: 100%; height: 100%; display: block; overflow: visible; }
+        .chain-banner-anim { animation: chainBannerIn 0.28s ease-out; }
+        @keyframes chainBannerIn { 0% { opacity: 0; transform: translateY(-50%) translateX(-30px); } 100% { opacity: 1; transform: translateY(-50%) translateX(0); } }
         .chain-band { stroke-linecap: round; vector-effect: non-scaling-stroke; animation: bandPulseK 1.1s ease-in-out infinite alternate; }
         @keyframes bandPulseK { from { opacity: 0.26; } to { opacity: 0.42; } }
         .chain-core { stroke-linecap: round; vector-effect: non-scaling-stroke; animation: corePulseK 1.1s ease-in-out infinite alternate; }
@@ -694,13 +699,12 @@
             <div id="skill-vfx-layer"></div>
             <div id="effect-layer"></div>
             <div id="popup-layer"></div>
-            <div id="attack-flash" class="hidden" style="position:absolute; left:8px; bottom:8px; z-index:44; pointer-events:none; text-align:center;">
-                <img id="attack-flash-img" class="h-32 sm:h-44 w-auto object-contain" style="filter: drop-shadow(0 6px 16px rgba(0,0,0,0.85));">
-                <div id="attack-flash-name" style="font-size:11px; font-weight:900; color:#fcd34d; text-shadow:0 1px 4px #000; letter-spacing:0.1em;"></div>
-            </div>
-            <div id="combo-display" class="hidden" style="position:absolute; top:6px; right:10px; z-index:45; text-align:right; pointer-events:none;">
-                <div id="combo-count" style="font-size:42px; line-height:1; font-weight:900; font-style:italic; color:#fcd34d; -webkit-text-stroke:1.5px #000; text-shadow:0 3px 10px rgba(0,0,0,0.85);">0</div>
-                <div style="font-size:11px; font-weight:900; letter-spacing:0.2em; color:#fff; text-shadow:0 1px 4px #000;">COMBO <span id="combo-bonus" style="color:#6ee7b7;"></span></div>
+            <div id="chain-banner" class="hidden" style="position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); z-index:46; pointer-events:none; text-align:center;">
+                <div style="background:linear-gradient(90deg, transparent, rgba(2,32,54,0.88) 18%, rgba(2,32,54,0.88) 82%, transparent); padding:10px 0; border-top:2px solid rgba(125,211,252,0.7); border-bottom:2px solid rgba(125,211,252,0.7);">
+                    <span id="chain-banner-count" style="font-size:40px; font-weight:900; font-style:italic; color:#7dd3fc; -webkit-text-stroke:1.5px #000; text-shadow:0 3px 10px rgba(0,0,0,0.9);">3</span>
+                    <span style="font-size:22px; font-weight:900; letter-spacing:0.18em; color:#fff; text-shadow:0 2px 6px #000;"> CHAIN </span>
+                    <span id="chain-banner-mult" style="font-size:16px; font-weight:900; color:#6ee7b7; text-shadow:0 1px 4px #000;"></span>
+                </div>
             </div>
         </div>
     </main>
@@ -2890,7 +2894,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.201';
+        const GAME_VERSION = '1.202';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4260,49 +4264,53 @@ const SE_AUDIO = {
             document.getElementById('btn-cutin-speed').textContent = labels[state.cutinSpeedMode];
         }
 
-        async function playFullScreenCutin(ally) {
-            if (state.cutinSpeedMode === 2) return; // OFFモード
-            playSE('cutin');
-
-            const durSec = state.cutinSpeedMode === 0 ? 1.92 : 0.52;
+                // カットイン表示の共通処理（通常／放浪者／随行ユニットはすべてここを通す）
+        async function showCutinCore(opts) {
+            if (state.cutinSpeedMode === 2) return;
             const overlay = document.getElementById('cutin-overlay');
             const band = document.getElementById('cutin-band');
             const artBox = document.getElementById('cutin-art');
             const subEl = document.getElementById('cutin-char-sub');
             const titleEl = document.getElementById('cutin-skill-title');
-
-            const theme = CUTIN_THEMES[ally.cutinTheme] || CUTIN_THEMES.crimson;
-            const jobInfo = JOB_CLASSES[ally.job] || JOB_CLASSES.warrior;
-
-            overlay.style.setProperty('--cutin-dur', `${durSec}s`);
+            if (!overlay || !band || !artBox) return;
+            const theme = CUTIN_THEMES[opts.themeKey] || CUTIN_THEMES.crimson;
+            playSE('cutin');
+            overlay.style.setProperty('--cutin-dur', `${opts.durSec}s`);
             band.className = `cutin-band ${theme.bandClass}`;
+            overlay.classList.toggle('aw-cutin', !!opts.fullscreen);
+            if (subEl) subEl.innerHTML = opts.subHtml || '';
+            if (titleEl) { titleEl.textContent = opts.titleText || ''; titleEl.style.color = opts.titleColor || '#ffffff'; }
+            artBox.innerHTML = opts.artHtml || '';
+            overlay.classList.remove('active');
+            void overlay.offsetWidth;
+            overlay.classList.add('active');
+            await sleep(opts.durSec * 1000);
+            overlay.classList.remove('active');
+            await sleep(opts.tailMs == null ? 130 : opts.tailMs);
+        }
+
+        async function playFullScreenCutin(ally) {
+            if (state.cutinSpeedMode === 2) return; // OFFモード
+            const durSec = state.cutinSpeedMode === 0 ? 1.92 : 0.52;
+            const jobInfo = JOB_CLASSES[ally.job] || JOB_CLASSES.warrior;
             const wInfo = WEAPONS[getWeaponOf(ally)] || WEAPONS.sword;
             const kindLabel = ally._skillKind === 'C' ? 'CHAIN SKILL' : (ally._skillKind === 'P' ? 'PINCER SKILL' : '');
-            subEl.innerHTML = `${ally._subLabel || jobInfo.name} ・ ${ally.name} ${wInfo.icon}${kindLabel ? ' ・ ' + kindLabel : ''}`;
-            titleEl.textContent = `『${ally.skillName}！』`;
-            titleEl.style.color = (ELEMENTS[ally.element] || {}).color || '#ffffff';
-
             const isAwCutin = isAwakened(ally);
-            overlay.classList.toggle('aw-cutin', isAwCutin);
+            let artHtml;
             if (isAwCutin) {
                 const awSrc = awCutinSrcOf(ally);
-                artBox.innerHTML = `<img src="${awSrc}" alt="${ally.name}" style="width:100%; height:auto; max-height:62vh; object-fit:contain;">`;
+                artHtml = `<img src="${awSrc}" alt="${ally.name}" style="width:100%; height:auto; max-height:62vh; object-fit:contain;">`;
             } else {
                 const cutinSrc = fullSrcOf(ally);
-                if (cutinSrc) {
-                    artBox.innerHTML = `<img src="${cutinSrc}" alt="${ally.name}">`;
-                } else {
-                    artBox.innerHTML = getBuiltInFullBodySVG(ally.presetArt || 'knight');
-                }
+                artHtml = cutinSrc ? `<img src="${cutinSrc}" alt="${ally.name}">` : getBuiltInFullBodySVG(ally.presetArt || 'knight');
             }
-
-            overlay.classList.remove('active');
-            void overlay.offsetWidth; // リフロー強制
-            overlay.classList.add('active');
-
-            await sleep(durSec * 1000);
-            overlay.classList.remove('active');
-            await sleep(140); // カットインが完全に消えてから次（着弾）を始める＝カットイン終了がトリガー
+            await showCutinCore({
+                themeKey: ally.cutinTheme, durSec, fullscreen: isAwCutin,
+                subHtml: `${ally._subLabel || jobInfo.name} ・ ${ally.name} ${wInfo.icon}${kindLabel ? ' ・ ' + kindLabel : ''}`,
+                titleText: `『${ally.skillName}！』`,
+                titleColor: (ELEMENTS[ally.element] || {}).color || '#ffffff',
+                artHtml, tailMs: 140
+            });
         }
 
         // ==========================================
@@ -4324,23 +4332,7 @@ const SE_AUDIO = {
             }
             return 1 + Math.min(0.5, state.combo * 0.02);
         }
-        let attackFlashTimer = null;
-        function showAttackFlash(unit) {
-            const url = fullSrcOf(unit);
-            if (!url) return;
-            const box = document.getElementById('attack-flash');
-            const img = document.getElementById('attack-flash-img');
-            const nm = document.getElementById('attack-flash-name');
-            if (!box || !img || !nm) return;
-            img.src = url;
-            nm.textContent = unit.name;
-            box.classList.remove('hidden');
-            box.classList.remove('attack-flash-anim');
-            void box.offsetWidth;
-            box.classList.add('attack-flash-anim');
-            clearTimeout(attackFlashTimer);
-            attackFlashTimer = setTimeout(() => box.classList.add('hidden'), 880);
-        }
+        
         function resetCombo() {
             state.combo = 0;
             const disp = document.getElementById('combo-display');
@@ -4350,6 +4342,21 @@ const SE_AUDIO = {
         function clearChainFxLayers() {
             document.querySelectorAll('.chain-beam-layer, .chain-sparkle-layer').forEach(el => el.remove());
         }
+        async function showChainBanner(count, mult) {
+            const box = document.getElementById('chain-banner');
+            if (!box) return;
+            const cnt = document.getElementById('chain-banner-count');
+            const mul = document.getElementById('chain-banner-mult');
+            if (cnt) cnt.textContent = count;
+            if (mul) mul.textContent = mult > 1 ? `×${mult.toFixed(2)}` : '';
+            box.classList.remove('hidden');
+            box.classList.remove('chain-banner-anim');
+            void box.offsetWidth;
+            box.classList.add('chain-banner-anim');
+            await sleepFx(620);
+            box.classList.add('hidden');
+        }
+
         function showChainBeams(participants, enemies, p) {
             const layer = document.getElementById('effect-layer');
             if (!layer) return;
@@ -4473,15 +4480,8 @@ const SE_AUDIO = {
             await playFreeCutin(ally, title);
         }
 
-        async function playFreeCutin(ally, title) {
+                async function playFreeCutin(ally, title) {
             if (state.cutinSpeedMode === 2) return;
-            const overlay = document.getElementById('cutin-overlay');
-            const band = document.getElementById('cutin-band');
-            const artBox = document.getElementById('cutin-art');
-            const subEl = document.getElementById('cutin-char-sub');
-            const titleEl = document.getElementById('cutin-skill-title');
-            if (!overlay || !band || !artBox) return;
-            const theme = CUTIN_THEMES[ally.cutinTheme] || CUTIN_THEMES.crimson;
             const durSec = state.cutinSpeedMode === 0 ? 1.92 : 0.52;
             const awakened = isAwakened(ally);
             let artHtml = '';
@@ -4490,23 +4490,15 @@ const SE_AUDIO = {
                 if (!art) return;
                 artHtml = `<img src="${art}" alt="" style="width:100%; height:auto; max-height:62vh; object-fit:contain;">`;
             } else {
-                // 未覚醒時は通常キャラのカットインと同じ帯レイアウト＋通常立ち絵
                 const src = fullSrcOf(ally);
                 artHtml = src ? `<img src="${src}" alt="">` : getBuiltInFullBodySVG(ally.presetArt || 'knight');
             }
-            playSE('cutin');
-            overlay.style.setProperty('--cutin-dur', `${durSec}s`);
-            band.className = `cutin-band ${theme.bandClass}`;
-            overlay.classList.toggle('aw-cutin', awakened);
-            if (subEl) subEl.innerHTML = `${ally.name} ・ 放浪者`;
-            if (titleEl) { titleEl.textContent = `『${title}！』`; titleEl.style.color = '#fcd34d'; }
-            artBox.innerHTML = artHtml;
-            overlay.classList.remove('active');
-            void overlay.offsetWidth;
-            overlay.classList.add('active');
-            await sleep(durSec * 1000);
-            overlay.classList.remove('active');
-            await sleep(120);
+            await showCutinCore({
+                themeKey: ally.cutinTheme, durSec, fullscreen: awakened,
+                subHtml: `${ally.name} ・ 放浪者`,
+                titleText: `『${title}！』`, titleColor: '#fcd34d',
+                artHtml, tailMs: 120
+            });
         }
 
         function bfsFirstStep(unit, target, goalDist) {
@@ -4838,32 +4830,20 @@ const SE_AUDIO = {
             return true;
         }
 
-        async function playFollowerCutin(kind, owner) {
+                async function playFollowerCutin(kind, owner) {
             if (state.cutinSpeedMode === 2) return;
-            const overlay = document.getElementById('cutin-overlay');
-            const band = document.getElementById('cutin-band');
-            const artBox = document.getElementById('cutin-art');
-            const subEl = document.getElementById('cutin-char-sub');
-            const titleEl = document.getElementById('cutin-skill-title');
-            if (!overlay || !band || !artBox) return;
             const aw = owner ? isAwakened(owner) : false;
             const isSpirit = kind === 'spirit';
             const art = isSpirit ? (aw ? FOLLOWER_ART.spiritAw : FOLLOWER_ART.spirit) : (aw ? FOLLOWER_ART.petAw : FOLLOWER_ART.pet);
-            const theme = CUTIN_THEMES[isSpirit ? 'holy' : 'crimson'] || CUTIN_THEMES.crimson;
             const durSec = state.cutinSpeedMode === 0 ? 1.15 : 0.45;
-            playSE('cutin');
-            overlay.style.setProperty('--cutin-dur', `${durSec}s`);
-            band.className = `cutin-band ${theme.bandClass}`;
-            overlay.classList.toggle('aw-cutin', aw);
-            if (subEl) subEl.innerHTML = isSpirit ? `召喚精霊 ・ 白狐（${owner ? owner.name : ''}）` : `子竜 ・ ペット（${owner ? owner.name : ''}）`;
-            if (titleEl) { titleEl.textContent = isSpirit ? '『霊尾旋風！』' : '『紅蓮ブレス！』'; titleEl.style.color = isSpirit ? '#fcd34d' : '#fdba74'; }
-            artBox.innerHTML = aw ? `<img src="${art}" alt="" style="width:100%; height:auto; max-height:62vh; object-fit:contain;">` : `<img src="${art}" alt="">`;
-            overlay.classList.remove('active');
-            void overlay.offsetWidth;
-            overlay.classList.add('active');
-            await sleep(durSec * 1000);
-            overlay.classList.remove('active');
-            await sleep(120);
+            await showCutinCore({
+                themeKey: isSpirit ? 'holy' : 'crimson', durSec, fullscreen: aw,
+                subHtml: isSpirit ? `召喚精霊 ・ 白狐（${owner ? owner.name : ''}）` : `子竜 ・ ペット（${owner ? owner.name : ''}）`,
+                titleText: isSpirit ? '『霊尾旋風！』' : '『紅蓮ブレス！』',
+                titleColor: isSpirit ? '#fcd34d' : '#fdba74',
+                artHtml: aw ? `<img src="${art}" alt="" style="width:100%; height:auto; max-height:62vh; object-fit:contain;">` : `<img src="${art}" alt="">`,
+                tailMs: 120
+            });
         }
 
         async function spiritAttack() {
@@ -4982,15 +4962,10 @@ const SE_AUDIO = {
                     const el = document.getElementById(`unit-${ally.id}`);
                     if (el) el.classList.add(p.pincerAllyIds.has(ally.id) ? 'pincer-active' : 'chain-active');
                 });
-                [...p.pincerAllyIds].forEach((pid, i2) => {
-                    const pa = state.allies.find(a => a.id === pid);
-                    if (pa) setTimeout(() => showAttackFlash(pa), i2 * 400);
-                });
                 playChainEffects(participants, p.pincerAllyIds);
                 showChainBeams(participants, livingEnemies, p);
                 if (chainCount >= 3 && livingEnemies.length) {
-                    const fe = livingEnemies[0];
-                    showFloatingText(fe.x + (fe.size || 1) / 2, fe.y - 0.4, `CHAIN ${chainCount}人 ×${chainMult.toFixed(2)}`, '#4ade80', '15px');
+                    await showChainBanner(chainCount, chainMult);
                 }
 
                 // 1. 直接打撃は事前に計算だけしておき、実際の着弾は各キャラの番（カットイン→自分の挟撃→自分のスキル）の中で自分の分だけ当てる
