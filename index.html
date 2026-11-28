@@ -88,6 +88,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -2842,7 +2845,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.189';
+        const GAME_VERSION = '1.190';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -4316,8 +4319,6 @@ const SE_AUDIO = {
 
         async function playFreeCutin(ally, title) {
             if (state.cutinSpeedMode === 2) return;
-            const art = ally.customCutinData || (usesCustomArt(ally) ? '' : ((typeof CUTIN_ART !== 'undefined' && CUTIN_ART[ally.presetArt]) || ''));
-            if (!art) return;
             const overlay = document.getElementById('cutin-overlay');
             const band = document.getElementById('cutin-band');
             const artBox = document.getElementById('cutin-art');
@@ -4326,13 +4327,24 @@ const SE_AUDIO = {
             if (!overlay || !band || !artBox) return;
             const theme = CUTIN_THEMES[ally.cutinTheme] || CUTIN_THEMES.crimson;
             const durSec = state.cutinSpeedMode === 0 ? 1.15 : 0.45;
+            const awakened = isAwakened(ally);
+            let artHtml = '';
+            if (awakened) {
+                const art = ally.customCutinData || (usesCustomArt(ally) ? '' : ((typeof CUTIN_ART !== 'undefined' && CUTIN_ART[ally.presetArt]) || ''));
+                if (!art) return;
+                artHtml = `<img src="${art}" alt="" style="width:100%; height:auto; max-height:62vh; object-fit:contain;">`;
+            } else {
+                // 未覚醒時は通常キャラのカットインと同じ帯レイアウト＋通常立ち絵
+                const src = fullSrcOf(ally);
+                artHtml = src ? `<img src="${src}" alt="">` : getBuiltInFullBodySVG(ally.presetArt || 'knight');
+            }
             playSE('cutin');
             overlay.style.setProperty('--cutin-dur', `${durSec}s`);
             band.className = `cutin-band ${theme.bandClass}`;
-            overlay.classList.toggle('aw-cutin', true);
+            overlay.classList.toggle('aw-cutin', awakened);
             if (subEl) subEl.innerHTML = `${ally.name} ・ 放浪者`;
             if (titleEl) { titleEl.textContent = `『${title}！』`; titleEl.style.color = '#fcd34d'; }
-            artBox.innerHTML = `<img src="${art}" alt="" style="width:100%; height:auto; max-height:62vh; object-fit:contain;">`;
+            artBox.innerHTML = artHtml;
             overlay.classList.remove('active');
             void overlay.offsetWidth;
             overlay.classList.add('active');
