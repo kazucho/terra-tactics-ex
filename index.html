@@ -115,6 +115,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -893,11 +896,11 @@
                 <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
                     <div class="font-bold text-amber-300">2. 挟み撃ち（ピンサー）＆チェーン魔法</div>
                         <div class="mt-1 space-y-1.5">
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>敵キャラと岩壁はすり抜け不可。味方を押し出しながら移動しよう</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>敵を縦または横で挟むと攻撃開始！</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>移動は上下左右のみ（斜め移動はなし）。敵・岩・魅了した敵はすり抜け不可。味方・放浪者・精霊・ペット・召喚獣のマスに入ると位置交換する。飛行ジョブは障害物を越えられるが、位置交換はせず、埋まったマスには着地できない</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>敵を縦または横で挟むと攻撃開始！</span></div><div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>四方を塞がれて<span class="text-amber-300 font-bold">移動できない敵</span>には、隣接した操作キャラの追込攻撃が挟撃と同じ扱いで成立する</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>挟んだ2人と同じ行・列の直線上にいる味方は、<span class="text-sky-300 font-bold">離れていてもチェーン発動</span>し、全身カットインと共に固有範囲スキルを放つ</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>間に敵が居る味方は繋がらない</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>チェーンで繋がった人数が多いほど火力倍率が上がる（3人で×1.10、4人で×1.20、5人で×1.30、6人で×1.40）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>チェーンで繋がった人数が多いほど火力倍率が上がる（3人で×1.15、4人で×1.30、5人で×1.45、6人で×1.60）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>精霊・子竜・懐柔した敵などの<span class="text-amber-300 font-bold">随行ユニット</span>は盤面に出て自律的に戦うが、挟撃・チェーンには参加しない</span></div>
                         </div>
                     </div>
@@ -992,7 +995,7 @@
                 <div class="space-y-1">
                     <div class="font-bold text-amber-300">10. 放浪者（フリー枠）</div>
                         <div class="mt-1 space-y-1.5">
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-fuchsia-300 font-bold">放浪者</span>はパーティー枠を使うが、ドラッグ操作はできず、<span class="text-amber-300 font-bold">挟撃・チェーンには一切参加しない</span>（盤上ではマスを占有する）。味方フェイズに各自が勝手に動き、敵からも狙われる。放浪者だけで編成すると操作できる仲間がいなくなるため、操作フェイズは自動で進む</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span><span class="text-fuchsia-300 font-bold">放浪者</span>はパーティー枠を使うが、ドラッグ操作はできず、<span class="text-amber-300 font-bold">挟撃・チェーンには一切参加しない</span>（盤上ではマスを占有し、操作キャラが上下左右から入ると位置を交換する）。味方フェイズに各自が勝手に動き、敵からも狙われる。放浪者だけで編成すると操作できる仲間がいなくなるため、操作フェイズは自動で進む</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>放浪者の与えるダメージは、挟撃に参加できない代わりに<span class="text-amber-300 font-bold">2倍</span>（リエルの幻獣も含む）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>リエル：WAVEに一度、幻獣（炎獣／氷姫／雷翁／風精、覚醒後は光竜）を召喚。幻獣はそのWAVEの間、自由に戦う。本人は非力で敵から逃げ回る</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>フェンリル：最寄りの敵へ一直線に駆け寄り聖牙で噛み付く。ガルフ：最寄りの敵とその隣の敵をまとめて薙ぐ</span></div>
@@ -2880,7 +2883,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.198';
+        const GAME_VERSION = '1.199';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -3659,7 +3662,7 @@ const SE_AUDIO = {
                         const sz = e.size || 1;
                         for (let ex = 0; ex < sz; ex++) for (let ey = 0; ey < sz; ey++) built.push({ x: e.x + ex, y: e.y + ey });
                     });
-                    state.allies.forEach(a => { if (a.free && a.hp > 0 && a !== du) built.push({ x: a.x, y: a.y }); });
+                    [state.spirit, state.pet, state.charmed, state.esper].forEach(f => { if (f && f.x !== undefined) built.push({ x: f.x, y: f.y }); });
                     state._dragBlocks = built;
                 }
                 const blocks = state._dragBlocks;
@@ -3684,32 +3687,58 @@ const SE_AUDIO = {
             el.style.top = `${cy - cellH / 2}px`;
         }
 
+        function followerAt(x, y) {
+            const list = [state.spirit, state.pet, state.charmed, state.esper];
+            for (const f of list) { if (f && f.x === x && f.y === y) return f; }
+            return null;
+        }
+        function swappableFollowerAt(x, y) {
+            // 場所交換できる随行ユニットは精霊・ペット・召喚獣のみ（魅了した敵とは交換しない）
+            const list = [state.spirit, state.pet, state.esper];
+            for (const f of list) { if (f && f.x === x && f.y === y) return f; }
+            return null;
+        }
+        function applySpikeStep(unit) {
+            if (!unit || unit.hp <= 0) return;
+            const terr = getTerrainAt(unit.x, unit.y);
+            if (terr && terr.type === 'spike' && unit.job !== 'ranger' && !(JOB_TRAITS[unit.job] || {}).flying) {
+                const dmg = Math.max(15, Math.round(unit.maxHp * 0.12));
+                unit.hp = Math.max(0, unit.hp - dmg);
+                playSE('spike');
+                showFloatingText(unit.x + 0.5, unit.y + 0.2, `トゲ! -${dmg}`, '#f87171', '13px');
+                renderPartyBar();
+            }
+        }
+        function canDragEnter(unit, x, y) {
+            if (x < 0 || x >= COLS || y < 0 || y >= ROWS) return false;
+            if ((JOB_TRAITS[unit.job] || {}).flying) return true;
+            const terr = getTerrainAt(x, y);
+            if (terr && terr.type === 'rock') return false;
+            const occ = getUnitAt(x, y);
+            if (occ && occ.side === 'enemy') return false;
+            if (state.charmed && state.charmed.x === x && state.charmed.y === y) return false;
+            return true;
+        }
+
+        // 移動は上下左右のみ（斜め移動はしない）。斜め方向へは直交ステップの組み合わせで回り込む
         function stepMoveUnit(activeUnit, destX, destY) {
             let safety = 0;
-            while ((activeUnit.x !== destX || activeUnit.y !== destY) && safety < 10) {
+            while ((activeUnit.x !== destX || activeUnit.y !== destY) && safety < 24) {
                 safety++;
                 const dx = Math.sign(destX - activeUnit.x);
                 const dy = Math.sign(destY - activeUnit.y);
-                const nextX = activeUnit.x + dx;
-                const nextY = activeUnit.y + dy;
-
-                // 斜め移動で両脇の角マス（縦・横）が両方とも塞がれている場合、挟まれた角はすり抜けられない
-                const cornerPinched = dx !== 0 && dy !== 0 && isCellBlockedForAlly(activeUnit.x + dx, activeUnit.y, activeUnit) && isCellBlockedForAlly(activeUnit.x, activeUnit.y + dy, activeUnit);
-                if (isCellBlockedForAlly(nextX, nextY, activeUnit) || cornerPinched) {
-                    // 斜め移動なら縦か横に逸らせないか試す
-                    if (dx !== 0 && dy !== 0) {
-                        if (!isCellBlockedForAlly(activeUnit.x + dx, activeUnit.y, activeUnit)) {
-                            executeSwapOrMove(activeUnit, activeUnit.x + dx, activeUnit.y);
-                            continue;
-                        } else if (!isCellBlockedForAlly(activeUnit.x, activeUnit.y + dy, activeUnit)) {
-                            executeSwapOrMove(activeUnit, activeUnit.x, activeUnit.y + dy);
-                            continue;
-                        }
-                    }
-                    break;
-                } else {
-                    executeSwapOrMove(activeUnit, nextX, nextY);
+                const axes = [];
+                if (dx !== 0 && dy !== 0) {
+                    if (Math.abs(destX - activeUnit.x) >= Math.abs(destY - activeUnit.y)) axes.push([dx, 0], [0, dy]);
+                    else axes.push([0, dy], [dx, 0]);
+                } else if (dx !== 0) axes.push([dx, 0]);
+                else if (dy !== 0) axes.push([0, dy]);
+                let moved = false;
+                for (const [mx, my] of axes) {
+                    const nx = activeUnit.x + mx, ny = activeUnit.y + my;
+                    if (canDragEnter(activeUnit, nx, ny)) { executeSwapOrMove(activeUnit, nx, ny); moved = true; break; }
                 }
+                if (!moved) break;
             }
         }
 
@@ -3719,11 +3748,21 @@ const SE_AUDIO = {
             const destBlockedRest = (destTerr && destTerr.type === 'rock') || (occupant && occupant.side === 'enemy');
             const seNow = performance.now();
             const seOk = !state._lastStepSeAt || seNow - state._lastStepSeAt > 90;
-            if (occupant && occupant.side === 'ally') {
+            const flying = !!(JOB_TRAITS[activeUnit.job] || {}).flying;
+            let swappedUnit = null;
+            if (!flying && occupant && occupant.side === 'ally') {
                 const pushedAlly = occupant.unit;
                 pushedAlly.x = activeUnit.x;
                 pushedAlly.y = activeUnit.y;
                 updateUnitElementPosition(pushedAlly);
+                swappedUnit = pushedAlly;
+                if (seOk) { playSE('swap'); state._lastStepSeAt = seNow; }
+            } else if (!flying && swappableFollowerAt(nextX, nextY)) {
+                const f = swappableFollowerAt(nextX, nextY);
+                f.x = activeUnit.x;
+                f.y = activeUnit.y;
+                const fel = document.getElementById('follower-' + (f === state.spirit ? 'spirit' : f === state.pet ? 'pet' : 'esper'));
+                if (fel) { fel.style.left = `${(f.x / COLS) * 100}%`; fel.style.top = `${(f.y / ROWS) * 100}%`; }
                 if (seOk) { playSE('swap'); state._lastStepSeAt = seNow; }
             } else if (seOk) {
                 playSE('move');
@@ -3731,17 +3770,16 @@ const SE_AUDIO = {
             }
             activeUnit.x = nextX;
             activeUnit.y = nextY;
-            if (!destBlockedRest) activeUnit._lastFree = { x: nextX, y: nextY };
+            // 着地できるマス（岩・敵・他ユニットがいないマス）だけを帰還先として記録する
+            const landable = !(destTerr && destTerr.type === 'rock')
+                && !state.enemies.some(e => e.hp > 0 && nextX >= e.x && nextX < e.x + (e.size || 1) && nextY >= e.y && nextY < e.y + (e.size || 1))
+                && !state.allies.some(a => a.hp > 0 && a !== activeUnit && a.x === nextX && a.y === nextY)
+                && !followerAt(nextX, nextY);
+            if (landable) activeUnit._lastFree = { x: nextX, y: nextY };
 
-            // トゲ床踏破ダメージ判定！
-            const terr = getTerrainAt(nextX, nextY);
-            if (terr && terr.type === 'spike' && activeUnit.job !== 'ranger' && !(JOB_TRAITS[activeUnit.job] || {}).flying) {
-                const spikeDmg = Math.max(15, Math.round(activeUnit.maxHp * 0.12));
-                activeUnit.hp = Math.max(0, activeUnit.hp - spikeDmg); // トゲでHPが尽きれば死亡する
-                playSE('spike');
-                showFloatingText(nextX + 0.5, nextY + 0.2, `トゲ! -${spikeDmg}`, '#f87171', '13px');
-                renderPartyBar();
-            }
+            // トゲ床踏破ダメージ判定！（入れ替わった味方・放浪者も、トゲのマスに入れば同様に受ける）
+            applySpikeStep(activeUnit);
+            if (swappedUnit) applySpikeStep(swappedUnit);
         }
 
         function startMoveTimer() {
@@ -3778,7 +3816,9 @@ const SE_AUDIO = {
                 const du = state.draggingUnit;
                 const terrD = getTerrainAt(du.x, du.y);
                 const onEnemy = state.enemies.some(e => e.hp > 0 && du.x >= e.x && du.x < e.x + (e.size || 1) && du.y >= e.y && du.y < e.y + (e.size || 1));
-                if ((terrD && terrD.type === 'rock') || onEnemy) {
+                const onAlly = state.allies.some(a => a.hp > 0 && a !== du && a.x === du.x && a.y === du.y);
+                const onFollower = !!followerAt(du.x, du.y);
+                if ((terrD && terrD.type === 'rock') || onEnemy || onAlly || onFollower) {
                     const lf = du._lastFree || { x: du.x, y: du.y };
                     du.x = lf.x; du.y = lf.y;
                     updateUnitElementPosition(du);
@@ -3826,6 +3866,25 @@ const SE_AUDIO = {
         // ==========================================
         // 挟み撃ち（ピンサー）＆チェーン判定
         // ==========================================
+        // 直線上の2点間に障害物（岩・敵・放浪者・召喚物など）があったらチェーンは切れる
+        function lineCutByObstacle(x1, y1, x2, y2) {
+            if (x1 !== x2 && y1 !== y2) return true;
+            const dx = Math.sign(x2 - x1), dy = Math.sign(y2 - y1);
+            let x = x1 + dx, y = y1 + dy;
+            let guard = 0;
+            while (x !== x2 || y !== y2) {
+                if (++guard > 64) return true;
+                const terr = getTerrainAt(x, y);
+                if (terr && terr.type === 'rock') return true;
+                const occ = getUnitAt(x, y);
+                if (occ && occ.side === 'enemy') return true;
+                if (occ && occ.side === 'ally' && occ.unit.free) return true;
+                if ([state.spirit, state.pet, state.charmed, state.esper].some(f => f && f.x === x && f.y === y)) return true;
+                x += dx; y += dy;
+            }
+            return false;
+        }
+
         // 直線上の2点間に敵が居たらチェーンは繋がらない
         function enemyBlocksLine(x1, y1, x2, y2) {
             // 縦・横・45度斜めの直線上でない2点は判定対象外（非45度斜めは終点に到達できず無限ループになるため）
@@ -3930,18 +3989,58 @@ const SE_AUDIO = {
                 }
             });
 
+            // 追込攻撃：敵が「移動できないほど周囲を塞がれている」場合、隣接する操作キャラは挟撃と同じ扱いで攻撃できる
+            // （操作キャラ以外の3方が放浪者・岩・盤外などで塞がれていても成立する）
+            const corneredPairs = new Set();
+            pincerGroups.forEach(g => { g.enemyIds.forEach(eid => g.pincerAllyIds.forEach(aid => corneredPairs.add(eid + ':' + aid))); });
+            const cellImpassable = (x, y, selfEnemy) => {
+                if (x < 0 || x >= COLS || y < 0 || y >= ROWS) return true;
+                const terr = getTerrainAt(x, y);
+                if (terr && terr.type === 'rock') return true;
+                if ([state.spirit, state.pet, state.charmed, state.esper].some(f => f && f.x === x && f.y === y)) return true;
+                const occ = getUnitAt(x, y);
+                if (!occ) return false;
+                return occ.unit !== selfEnemy;
+            };
+            state.enemies.forEach(e => {
+                if (e.hp <= 0) return;
+                const sz = e.size || 1;
+                let immobile = true;
+                for (const [dx, dy] of [[0, -1], [1, 0], [0, 1], [-1, 0]]) {
+                    let dirBlocked = false;
+                    for (let cx = 0; cx < sz && !dirBlocked; cx++) for (let cy = 0; cy < sz && !dirBlocked; cy++) {
+                        if (cellImpassable(e.x + cx + dx, e.y + cy + dy, e)) dirBlocked = true;
+                    }
+                    if (!dirBlocked) { immobile = false; break; }
+                }
+                if (!immobile) return;
+                const ring = new Set();
+                for (let cx = 0; cx < sz; cx++) { ring.add((e.x + cx) + ',' + (e.y - 1)); ring.add((e.x + cx) + ',' + (e.y + sz)); }
+                for (let cy = 0; cy < sz; cy++) { ring.add((e.x - 1) + ',' + (e.y + cy)); ring.add((e.x + sz) + ',' + (e.y + cy)); }
+                ring.forEach(k => {
+                    const parts = k.split(',').map(Number);
+                    const x = parts[0], y = parts[1];
+                    if (x < 0 || x >= COLS || y < 0 || y >= ROWS) return;
+                    const occ = getUnitAt(x, y);
+                    if (!occ || occ.side !== 'ally' || occ.unit.free) return;
+                    const key = e.id + ':' + occ.unit.id;
+                    if (corneredPairs.has(key)) return;
+                    corneredPairs.add(key);
+                    pincerGroups.push({ enemyIds: new Set([e.id]), pincerAllyIds: new Set([occ.unit.id]), axis: 'W' });
+                });
+            });
+
             // チェーン味方探索（本家仕様：挟んだ2人と同じ行・列の直線上にいる味方は、間に空きマスや敵があっても全員チェーン発動）
             pincerGroups.forEach(group => {
                 const chainSet = new Set(group.pincerAllyIds);
                 const pincers = [...group.pincerAllyIds]
                     .map(id => state.allies.find(a => a.id === id))
                     .filter(Boolean);
-                if (pincers.length === 2) {
-                    const [pa, pb] = pincers;
+                if (pincers.length >= 1) {
                     state.allies.forEach(a => {
-                        if (a.hp <= 0 || chainSet.has(a.id)) return;
-                        // 挟んだ2人のどちらかと同行・同列で、間に敵が居ない場合のみチェーン対象
-                        const linked = [pa, pb].some(p => (a.x === p.x || a.y === p.y) && !enemyBlocksLine(p.x, p.y, a.x, a.y));
+                        if (a.hp <= 0 || a.free || chainSet.has(a.id)) return;
+                        // 挟んだキャラと同行・同列で、間に障害物（岩・敵・放浪者・召喚物など）が無い場合のみチェーン対象
+                        const linked = pincers.some(p => (a.x === p.x || a.y === p.y) && !lineCutByObstacle(p.x, p.y, a.x, a.y));
                         if (linked) chainSet.add(a.id);
                     });
                 }
@@ -4438,6 +4537,7 @@ const SE_AUDIO = {
                 const step = bfsFirstStep(unit, target, goalDist);
                 if (!step) break;
                 unit.x = step.x; unit.y = step.y;
+                applySpikeStep(unit);
                 renderUnits();
                 await sleep(130);
             }
@@ -4457,6 +4557,7 @@ const SE_AUDIO = {
                 }
                 if (!best) return;
                 unit.x = best.x; unit.y = best.y;
+                applySpikeStep(unit);
                 renderUnits();
                 await sleep(140);
             }
@@ -4469,6 +4570,7 @@ const SE_AUDIO = {
                 if (!dirs.length) break;
                 const [dx, dy] = dirs[Math.floor(Math.random() * dirs.length)];
                 unit.x += dx; unit.y += dy;
+                applySpikeStep(unit);
                 renderUnits();
                 await sleep(130);
             }
@@ -4536,7 +4638,7 @@ const SE_AUDIO = {
                             const d = followerDist({ x: nx, y: ny }, nearest);
                             if (d > bd) { bd = d; best = { x: nx, y: ny }; }
                         }
-                        if (best) { a.x = best.x; a.y = best.y; renderUnits(); await sleep(150); }
+                        if (best) { a.x = best.x; a.y = best.y; applySpikeStep(a); renderUnits(); await sleep(150); }
                         else if (d0 === 1) await freeHit(a, nearest, 0.5, '杖の一撃');
                     } else if (Math.random() < 0.5) {
                         await freeWander(a, 1);
@@ -4848,19 +4950,9 @@ const SE_AUDIO = {
                     if (burstHit) await sleepFx(480);
                 }
             }
-            await spiritAttack().catch(() => {});
-            await petAttack().catch(() => {});
-            if (state.charmed) await charmedAttack().catch(() => {});
-            await esperAttack().catch(() => {});
-            await freeUnitsAct().catch(() => {});
-            processEnemySplits(); if (state.enemies.filter(e => e.hp > 0).length === 0) { await handleWaveClear(); return; }
+            state._directHitPairs = new Set();
+            state._physSkillUsed = new Set();
             const pincers = detectPincers();
-
-            if (pincers.length === 0) {
-                await sleepFx(200);
-                await proceedToEnemyTurn();
-                return;
-            }
 
             for (let i = 0; i < pincers.length; i++) {
                 const p = pincers[i];
@@ -4874,9 +4966,9 @@ const SE_AUDIO = {
                 const participants = [...p.allParticipants]
                     .map(id => state.allies.find(a => a.id === id))
                     .filter(Boolean);
-                // チェーン倍率：繋がった人数が多いほど火力UP（3人×1.10、4人×1.20、5人×1.30、6人×1.40）
+                // チェーン倍率：繋がった人数が多いほど火力UP（3人×1.15、4人×1.30、5人×1.45、6人×1.60）
                 const chainCount = participants.length;
-                const chainMult = 1 + 0.10 * Math.max(0, chainCount - 2);
+                const chainMult = 1 + 0.15 * Math.max(0, chainCount - 2);
                 const deferredDirect = [];
 
                 state.chainGlow = {};
@@ -4925,6 +5017,8 @@ const SE_AUDIO = {
                         // livingEnemiesはグループ開始時点の生存敵。先行した味方が倒し切っても自分の挟撃は着弾させる
                         const plan = directPlans.get(enemy.id);
                         if (!plan || plan.done.has(ally.id)) continue;
+                        if (state._directHitPairs && state._directHitPairs.has(ally.id + ':' + enemy.id)) continue;
+                        if (state._directHitPairs) state._directHitPairs.add(ally.id + ':' + enemy.id);
                         const c = plan.contributions.find(x => x.ally.id === ally.id);
                         if (!c) continue;
                         plan.done.add(ally.id);
@@ -5050,6 +5144,14 @@ const SE_AUDIO = {
                     }
                     if (!skillUseful) { deferredDirect.push(ally); continue; }
 
+                    // 直接攻撃スキル（物理系）は1回の解決につき1人1回まで。魔法系は何度でも発動できる
+                    const PHYS_ONCE_TYPES = ['damage', 'omni', 'hybrid', 'terrain'];
+                    const isMagicUser = MAGIC_JOBS.includes(ally.job) || ['gravitymage', 'timemage', 'necromancer', 'warper'].includes(ally.job);
+                    if (PHYS_ONCE_TYPES.includes(skillInfo.type) && !isMagicUser && state._physSkillUsed && state._physSkillUsed.has(ally.id)) {
+                        deferredDirect.push(ally);
+                        continue;
+                    }
+
                     // スキル発動率判定（本家仕様：不発でもスキルブーストSBが溜まっていく）
                     const rate = getSkillRate(ally);
                     if (Math.random() * 100 >= rate) {
@@ -5060,6 +5162,7 @@ const SE_AUDIO = {
                         continue;
                     }
                     ally.sb = Math.min(40, (ally.sb || 0) + 1);
+                    if (PHYS_ONCE_TYPES.includes(skillInfo.type) && !isMagicUser && state._physSkillUsed) state._physSkillUsed.add(ally.id);
 
                     // 全画面立ち絵カットイン再生！
                     await playFullScreenCutin(ally);
@@ -5427,6 +5530,19 @@ const SE_AUDIO = {
                 await sleepFx(500);
             }
 
+            processEnemySplits();
+            if (state.enemies.filter(e => e.hp > 0).length === 0) {
+                await handleWaveClear();
+                return;
+            }
+
+            // 自律ユニットは挟撃処理の後に行動する（放浪者→召喚獣→精霊→ペット→魅了敵の順）
+            await freeUnitsAct().catch(() => {});
+            await esperAttack().catch(() => {});
+            await spiritAttack().catch(() => {});
+            await petAttack().catch(() => {});
+            if (state.charmed) await charmedAttack().catch(() => {});
+            processEnemySplits();
             if (state.enemies.filter(e => e.hp > 0).length === 0) {
                 await handleWaveClear();
                 return;
@@ -5970,7 +6086,7 @@ const SE_AUDIO = {
                 const nx = enemy.x + dx, ny = enemy.y + dy;
                 if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS) {
                     const terr = getTerrainAt(nx, ny);
-                    if ((!terr || terr.type !== 'rock') && !getUnitAt(nx, ny)) {
+                    if ((!terr || terr.type !== 'rock') && !getUnitAt(nx, ny) && !followerAt(nx, ny)) {
                         enemy.x = nx; enemy.y = ny;
                         break;
                     }
@@ -5992,6 +6108,7 @@ const SE_AUDIO = {
                 for (let cx = 0; cx < size && !blocked; cx++) for (let cy = 0; cy < size && !blocked; cy++) {
                     const occ = getUnitAt(nx + cx, ny + cy);
                     if (occ && occ.unit !== enemy) blocked = true;
+                    if (followerAt(nx + cx, ny + cy)) blocked = true;
                 }
                 if (!blocked) cands.push({ x: nx, y: ny });
             });
@@ -6046,6 +6163,7 @@ const SE_AUDIO = {
                             if (t && t.type === 'rock') blocked = true;
                             const occ = getUnitAt(nx + cx, ny + cy);
                             if (occ && occ.unit !== enemy) blocked = true;
+                            if (followerAt(nx + cx, ny + cy)) blocked = true;
                         }
                         if (blocked) continue;
                         visited.add(k); prev.set(k, cur);
@@ -7664,6 +7782,7 @@ const SE_AUDIO = {
                     if (o) { const c = freeCellNear(o.x, o.y, f); f.x = c.x; f.y = c.y; } else { f.x = 0; f.y = ROWS - 1; }
                 }
                 const el = document.createElement('div');
+                el.id = 'follower-' + kind;
                 el.className = 'unit follower';
                 el.style.width = `${100 / COLS}%`;
                 el.style.height = `${100 / ROWS}%`;
