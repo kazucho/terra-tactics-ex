@@ -136,6 +136,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -2903,7 +2906,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.205';
+        const GAME_VERSION = '1.206';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -7072,7 +7075,7 @@ const SE_AUDIO = {
             const inParty = state.partyIds.includes(c.id);
             document.getElementById('formation-detail').innerHTML = `
                 <div class="flex gap-3">
-                    <div class="w-20 shrink-0 flex items-start justify-center"><div class="bg-white rounded-md p-1.5 flex items-center justify-center">${charArtHtml(c, 'max-h-36 w-auto object-contain')}</div></div>
+                    <div class="w-20 shrink-0 flex items-start justify-center"><div class="bg-black rounded-md p-1.5 flex items-center justify-center">${charArtHtml(c, 'max-h-36 w-auto object-contain')}</div></div>
                     <div class="flex-1 min-w-0 text-xs">
                         <div class="flex items-center gap-2 flex-wrap">
                             <span class="text-sm font-black text-white">${c.name}</span>
@@ -7912,7 +7915,7 @@ const SE_AUDIO = {
             if (ally.job === 'orator' && state.charmed) status.push(`懐柔中：${state.charmed.name}`);
             document.getElementById('battle-detail-content').innerHTML = `
                 <div class="flex gap-3">
-                    <div class="w-24 shrink-0 flex flex-col items-center"><div class="bg-white rounded-md p-1.5 flex items-center justify-center">${charArtHtml(ally, 'max-h-44 w-auto object-contain')}</div></div>
+                    <div class="w-24 shrink-0 flex flex-col items-center"><div class="bg-black rounded-md p-1.5 flex items-center justify-center">${charArtHtml(ally, 'max-h-44 w-auto object-contain')}</div></div>
                     <div class="flex-1 min-w-0 text-xs">
                         <div class="flex items-center gap-2 flex-wrap">
                             <span class="text-base font-black text-white">${ally.name}</span>
