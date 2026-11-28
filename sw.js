@@ -1,4 +1,4 @@
-const CACHE = 'terra-tactics-ex-v207';
+const CACHE = 'terra-tactics-ex-v208';
 const ASSETS = ['./manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => {
     // index.htmlと assets/ 配下の画像・音声は初回表示時にfetch側でキャッシュされ、以降はスマホ内キャッシュから読む
