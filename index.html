@@ -112,6 +112,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
@@ -993,7 +996,7 @@
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>放浪者の与えるダメージは、挟撃に参加できない代わりに<span class="text-amber-300 font-bold">2倍</span>（リエルの幻獣も含む）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>リエル：WAVEに一度、幻獣（炎獣／氷姫／雷翁／風精、覚醒後は光竜）を召喚。幻獣はそのWAVEの間、自由に戦う。本人は非力で敵から逃げ回る</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>フェンリル：最寄りの敵へ一直線に駆け寄り聖牙で噛み付く。ガルフ：最寄りの敵とその隣の敵をまとめて薙ぐ</span></div>
-                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>タナカ：敵に近づくとフラッシュで<span class="text-amber-300 font-bold">目潰し</span>（2ターンの間、敵の攻撃が50%で外れる）。エンドレスの完全レア（1%）</span></div>
+                            <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>タナカ：敵に近づくとフラッシュで<span class="text-amber-300 font-bold">目潰し</span>（2ターンの間、敵の攻撃が50%で外れる）。フラッシュ後は敵から逃げ回り、効果が切れるとまた近づく。エンドレスの完全レア（1%）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ユウギリ：気ままに歩き、隣の敵を<span class="text-amber-300 font-bold">魅了</span>して1ターン行動を止める。目潰し・魅了は状態異常レジストの対象（ボスには効きにくい）</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>ミミル：毎ターン、仲間の攻撃スキルをランダムで真似て放つ</span></div>
                             <div class="flex"><span class="mr-1 shrink-0 text-amber-400">・</span><span>クロ：半分の確率で昼寝し、それ以外は3連続引っ掻き。敵の攻撃を40%でかわす</span></div>
@@ -1052,7 +1055,7 @@
             espercaller: { name: '幻獣少女', moveTime: 5.0, directMult: 0.3, skillPowerMult: 1.0, badge: '放浪者', desc: '幻獣と契約した少女。味方フェイズに一度だけ幻獣を召喚し、召喚された幻獣は自由に戦い続ける。本人は非力で、敵が近づくと逃げ回る。挟撃・チェーンには参加しない放浪者。' },
             holybeast: { name: '聖獣', moveTime: 6.0, directMult: 1.2, skillPowerMult: 1.2, badge: '放浪者', desc: '古の盟約により人に力を貸す白き聖獣フェンリル。味方フェイズに最寄りの敵へ一直線に駆け寄り、聖なる牙で噛み付く。挟撃・チェーンには参加しない放浪者。' },
             berserker: { name: '狂戦士', moveTime: 5.0, directMult: 1.25, skillPowerMult: 1.2, badge: '放浪者', desc: '耳に白い花を挿した愛嬌のある大男ガルフ。味方フェイズに最寄りの敵を大斧で薙ぎ払い、隣の敵も巻き込む。協調性は皆無。挟撃・チェーンには参加しない放浪者。' },
-            tourist: { name: '観光客', moveTime: 5.0, directMult: 0.1, skillPowerMult: 1.0, badge: '放浪者', desc: '転生して異世界に迷い込んだ日本人観光客タナカ。戦う気はなく、歩き回ってはカメラのフラッシュで敵の目を眩ませる（命中低下2ターン）。エンドレスダンジョンで稀に出会える完全レア。挟撃・チェーンには参加しない放浪者。' },
+            tourist: { name: '観光客', moveTime: 5.0, directMult: 0.1, skillPowerMult: 1.0, badge: '放浪者', desc: '転生して異世界に迷い込んだ日本人観光客タナカ。戦う気はなく、敵に近づいてはカメラのフラッシュで目を眩ませ（命中低下2ターン）、焚いた後は一目散に逃げる。効果が切れるとまた近づく。エンドレスダンジョンで稀に出会える完全レア。挟撃・チェーンには参加しない放浪者。' },
             oiran: { name: '花魁', moveTime: 5.0, directMult: 0.4, skillPowerMult: 1.0, badge: '放浪者', desc: '歩く先々に魅力を振り撒く花魁ユウギリ。味方フェイズに気ままに歩き、隣り合った敵を魅了して1ターン動きを止める。挟撃・チェーンには参加しない放浪者。' },
             copycat: { name: 'ものまね師', moveTime: 5.0, directMult: 0.9, skillPowerMult: 1.0, badge: '放浪者', desc: '素顔を見た者はいない、千の仮面のものまね師ミミル。味方フェイズに仲間の誰かの攻撃スキルをランダムで真似て放つ。何を真似るかは本人にも分からない。挟撃・チェーンには参加しない放浪者。' },
             blackcat: { name: '黒猫', moveTime: 6.0, directMult: 0.9, skillPowerMult: 1.0, badge: '放浪者', desc: '金の目を持つ黒猫クロ。気まぐれに歩き回り、時々昼寝し、時々引っ掻き回す。小さくて敵の攻撃をかわしやすい。挟撃・チェーンには参加しない放浪者。' },
@@ -2015,6 +2018,15 @@
                     return arr;
                 }
             },
+            blind_flash: {
+                name: '隣接・目潰しフラッシュ',
+                type: 'debuff',
+                mult: 1.0,
+                desc: '隣接する敵全員を目潰し（2ターン、敵の攻撃が50%で外れる）。フラッシュ後は敵から逃げ、効果が切れるとまた近づく',
+                getCells: (ux, uy) => [
+                    {x: ux, y: uy-1}, {x: ux, y: uy+1}, {x: ux-1, y: uy}, {x: ux+1, y: uy}
+                ].filter(c => c.x >= 0 && c.x < COLS && c.y >= 0 && c.y < ROWS)
+            },
             hero_song: {
                 name: '周囲2マス・鼓舞の英雄歌',
                 type: 'buff',
@@ -2258,7 +2270,7 @@
             { id: 'f1', name: 'リエル', title: '幻獣と歩む少女', job: 'espercaller', element: 'wind', weapon: 'staff', maxHp: 260, atk: 55, skillName: '幻獣召喚', skillPattern: 'summon_spirit', cutinTheme: 'holy', iconEmoji: '', presetArt: 'espercaller', free: true },
             { id: 'f2', name: 'フェンリル', title: '古の盟約の聖獣', job: 'holybeast', element: 'light', weapon: 'fist', maxHp: 520, atk: 118, skillName: '聖牙・天駆け', skillPattern: 'shadow_fang', cutinTheme: 'golden', iconEmoji: '', presetArt: 'holybeast', free: true },
             { id: 'f3', name: 'ガルフ', title: '笑う狂戦士', job: 'berserker', element: 'earth', weapon: 'axe', maxHp: 640, atk: 128, skillName: '大地砕き', skillPattern: 'spin_ring1', cutinTheme: 'golden', iconEmoji: '', presetArt: 'berserker', free: true },
-            { id: 'f4', name: 'タナカ', title: '異世界の観光客', job: 'tourist', element: 'light', weapon: 'bow', maxHp: 300, atk: 5, skillName: '絶景フラッシュ', skillPattern: 'hero_song', cutinTheme: 'golden', iconEmoji: '', presetArt: 'tourist', free: true },
+            { id: 'f4', name: 'タナカ', title: '異世界の観光客', job: 'tourist', element: 'light', weapon: 'bow', maxHp: 300, atk: 5, skillName: '絶景フラッシュ', skillPattern: 'blind_flash', cutinTheme: 'golden', iconEmoji: '', presetArt: 'tourist', free: true },
             { id: 'f5', name: 'ユウギリ', title: '夢幻の花魁', job: 'oiran', element: 'dark', weapon: 'fan', maxHp: 300, atk: 70, skillName: '魅惑の舞', skillPattern: 'persuade_cross', cutinTheme: 'holy', iconEmoji: '', presetArt: 'oiran', free: true },
             { id: 'f6', name: 'ミミル', title: '千の仮面のものまね師', job: 'copycat', element: 'dark', weapon: 'staff', maxHp: 380, atk: 95, skillName: 'ものまね', skillPattern: 'glitch_cross', cutinTheme: 'holy', iconEmoji: '', presetArt: 'copycat', free: true },
             { id: 'f7', name: 'クロ', title: '気まぐれな黒猫', job: 'blackcat', element: 'dark', weapon: 'dagger', maxHp: 240, atk: 85, skillName: '猫乱舞', skillPattern: 'cross_slash', cutinTheme: 'crimson', iconEmoji: '', presetArt: 'blackcat', free: true },
@@ -2868,7 +2880,7 @@ const SE_AUDIO = {
         // ==========================================
         // 初期化＆パーティデータ管理
         // ==========================================
-        const GAME_VERSION = '1.197';
+        const GAME_VERSION = '1.198';
 
         function initGame() {
             const vEl = document.getElementById('version-label');
@@ -2884,6 +2896,7 @@ const SE_AUDIO = {
         function normalizeRosterJobs() {
             state.partyConfig.forEach(c => {
                 if (!c.weapon) c.weapon = JOB_WEAPONS[c.job] || 'sword';
+                if (c.id === 'f4' && c.skillPattern === 'hero_song') c.skillPattern = 'blind_flash';
                 if (c.job === 'mage') {
                     c.job = c.element === 'thunder' ? 'mage_thunder'
                         : c.element === 'wind' ? 'mage_wind'
@@ -3574,28 +3587,39 @@ const SE_AUDIO = {
 
                 playSE('move', 1.15);
                 startMoveTimer();
-                moveDraggedUnitVisual(e);
+                state._dragRect = boardEl.getBoundingClientRect();
+                state._dragBlocks = null;
+                moveDraggedUnitVisual(e.touches ? e.touches[0].clientX : e.clientX, e.touches ? e.touches[0].clientY : e.clientY);
             };
 
+            let dragRafQueued = false;
+            let lastDragPos = null;
             const onPointerMove = (e) => {
                 if (state.phase !== 'PLAYER_DRAGGING' || !state.draggingUnit) return;
                 e.preventDefault();
 
-                const rect = boardEl.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-                moveDraggedUnitVisual(e);
-
-                const relX = Math.max(0, Math.min(rect.width - 1, clientX - rect.left));
-                const relY = Math.max(0, Math.min(rect.height - 1, clientY - rect.top));
-                const targetX = Math.floor((relX / rect.width) * COLS);
-                const targetY = Math.floor((relY / rect.height) * ROWS);
-
-                const activeUnit = state.draggingUnit;
-                if (targetX !== activeUnit.x || targetY !== activeUnit.y) {
-                    stepMoveUnit(activeUnit, targetX, targetY);
-                }
+                lastDragPos = {
+                    clientX: e.touches ? e.touches[0].clientX : e.clientX,
+                    clientY: e.touches ? e.touches[0].clientY : e.clientY
+                };
+                if (dragRafQueued) return;
+                dragRafQueued = true;
+                requestAnimationFrame(() => {
+                    dragRafQueued = false;
+                    const pos = lastDragPos;
+                    lastDragPos = null;
+                    if (!pos || state.phase !== 'PLAYER_DRAGGING' || !state.draggingUnit) return;
+                    const rect = state._dragRect || boardEl.getBoundingClientRect();
+                    moveDraggedUnitVisual(pos.clientX, pos.clientY);
+                    const relX = Math.max(0, Math.min(rect.width - 1, pos.clientX - rect.left));
+                    const relY = Math.max(0, Math.min(rect.height - 1, pos.clientY - rect.top));
+                    const targetX = Math.floor((relX / rect.width) * COLS);
+                    const targetY = Math.floor((relY / rect.height) * ROWS);
+                    const activeUnit = state.draggingUnit;
+                    if (targetX !== activeUnit.x || targetY !== activeUnit.y) {
+                        stepMoveUnit(activeUnit, targetX, targetY);
+                    }
+                });
             };
 
             const onPointerUp = () => {
@@ -3613,14 +3637,12 @@ const SE_AUDIO = {
             window.addEventListener('touchend', onPointerUp);
         }
 
-        function moveDraggedUnitVisual(e) {
+        function moveDraggedUnitVisual(clientX, clientY) {
             if (!state.draggingUnit) return;
             const el = document.getElementById(`unit-${state.draggingUnit.id}`);
             if (!el) return;
 
-            const rect = boardEl.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const rect = state._dragRect || boardEl.getBoundingClientRect();
 
             const cellW = rect.width / COLS;
             const cellH = rect.height / ROWS;
@@ -3629,14 +3651,18 @@ const SE_AUDIO = {
             // 通過不可マス（岩・瓦礫／敵／放浪者）の中心から51%の範囲は進入禁止：ドラッグ中の絵も迂回して滑る（飛行の竜騎士リュカは除く）
             const du = state.draggingUnit;
             if (!(JOB_TRAITS[du.job] || {}).flying) {
-                const blocks = [];
-                (state.terrain || []).forEach(t => { if (t.type === 'rock') blocks.push({ x: t.x, y: t.y }); });
-                state.enemies.forEach(e => {
-                    if (e.hp <= 0) return;
-                    const sz = e.size || 1;
-                    for (let ex = 0; ex < sz; ex++) for (let ey = 0; ey < sz; ey++) blocks.push({ x: e.x + ex, y: e.y + ey });
-                });
-                state.allies.forEach(a => { if (a.free && a.hp > 0 && a !== du) blocks.push({ x: a.x, y: a.y }); });
+                if (!state._dragBlocks) {
+                    const built = [];
+                    (state.terrain || []).forEach(t => { if (t.type === 'rock') built.push({ x: t.x, y: t.y }); });
+                    state.enemies.forEach(e => {
+                        if (e.hp <= 0) return;
+                        const sz = e.size || 1;
+                        for (let ex = 0; ex < sz; ex++) for (let ey = 0; ey < sz; ey++) built.push({ x: e.x + ex, y: e.y + ey });
+                    });
+                    state.allies.forEach(a => { if (a.free && a.hp > 0 && a !== du) built.push({ x: a.x, y: a.y }); });
+                    state._dragBlocks = built;
+                }
+                const blocks = state._dragBlocks;
                 const rx = cellW * 0.51, ry = cellH * 0.51;
                 for (let pass = 0; pass < 2; pass++) {
                     blocks.forEach(b => {
@@ -3691,14 +3717,17 @@ const SE_AUDIO = {
             const occupant = getUnitAt(nextX, nextY);
             const destTerr = getTerrainAt(nextX, nextY);
             const destBlockedRest = (destTerr && destTerr.type === 'rock') || (occupant && occupant.side === 'enemy');
+            const seNow = performance.now();
+            const seOk = !state._lastStepSeAt || seNow - state._lastStepSeAt > 90;
             if (occupant && occupant.side === 'ally') {
                 const pushedAlly = occupant.unit;
                 pushedAlly.x = activeUnit.x;
                 pushedAlly.y = activeUnit.y;
                 updateUnitElementPosition(pushedAlly);
-                playSE('swap');
-            } else {
+                if (seOk) { playSE('swap'); state._lastStepSeAt = seNow; }
+            } else if (seOk) {
                 playSE('move');
+                state._lastStepSeAt = seNow;
             }
             activeUnit.x = nextX;
             activeUnit.y = nextY;
@@ -4414,6 +4443,25 @@ const SE_AUDIO = {
             }
         }
 
+        async function freeFlee(unit, steps) {
+            for (let s = 0; s < steps; s++) {
+                const enemies = state.enemies.filter(e => e.hp > 0);
+                if (!enemies.length) return;
+                const curD = Math.min(...enemies.map(e => followerDist(unit, e)));
+                let best = null, bestD = curD;
+                for (const [dx, dy] of [[0, -1], [1, 0], [-1, 0], [0, 1]]) {
+                    const nx = unit.x + dx, ny = unit.y + dy;
+                    if (followerBlocked(nx, ny, unit)) continue;
+                    const d = Math.min(...enemies.map(e => followerDist({ x: nx, y: ny }, e)));
+                    if (d > bestD) { bestD = d; best = { x: nx, y: ny }; }
+                }
+                if (!best) return;
+                unit.x = best.x; unit.y = best.y;
+                renderUnits();
+                await sleep(140);
+            }
+        }
+
         async function freeWander(unit, steps) {
             let n = steps;
             while (n-- > 0) {
@@ -4519,6 +4567,9 @@ const SE_AUDIO = {
                         });
                         renderUnits();
                         await sleep(300);
+                        await freeFlee(a, 2);
+                    } else if (living.some(e => (e.blindT || 0) > 0)) {
+                        await freeFlee(a, 2);
                     } else {
                         await freeMoveToward(a, nearest, 2);
                     }
